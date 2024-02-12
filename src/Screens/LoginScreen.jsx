@@ -7,7 +7,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Vibration,
   View,
 } from 'react-native';
 import COLORS from '../constants/colors';
