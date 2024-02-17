@@ -7,6 +7,7 @@
 
 import React from 'react';
 // import type {PropsWithChildren} from 'react';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -34,53 +35,75 @@ import RegisterScreen from './src/Screens/RegisterScreen/RegisterScreen';
 import BottomNavigation from './src/navigation/BottomNavigation';
 import DetailProductScreen from './src/Screens/DetailProductScreen/DetailProductScreen';
 
-function App() {
-  // const isDarkMode = useColorScheme() === 'dark';
 
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
+import ForgotPassword from './src/Screens/ForgotPassword';
+
+function App() {
+
 
   const Stack = createNativeStackNavigator();
 
   return (
-    // <SafeAreaView style={backgroundStyle}>
-    //   <StatusBar
-    //     barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-    //     backgroundColor={backgroundStyle.backgroundColor}
-    //   />
+
     <NavigationContainer>
-        <Stack.Navigator initialRouteName='FisrtScreen'>
-        <Stack.Screen name='FisrtScreen' component={FisrtScreen} options={{headerShown : false}}/>
-        <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown : false}}/>
-        <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown : false}}/>
-        <Stack.Screen name='BottomNavigation' component={BottomNavigation} options={{headerShown : false}}/>
-        <Stack.Screen name='DetailProductScreen' component={DetailProductScreen} options={{headerShown : false}}/>
-        </Stack.Navigator>
+      <Stack.Navigator
+        initialRouteName={'LoginScreen'}
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen
+          name="FisrtScreen"
+          component={FisrtScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OnboardingScreen"
+          component={OnboardingScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BottomNavigation"
+          component={BottomNavigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MessageScreen"
+          component={MessageScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
 
     // </SafeAreaView>
-
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
