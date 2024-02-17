@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import COLORS from '../constants/colors';
-import {Icons} from '../constants/images';
+import COLORS from '../../constants/colors';
+import {Icons} from '../../constants/images';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -22,11 +22,11 @@ const LoginScreen = ({navigation}) => {
 
   const handerOnlickLogin = () => {
     // event login ( check account is realldy exists ) else if { check account is exitsted , however false password or email  } else{ true change Screen }
-    navigation.navigate('BottomNavigation'); // change Screen Onboarding if (user.download === fisrt) else { change screen bottomNavigation }
+    // change Screen Onboarding if (user.download === fisrt) else { change screen bottomNavigation }
   };
 
   const hanlderOnlickSignup = () => {
-    navigation.navigate('RegisterScreen');
+   
   };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
@@ -65,14 +65,14 @@ const LoginScreen = ({navigation}) => {
           <Text style={styles.title2}>Forgot Password</Text>
 
           <View style={styles.formAction}>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() =>  navigation.navigate('BottomNavigation')}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>Login</Text>
               </View>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={{marginTop: 'auto'}} onPress={() => {}}>
+          <TouchableOpacity style={{marginTop: 'auto'}} onPress={() =>  navigation.navigate('Register')}>
             <Text style={styles.formFooter}>
               Don't have an account?{''}
               <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>

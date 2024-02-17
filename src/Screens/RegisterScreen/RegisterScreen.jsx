@@ -10,9 +10,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import COLORS from '../constants/colors';
+import COLORS from '../../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Icons} from '../constants/images';
+import {Icons} from '../../constants/images';
 import {ToggleButton} from 'react-native-paper';
 
 const RegisterScreen = ({navigation}) => {
@@ -24,7 +24,7 @@ const RegisterScreen = ({navigation}) => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
   const handerOnlickCreateAccount = () => {
-    navigation.navigate('LoginScreen');
+    navigation.navigate('Login');
   };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
