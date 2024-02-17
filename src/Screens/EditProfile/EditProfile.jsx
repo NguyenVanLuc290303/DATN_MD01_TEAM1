@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import COLORS from '../constants/colors';
-import {Icons} from '../constants/images';
+import COLORS from '../../constants/colors';
+import {Icons} from '../../constants/images';
 import {useState} from 'react';
 
 const EditProfile = ({navigation}) => {

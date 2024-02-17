@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
 import Home from "../Screens/HomeScreen/Home";
 import Love from "../Screens/LoveScreen/Love";
 import Notification from "../Screens/NotificationScreen/Notification";

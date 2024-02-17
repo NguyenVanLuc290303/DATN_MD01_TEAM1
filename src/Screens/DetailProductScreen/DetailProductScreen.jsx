@@ -25,11 +25,21 @@ const DetailProductScreen = () =>{
         </View>
         <View style={styles.colorProduct}>
             <Text>Color</Text>
-            <View>
+            <View style={{ width : "80%" ,  backgroundColor : 'red'}}>
                 <ScrollView
                     horizontal
                 >
                     
+                </ScrollView>
+            </View>
+        </View>
+        <View style={styles.sizeProduct}>
+            <Text>Size</Text>
+            <View>
+                <ScrollView
+                    horizontal
+                >
+
                 </ScrollView>
             </View>
         </View>

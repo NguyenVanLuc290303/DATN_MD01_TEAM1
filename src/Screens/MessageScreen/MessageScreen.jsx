@@ -1,5 +1,5 @@
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
-import COLORS from '../constants/colors';
+import COLORS from '../../constants/colors';
 import {
   Container,
   Card,

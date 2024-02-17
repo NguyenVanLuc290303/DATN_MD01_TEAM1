@@ -1,5 +1,5 @@
 import {Button, StyleSheet, Text, View} from 'react-native';
-import COLORS from '../constants/colors';
+import COLORS from '../../constants/colors';
 
 const Chat = ({navigation}) => {
   return (
@@ -64,4 +64,3 @@ const styles = StyleSheet.create({
 
 export default Chat;
 
-export default Chat;

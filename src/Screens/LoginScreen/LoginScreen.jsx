@@ -72,7 +72,7 @@ const LoginScreen = ({navigation}) => {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={{marginTop: 'auto'}} onPress={() =>  navigation.navigate('Register')}>
+          <TouchableOpacity style={{marginTop: 'auto'}} onPress={() =>  navigation.navigate('RegisterScreen')}>
             <Text style={styles.formFooter}>
               Don't have an account?{''}
               <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>

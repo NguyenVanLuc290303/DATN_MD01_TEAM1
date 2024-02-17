@@ -1,16 +1,16 @@
-import LoginScreen from './LoginScreen';
-import FisrtScreen from './FisrtScreen';
-import RegisterScreen from './RegisterScreen';
-import OnboardingScreen from './OnboardingScreen';
-import Home from './Home';
-import Chat from './Chat';
-import Love from './Love';
-import Notification from './Notification';
-import Profile from './Profile';
+import LoginScreen from './LoginScreen/LoginScreen';
+import FisrtScreen from './FisrtScreen/FisrtScreen';
+import RegisterScreen from './RegisterScreen/RegisterScreen';
+import OnboardingScreen from './OnboardingScreen/OnboardingScreen';
+import Home from './HomeScreen/Home';
+import Chat from './ChatScreen/Chat';
+import Love from './LoveScreen/Love';
+import Notification from './NotificationScreen/Notification';
+import Profile from './ProfileScreen/Profile';
 import BottomNavigation from '../navigation/BottomNavigation';
-import EditProfile from './EditProfile';
-import MessageScreen from './MessageScreen';
-import ForgotPassword from './ForgotPassword';
+import EditProfile from './EditProfile/EditProfile';
+import MessageScreen from './MessageScreen/MessageScreen';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
 export {
   OnboardingScreen,
   LoginScreen,

@@ -34,9 +34,11 @@ import LoginScreen from './src/Screens/LoginScreen/LoginScreen';
 import RegisterScreen from './src/Screens/RegisterScreen/RegisterScreen';
 import BottomNavigation from './src/navigation/BottomNavigation';
 import DetailProductScreen from './src/Screens/DetailProductScreen/DetailProductScreen';
+import  OnboardingScreen  from './src/Screens/OnboardingScreen/OnboardingScreen';
+import { EditProfile } from './src/Screens';
+import {MessageScreen } from './src/Screens';
 
-
-import ForgotPassword from './src/Screens/ForgotPassword';
+import ForgotPassword from './src/Screens/ForgotPassword/ForgotPassword';
 
 function App() {
 
@@ -47,7 +49,7 @@ function App() {
 
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'LoginScreen'}
+        initialRouteName={'FisrtScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -69,11 +71,11 @@ function App() {
           component={OnboardingScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Notification"
           component={Notification}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="BottomNavigation"
           component={BottomNavigation}
@@ -89,14 +91,19 @@ function App() {
           component={MessageScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Chat"
           component={Chat}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="ForgotPassword"
           component={ForgotPassword}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="DetailProductScreen"
+          component={DetailProductScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

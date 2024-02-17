@@ -5,15 +5,12 @@ const FisrtScreen = ({navigation}) =>{
 
     useEffect(() =>{
         const timer = setTimeout(() => {
-          navigation.replace('Login')
+          navigation.replace('LoginScreen')
         }, 2000);
 
         return () => clearTimeout(timer);
     },[navigation]);
 
-    // const handlerLogin = () =>{
-    //     navigation.navigate('DetailProductScreen');
-    // }
     return(
         <View style={styles.container}>
             <Text style={styles.text}>

@@ -7,8 +7,8 @@ import {
     TouchableOpacity,
     View,
   } from 'react-native';
-  import {Icons} from '../constants/images';
-  import COLORS from '../constants/colors';
+  import {Icons} from '../../constants/images';
+  import COLORS from '../../constants/colors';
   import {Fragment} from 'react';
   
   const Profile = ({navigation}) => {
