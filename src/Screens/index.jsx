@@ -8,6 +8,9 @@ import Love from './Love';
 import Notification from './Notification';
 import Profile from './Profile';
 import BottomNavigation from '../navigation/BottomNavigation';
+import EditProfile from './EditProfile';
+import MessageScreen from './MessageScreen';
+import ForgotPassword from './ForgotPassword';
 export {
   OnboardingScreen,
   LoginScreen,
@@ -19,4 +22,7 @@ export {
   Notification,
   Profile,
   BottomNavigation,
+  EditProfile,
+  MessageScreen,
+  ForgotPassword,
 };

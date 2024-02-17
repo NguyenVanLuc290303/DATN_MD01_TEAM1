@@ -1,9 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 
-const Home = () => {
+const ForgotPassword = () => {
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
+      <Text>ForgotPassword</Text>
     </View>
   );
 };
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default ForgotPassword;

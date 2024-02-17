@@ -15,8 +15,10 @@ import RegisterScreen from './src/Screens/RegisterScreen';
 import Notification from './src/Screens/Notification';
 import OnboardingScreen from './src/Screens/OnboardingScreen';
 import BottomNavigation from './src/navigation/BottomNavigation';
-import Home from './src/Screens/Home';
-
+import EditProfile from './src/Screens/EditProfile';
+import MessageScreen from './src/Screens/MessageScreen';
+import Chat from './src/Screens/Chat';
+import ForgotPassword from './src/Screens/ForgotPassword';
 function App() {
   // const isDarkMode = useColorScheme() === 'dark';
 
@@ -33,7 +35,9 @@ function App() {
     //     backgroundColor={backgroundStyle.backgroundColor}
     //   />
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'BottomNavigation'}>
+      <Stack.Navigator
+        initialRouteName={'LoginScreen'}
+        screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
           component={FisrtScreen}
@@ -65,8 +69,23 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="EditProfile"
+          component={EditProfile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MessageScreen"
+          component={MessageScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
