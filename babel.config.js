@@ -8,13 +8,14 @@ module.exports = {
 				root: ['./src'],
 				extensions: ['.js', '.json'],
 				alias: {
-					'@': './src',
+					'@': './src/assets',
 				},
 			},
 		],
-		'inline-dotenv',
-		'macros',
-		'react-native-reanimated/plugin',
+    
+		// 'inline-dotenv',
+		// 'macros',
+		// 'react-native-reanimated/plugin',
 
 	],
 };

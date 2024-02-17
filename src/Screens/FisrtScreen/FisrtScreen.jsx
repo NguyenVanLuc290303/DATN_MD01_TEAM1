@@ -1,18 +1,19 @@
 import { useEffect } from "react";
 import { StyleSheet, Text, Vibration, View } from "react-native";
+import styles from "./FisrtScreen"
 
 const FisrtScreen = ({navigation}) =>{
 
-    useEffect(() =>{
-        const time = setTimeout(() => {
-            navigation.navigate('LoginScreen');
-        }, 2000);
+    // useEffect(() =>{
+    //     const time = setTimeout(() => {
+    //         navigation.navigate('LoginScreen');
+    //     }, 2000);
 
-        return clearTimeout(time);
-    },[navigation])
+    //     return clearTimeout(time);
+    // },[navigation])
     return(
         <View style={styles.container}>
-            <Text>
+            <Text style={styles.text}>
                 ScreenFisrt
             </Text>
         </View>
@@ -22,7 +23,7 @@ const FisrtScreen = ({navigation}) =>{
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        backgroundColor : '#FFFFFF'
+        backgroundColor : '#FFFFFF',
     }
 })
 

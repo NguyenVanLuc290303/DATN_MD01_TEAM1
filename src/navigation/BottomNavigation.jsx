@@ -1,25 +1,27 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View ,TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IconAndesign from 'react-native-vector-icons/AntDesign'
+import Icon from 'react-native-vector-icons/Ionicons'
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-import Home from "../components/Home";
-import Love from "../components/Love";
-import Notification from "../components/Notification";
-import Chat from "../components/Chat";
-import Profile from "../components/Profile";
+import Home from "../Screens/HomeScreen/Home";
+import Love from "../Screens/LoveScreen/Love";
+import Notification from "../Screens/NotificationScreen/Notification";
+import Chat from "../Screens/ChatScreen/Chat";
+import Profile from "../Screens/ProfileScreen/Profile";
 
-const BottomNavigation = () =>{
+const BottomNavigation = ({navigation}) =>{
 
-    const BotTab = createBottomTabNavigator();
+    const Tab = createBottomTabNavigator();
 
     return(
-        <BotTab.Navigator
+        <Tab.Navigator
             initialRouteName="Home"
             screenOptions={{
                 tabBarActiveTintColor: '#0c090a',
-                headerShown : false,
+                headerShown : false ,
                 tabBarShowLabel : true,
                 
               }}
@@ -37,10 +39,11 @@ const BottomNavigation = () =>{
                 <Tab.Screen
                 name="Love"
                 component={Love}
+                headerShown={true}
                 options={{
                 tabBarLabel: 'Love',
                 tabBarIcon: ({focused , color, size }) => (
-                    <IconAndesign   name="home" color={color}  size={  focused ? 32 : 26}/>
+                    <IconAndesign   name="heart" color={color}  size={  focused ? 32 : 26}/>
                 ),
                 }}
                 />
@@ -60,13 +63,13 @@ const BottomNavigation = () =>{
                     borderRadius : 25,
                     marginBottom : 20, 
                     borderWidth :1,
-                    borderColor : focused ? 'red' : color
+                    borderColor : focused ? '#000000' : color
                     
                     }}
                     onPress={() =>navigation.navigate('Notification')}
                     >
                     <View >
-                    <MaterialCommunityIcons name="bell" color={ focused ? '#040303' : color} size={26} />
+                    <MaterialCommunityIcons name="bell" color={ focused ? '#040303' : color} size={ focused ? 32 : 26} />
                     </View>
                     </TouchableOpacity>
                 ),
@@ -79,7 +82,7 @@ const BottomNavigation = () =>{
                 options={{
                 tabBarLabel: 'Chat',
                 tabBarIcon: ({focused , color, size }) => (
-                    <IconAndesign   name="home" color={color}  size={  focused ? 32 : 26}/>
+                    <IconAndesign   name="wechat" color={color}  size={  focused ? 34 : 26}/>
                 ),
                 }}
                 />
@@ -89,11 +92,11 @@ const BottomNavigation = () =>{
                 options={{
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({focused , color, size }) => (
-                    <IconAndesign   name="home" color={color}  size={  focused ? 32 : 26}/>
+                    <Icon name="person" color={color}  size={  focused ? 32 : 26}/>
                 ),
                 }}
                 />
-        </BotTab.Navigator>
+        </Tab.Navigator>
     )
 }
 const styles = StyleSheet.create({
