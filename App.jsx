@@ -43,43 +43,49 @@ function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    // <SafeAreaView style={backgroundStyle}>
-    //   <StatusBar
-    //     barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-    //     backgroundColor={backgroundStyle.backgroundColor}
-    //   />
     <NavigationContainer>
-        <Stack.Navigator initialRouteName='BottomNavigation'>
-        <Stack.Screen name='FisrtScreen' component={FisrtScreen} options={{headerShown : false}}/>
-        <Stack.Screen name='LoginScreen' component={LoginScreen} options={{ headerShown : false}}/>
-        <Stack.Screen name='RegisterScreen' component={RegisterScreen} options={{headerShown : false}}/>
-        <Stack.Screen name='BottomNavigation' component={BottomNavigation} options={{headerShown : false}}/>
-        <Stack.Screen name='DetailProductScreen' component={DetailProductScreen} options={{headerShown : false}}/>
-        </Stack.Navigator>
+
+      <Stack.Navigator initialRouteName={'BottomNavigation'}>
+        <Stack.Screen
+          name="FisrtScreen"
+          component={FisrtScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OnboardingScreen"
+          component={OnboardingScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BottomNavigation"
+          component={BottomNavigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
 
     // </SafeAreaView>
-
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

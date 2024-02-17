@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { StyleSheet, Text, Vibration, View } from "react-native";
 import styles from "./FisrtScreen"
 
-const FisrtScreen = ({navigation}) =>{
+const FisrtScreen = ({navigation}) => {
 
     // useEffect(() =>{
     //     const time = setTimeout(() => {
