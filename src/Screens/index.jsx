@@ -11,6 +11,7 @@ import BottomNavigation from '../navigation/BottomNavigation';
 import EditProfile from './EditProfile/EditProfile';
 import MessageScreen from './MessageScreen/MessageScreen';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
+import DetailMessage from './MessageScreen/DetailMessage';
 export {
   OnboardingScreen,
   LoginScreen,
@@ -25,4 +26,5 @@ export {
   EditProfile,
   MessageScreen,
   ForgotPassword,
+  DetailMessage,
 };

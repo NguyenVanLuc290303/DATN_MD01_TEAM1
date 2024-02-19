@@ -25,9 +25,7 @@ const LoginScreen = ({navigation}) => {
     // change Screen Onboarding if (user.download === fisrt) else { change screen bottomNavigation }
   };
 
-  const hanlderOnlickSignup = () => {
-   
-  };
+  const hanlderOnlickSignup = () => {};
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
       <ScrollView style={styles.container}>
@@ -62,17 +60,24 @@ const LoginScreen = ({navigation}) => {
               onChangeText={password => setForm({...form, password})}
             />
           </View>
-          <Text style={styles.title2}>Forgot Password</Text>
+          <Text
+            style={styles.title2}
+            onPress={() => navigation.navigate('ForgotPassword')}>
+            Forgot Password
+          </Text>
 
           <View style={styles.formAction}>
-            <TouchableOpacity onPress={() =>  navigation.navigate('BottomNavigation')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('BottomNavigation')}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>Login</Text>
               </View>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={{marginTop: 'auto'}} onPress={() =>  navigation.navigate('RegisterScreen')}>
+          <TouchableOpacity
+            style={{marginTop: 'auto'}}
+            onPress={() => navigation.navigate('RegisterScreen')}>
             <Text style={styles.formFooter}>
               Don't have an account?{''}
               <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>

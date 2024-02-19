@@ -1,32 +1,37 @@
-import { useEffect } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {useEffect} from 'react';
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Icons} from '../../constants/images';
 
-const FisrtScreen = ({navigation}) =>{
+const FisrtScreen = ({navigation}) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('LoginScreen');
+    }, 2000);
 
-    useEffect(() =>{
-        const timer = setTimeout(() => {
-          navigation.replace('LoginScreen')
-        }, 2000);
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
-        return () => clearTimeout(timer);
-    },[navigation]);
-
-    return(
-        <View style={styles.container}>
-            <Text style={styles.text}>
-                ScreenFisrt
-            </Text>
-        </View>
-    )
-}
+  return (
+    <View style={styles.container}>
+      <Image source={Icons.IconApp} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container : {
-        flex : 1,
-        backgroundColor : '#FFFFFF',
-        justifyContent : 'center',
-        alignItems : 'center'
-    }
-})
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default FisrtScreen;
