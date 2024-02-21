@@ -18,6 +18,7 @@ import IconReport from '../assets/images/flag.png';
 import IconPeople from '../assets/images/people.png';
 import IconLogOut from '../assets/images/logout.png';
 import ImageForogtPassword from '../assets/images/image_forgot_pass1.png';
+import IconPlus from '../assets/images/plus.png';
 export const Icons = {
   IconEye,
   IconEyeHide,
@@ -39,4 +40,5 @@ export const Icons = {
   IconPeople,
   IconLogOut,
   ImageForogtPassword,
+  IconPlus,
 };

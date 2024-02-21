@@ -9,9 +9,34 @@ import {
 } from 'react-native';
 import {Icons} from '../../constants/images';
 import COLORS from '../../constants/colors';
-import {Fragment} from 'react';
+import {Fragment, useState} from 'react';
+import ModalConfirm from '../../components/dialog/ModalConfirm';
 
 const Profile = ({navigation}) => {
+  const [showModal, setShowModal] = useState(false);
+  const handleConfirmAction = () => {
+    console.log('Confirmed action');
+    // Add your logic here for the action to be taken when confirmed
+    setShowModal(false); // Close the modal after action is taken
+    navigation.navigate('LoginScreen'); // Chuyển hướng đến màn hình đăng nhập
+  };
+  const displayModal = () => {
+    setShowModal(true);
+    return (
+      <SafeAreaView style={styles.container}>
+        {/* Your existing code */}
+        <ModalConfirm
+          title="Confirm Action"
+          message="Are you sure you want to take this action?"
+          cancelText="Cancel"
+          confirmText="Confirm"
+          cancelCallback={() => setShowModal(false)} // Close modal on cancel
+          confirmCallBack={handleConfirmAction} // Define action for confirmation
+        />
+      </SafeAreaView>
+    );
+  };
+
   const navigateToEditProfile = () => {
     console.log('Edit Profile Action');
     navigation.navigate('EditProfile');
@@ -22,6 +47,7 @@ const Profile = ({navigation}) => {
 
   const navigateToNotifications = () => {
     console.log('Notifications Action');
+    navigation.navigate('Notification');
   };
 
   const navigateToPrivacy = () => {
@@ -113,7 +139,7 @@ const Profile = ({navigation}) => {
 
   const logout = () => {
     console.log('Logout Action');
-    navigation.navigate('LoginScreen');
+    displayModal(); // Hiển thị modal khi nhấn logout
   };
 
   const cacheAndCellularItems = [
@@ -178,7 +204,7 @@ const Profile = ({navigation}) => {
           {/*Cache & Cellular*/}
           <View style={{marginBottom: 12}}>
             <Text style={{marginVertical: 10, color: COLORS.black}}>
-              Support and About
+              Cache & Cellular
             </Text>
             <View style={{borderRadius: 12, color: COLORS.black}}>
               {cacheAndCellularItems.map((item, index) => (
@@ -190,7 +216,7 @@ const Profile = ({navigation}) => {
           {/*Actions Settings*/}
           <View style={{marginBottom: 12}}>
             <Text style={{marginVertical: 10, color: COLORS.black}}>
-              Support and About
+              Actions Settings
             </Text>
             <View style={{borderRadius: 12, color: COLORS.black}}>
               {actionsItems.map((item, index) => (

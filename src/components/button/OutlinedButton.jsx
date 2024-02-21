@@ -2,32 +2,30 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import COLORS from '../../constants/colors';
 import {FontText} from '../../constants/Constant';
 
-const FilledButton = props => {
+export const OutlinedButton = props => {
   const {label, onPressed, isEnabled = true} = props;
   return (
-    <TouchableOpacity
-      style={styles.button(isEnabled)}
-      disabled={!isEnabled}
-      onPress={onPressed}>
-      <Text style={styles.buttonLabel(isEnabled)}>{label}</Text>
+    <TouchableOpacity style={styles.button} onPress={onPressed}>
+      <Text style={styles.buttonLabel}>{label}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  button: isEnabled => ({
+  button: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: isEnabled ? COLORS.primary : COLORS.color_E4E4E4,
-    borderWidth: 1,
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+    borderWidth: 2,
     borderColor: COLORS.color_EEEEEE,
-    height: 48,
+    height: 46,
     borderRadius: 10,
-  }),
-  buttonLabel: isEnabled => ({
-    backgroundColor: isEnabled ? COLORS.white : COLORS.color_text_main,
+  },
+  buttonLabel: {
+    backgroundColor: COLORS.color_EE0033,
     fontSize: 16,
     fontWeight: '700',
     fontFamily: FontText.FS_PF_BeauSans_Pro_SemiBold,
-  }),
+  },
 });

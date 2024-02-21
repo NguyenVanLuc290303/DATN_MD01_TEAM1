@@ -28,8 +28,7 @@ const ForgotPassword = ({navigation}) => {
         placeholderTextColor={COLORS.color_7E7D7D}
       />
       <View style={styles.formAction}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BottomNavigation')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SendOtpScreen')}>
           <View style={styles.btn}>
             <Text style={styles.btnText}>Continue</Text>
           </View>

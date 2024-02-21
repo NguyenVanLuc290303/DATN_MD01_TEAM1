@@ -12,6 +12,7 @@ const COLORS = {
   color_E4E4E4: '#E4E4E4',
   color_EEEEEE: '#EEEEEE',
   color_text_main: '#44494D',
+  color_EE0033: '#EE0033',
 };
 
 export default COLORS;

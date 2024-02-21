@@ -2,9 +2,10 @@ import {Modal, Text, View} from 'react-native';
 import COLORS from '../../constants/colors';
 import {FontText} from '../../constants/Constant';
 import {StyleSheet} from 'react-native';
+import {OutlinedButton} from '../../components/button/OutlinedButton';
+import {FilledButton} from '../../components/button/FilledButton';
 
 const ModalConfirm = ({
-  isShow,
   title,
   message,
   cancelText,
@@ -17,7 +18,11 @@ const ModalConfirm = ({
       <View style={styles.container}>
         <Text style={styles.textTitle}>{title}</Text>
         <Text style={styles.textMessage}>{message}</Text>
-        <View style={{width: 8}} />
+        <View style={{flexDirection: 'row'}}>
+          <OutlinedButton label={cancelText} onPress={cancelCallback} />
+          <View style={{width: 8}} />
+          <FilledButton label={cancelText} onPress={confirmCallBack} />
+        </View>
       </View>
     </Modal>
   );
@@ -49,3 +54,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default ModalConfirm;
