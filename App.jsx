@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -37,6 +38,9 @@ import DetailProductScreen from './src/Screens/DetailProductScreen/DetailProduct
 import  OnboardingScreen  from './src/Screens/OnboardingScreen/OnboardingScreen';
 import { EditProfile } from './src/Screens';
 import {MessageScreen } from './src/Screens';
+import {CartScreen} from './src/Screens';
+import {ProductCategory} from './src/Screens';
+import {SendOTPRegisterScreen} from './src/Screens';
 
 import ForgotPassword from './src/Screens/ForgotPassword/ForgotPassword';
 
@@ -49,7 +53,7 @@ function App() {
 
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'FisrtScreen'}
+        initialRouteName={'RegisterScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -59,6 +63,11 @@ function App() {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SendOTPRegisterScreen"
+          component={SendOTPRegisterScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -105,6 +114,16 @@ function App() {
           name="DetailProductScreen"
           component={DetailProductScreen}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CartScreen"
+          component={CartScreen}
+          options={{headerShown : false}}
+        />
+         <Stack.Screen
+          name="ProductCategory"
+          component={ProductCategory}
+          options={{headerShown : false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

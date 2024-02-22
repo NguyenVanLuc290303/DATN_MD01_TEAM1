@@ -4,7 +4,9 @@ import { StyleSheet, View } from "react-native";
 const ProductScreen = () =>{
     return(
         <View>
-
+            <View style={styles.header}>
+                
+            </View>
         </View>
     )
 }

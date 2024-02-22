@@ -11,9 +11,13 @@ import BottomNavigation from '../navigation/BottomNavigation';
 import EditProfile from './EditProfile/EditProfile';
 import MessageScreen from './MessageScreen/MessageScreen';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
+import CartScreen from './CartScreen/CartScreen';
+import ProductCategory from './ProductCategory/ProductCategory';
+import SendOTPRegisterScreen from './SendOTPRegisterScreen/SendOTPRegisterScreen';
 export {
   OnboardingScreen,
   LoginScreen,
+  SendOTPRegisterScreen,
   FisrtScreen,
   RegisterScreen,
   Home,
@@ -25,4 +29,6 @@ export {
   EditProfile,
   MessageScreen,
   ForgotPassword,
+  CartScreen,
+  ProductCategory
 };
