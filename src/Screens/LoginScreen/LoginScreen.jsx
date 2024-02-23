@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {
+  Alert,
   Image,
   SafeAreaView,
   ScrollView,
@@ -11,23 +12,62 @@ import {
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
+import { User } from '../../hooks/useContext';
+import { API_ADD_USERS } from '../../config/api-consts';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
+  const [phone, setPhoneNumber] = useState();
+
   const [password, setPassWord] = useState();
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
+
+  const [dataUser,setDataUser] = useState({});
+
+  const { setUserData} = User();
+  // const [form, setForm] = useState({
+  //   email: '',
+  //   password: '',
+  // });
 
   const handerOnlickLogin = () => {
     // event login ( check account is realldy exists ) else if { check account is exitsted , however false password or email  } else{ true change Screen }
     // change Screen Onboarding if (user.download === fisrt) else { change screen bottomNavigation }
+    const myHeaders = new Headers();
+    myHeaders.append("Cookie", "connect.sid=s%3A2ZxJ5qiC033izH_apThtJr0MlnV8Uz4z.N3Nf0xYBaBKssx0FkCehJrfHAfR3bNl85nnEvrjfLfA");
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow"
+    };
+
+    fetch(`http://192.168.0.100:3000/api-taikhoan/${phone}`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => loginUser(result))
+      .catch((error) => console.error(error));
+  
   };
 
-  const hanlderOnlickSignup = () => {
+  const loginUser = (dataUser) =>{
+
+    try {
+      if(dataUser === null){
+        Alert.alert('thông tin null');
+      }
+      if(phone === dataUser.numberPhone && password === dataUser.passwd){
+          setUserData(dataUser);
+          navigation.navigate('BottomNavigation');
+      }else{
+        Alert.alert('thông tin sai');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+ 
+  }
+  // const hanlderOnlickSignup = () => {
    
-  };
+  // };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
       <ScrollView style={styles.container}>
@@ -43,12 +83,12 @@ const LoginScreen = ({navigation}) => {
             <TextInput
               autoCapitalize="none"
               autoCorrect={false}
-              keyboardType="email-address"
+              // keyboardType="phone-pad"
               style={styles.inputControl}
-              value={form.email}
-              placeholder="Enter your email"
+              // value={form.email}
+              placeholder="Enter your phone"
               placeholderTextColor="#6b7280"
-              onChangeText={email => setForm({...form, email})}
+              onChangeText={(Text) => setPhoneNumber(Text)}
             />
           </View>
 
@@ -56,16 +96,16 @@ const LoginScreen = ({navigation}) => {
             <TextInput
               secureTextEntry
               style={styles.inputControl}
-              value={form.password}
+              // value={form.password}
               placeholder="Enter your password"
               placeholderTextColor="#6b7280"
-              onChangeText={password => setForm({...form, password})}
+              onChangeText={(Text) => setPassWord(Text)}
             />
           </View>
           <Text style={styles.title2}>Forgot Password</Text>
 
           <View style={styles.formAction}>
-            <TouchableOpacity onPress={() =>  navigation.navigate('BottomNavigation')}>
+            <TouchableOpacity onPress={handerOnlickLogin}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>Login</Text>
               </View>

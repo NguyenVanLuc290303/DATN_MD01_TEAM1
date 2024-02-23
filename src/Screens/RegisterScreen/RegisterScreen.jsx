@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState , useEffect , useContext} from 'react';
 import {
   Button,
   Image,
@@ -15,7 +15,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Icons} from '../../constants/images';
 import {ToggleButton} from 'react-native-paper';
 import axios, { Axios } from 'axios';
-import { API_ADD_USERS } from '../../config/api-consts';
+import auth from '@react-native-firebase/auth';
+
+
+
 
 const RegisterScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -25,38 +28,42 @@ const RegisterScreen = ({navigation}) => {
   const [phoneNumber, setPhoneNumber] = useState();
 
 
+  // const [verification,setVerification] = useState(null);
+
+
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
 
- 
+  function onAuthStateChanged(user) {
+    if (user) {
+      // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
+      // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
+      // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
+      // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
+    }
+  }
 
-  const handerOnlickCreateAccount =  ()  => {
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Cookie", "connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg");
-  
-  const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({ 
-        username: name,
-        passwd: password,
-        email: email,
-        address: address,
-        image: ''
-      }), 
-      redirect: "follow"
-  };
-  
-  fetch(API_ADD_USERS, requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
+  const handerOnlickCreateAccount = async  ()  => {
 
-          // navigation.navigate('Login');
-
-  
+    try {
+      const confirmationResult = await auth().signInWithPhoneNumber(phoneNumber);
+      navigation.navigate('SendOTPRegisterScreen' , data = {
+                                                    verification : confirmationResult.verificationId,
+                                                    email : email,
+                                                    name : name,
+                                                    password : password,
+                                                    address : address,
+                                                    numberPhone : phoneNumber,
+                                                  });
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Failed to send OTP');
+    }
    };
 
 

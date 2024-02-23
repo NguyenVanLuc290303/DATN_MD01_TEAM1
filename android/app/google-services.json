@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "240303417311",
+    "project_id": "app-koru",
+    "storage_bucket": "app-koru.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240303417311:android:a85d7feb4242e9a92f066a",
+        "android_client_info": {
+          "package_name": "com.datn_md01_team1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi5_6Ok9_Sh8oRUbNgUqNKTYYbk0GeUnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

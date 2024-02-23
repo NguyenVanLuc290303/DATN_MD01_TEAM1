@@ -41,8 +41,8 @@ import {MessageScreen } from './src/Screens';
 import {CartScreen} from './src/Screens';
 import {ProductCategory} from './src/Screens';
 import {SendOTPRegisterScreen} from './src/Screens';
-
 import ForgotPassword from './src/Screens/ForgotPassword/ForgotPassword';
+import { UserProvider } from './src/hooks/useContext';
 
 function App() {
 
@@ -50,10 +50,10 @@ function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-
+    <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'RegisterScreen'}
+        initialRouteName={'LoginScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -65,6 +65,7 @@ function App() {
           component={LoginScreen}
           options={{headerShown: false}}
         />
+      
         <Stack.Screen
           name="SendOTPRegisterScreen"
           component={SendOTPRegisterScreen}
@@ -75,6 +76,8 @@ function App() {
           component={RegisterScreen}
           options={{headerShown: false}}
         />
+      
+        
         <Stack.Screen
           name="OnboardingScreen"
           component={OnboardingScreen}
@@ -127,8 +130,7 @@ function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-
-    // </SafeAreaView>
+    </UserProvider>
   );
 }
 
