@@ -47,7 +47,8 @@ const BottomNavigation = ({navigation}) => {
         name="Notification"
         component={Notification}
         options={{
-          tabBarLabel: '',
+          headerShown: true,
+          tabBarLabel: 'Notification',
           tabBarIcon: ({focused, color, size}) => (
             <TouchableOpacity
               style={{

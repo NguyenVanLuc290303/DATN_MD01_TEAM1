@@ -19,6 +19,15 @@ import IconPeople from '../assets/images/people.png';
 import IconLogOut from '../assets/images/logout.png';
 import ImageForogtPassword from '../assets/images/image_forgot_pass1.png';
 import IconPlus from '../assets/images/plus.png';
+import ImageCard from '../assets/images/card.png';
+import IconCamera from '../assets/images/iconCamera.png';
+import IconNext from '../assets/images/next.png';
+import IconAddress from '../assets/images/address.png';
+import IconView from '../assets/images/view.png';
+import IconCardNumber from '../assets/images/iconCardNumber.png';
+import IconCVC from '../assets/images/iconCVC.png';
+import Avatar1 from '../assets/images/avatar1.png';
+import Avatar2 from '../assets/images/avatar2.jpg';
 export const Icons = {
   IconEye,
   IconEyeHide,
@@ -41,4 +50,13 @@ export const Icons = {
   IconLogOut,
   ImageForogtPassword,
   IconPlus,
+  ImageCard,
+  IconCamera,
+  IconNext,
+  IconAddress,
+  IconView,
+  IconCardNumber,
+  IconCVC,
+  Avatar1,
+  Avatar2,
 };

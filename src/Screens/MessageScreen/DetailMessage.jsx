@@ -4,6 +4,7 @@ import {useCallback, useEffect, useState} from 'react';
 import COLORS from '../../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {Icons} from '../../constants/images';
 
 const DetailMessage = () => {
   const [messages, setMessages] = useState([]);
@@ -17,7 +18,7 @@ const DetailMessage = () => {
         user: {
           _id: 2,
           name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
+          avatar: Icons.Avatar1,
         },
       },
       {

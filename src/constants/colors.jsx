@@ -13,6 +13,8 @@ const COLORS = {
   color_EEEEEE: '#EEEEEE',
   color_text_main: '#44494D',
   color_EE0033: '#EE0033',
+  color_A1A1A1: '#A1A1A1',
+  color_D2D2D2: '#D2D2D2',
 };
 
 export default COLORS;

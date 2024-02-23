@@ -13,7 +13,7 @@ const Message = [
   {
     id: '1',
     userName: 'Jenny Doe',
-    userImg: require('../../assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar2.jpg'),
     messageTime: '4 mins ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
@@ -21,7 +21,7 @@ const Message = [
   {
     id: '2',
     userName: 'Jenny Doe',
-    userImg: require('../../assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar1.png'),
     messageTime: '2 hours ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
@@ -29,7 +29,7 @@ const Message = [
   {
     id: '4',
     userName: 'Jenny Doe',
-    userImg: require('../../assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar1.png'),
     messageTime: '2 days ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
@@ -37,7 +37,7 @@ const Message = [
   {
     id: '5',
     userName: 'Jenny Doe',
-    userImg: require('../../assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar2.jpg'),
     messageTime: '4 months ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
