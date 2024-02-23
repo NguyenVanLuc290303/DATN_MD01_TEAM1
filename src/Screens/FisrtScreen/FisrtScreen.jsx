@@ -3,13 +3,13 @@ import {  Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackgrou
 
 const FisrtScreen = ({navigation}) =>{
 
-    // useEffect(() =>{
-    //     const timer = setTimeout(() => {
-    //       navigation.replace('LoginScreen')
-    //     }, 2000);
+    useEffect(() =>{
+        const timer = setTimeout(() => {
+          navigation.replace('LoginScreen')
+        }, 2000);
 
-    //     return () => clearTimeout(timer);
-    // },[navigation]);
+        return () => clearTimeout(timer);
+    },[navigation]);
 
     return (
         <ImageBackground style={styles.background} source={require('@/images/image26.png')}>
