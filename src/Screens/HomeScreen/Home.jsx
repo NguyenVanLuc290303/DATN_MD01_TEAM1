@@ -50,6 +50,7 @@ const IP = "192.168.0.100";
 
     },[])
 
+    // console.log(dataProduct);
     const handlerItemProducts = (item) =>{
         console.log(item);
     }
@@ -85,7 +86,7 @@ const IP = "192.168.0.100";
             <View style={{ marginTop : 10}}>
                 <FlatList horizontal data={dataCategory} renderItem={({item , index}) =>{
                     return(
-                        <TouchableOpacity onPress={() => navigation.navigate('ProductCategory' , {item})}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProductCategory' , item = {name: item.name})}>
                             <View style={styles.viewItem}>
                                 <Text>{item.name}</Text>
                                 <Image style={{ width : 52 , height : 52}} source={{ uri: item.image}}/>

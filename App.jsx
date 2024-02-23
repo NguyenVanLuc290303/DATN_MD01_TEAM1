@@ -53,7 +53,7 @@ function App() {
 
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'RegisterScreen'}
+        initialRouteName={'BottomNavigation'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
