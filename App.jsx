@@ -53,7 +53,8 @@ function App() {
     <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'LoginScreen'}
+
+        initialRouteName={'FisrtScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
