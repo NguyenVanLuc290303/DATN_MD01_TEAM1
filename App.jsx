@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -34,9 +35,12 @@ import LoginScreen from './src/Screens/LoginScreen/LoginScreen';
 import RegisterScreen from './src/Screens/RegisterScreen/RegisterScreen';
 import BottomNavigation from './src/navigation/BottomNavigation';
 import DetailProductScreen from './src/Screens/DetailProductScreen/DetailProductScreen';
-import OnboardingScreen from './src/Screens/OnboardingScreen/OnboardingScreen';
-import {EditProfile} from './src/Screens';
-import {MessageScreen} from './src/Screens';
+import  OnboardingScreen  from './src/Screens/OnboardingScreen/OnboardingScreen';
+import { EditProfile } from './src/Screens';
+import {MessageScreen } from './src/Screens';
+import {CartScreen} from './src/Screens';
+import {ProductCategory} from './src/Screens';
+import {SendOTPRegisterScreen} from './src/Screens';
 
 import ForgotPassword from './src/Screens/ForgotPassword/ForgotPassword';
 import DetailMessage from './src/Screens/MessageScreen/DetailMessage';
@@ -69,7 +73,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'CartScreen'}
+        initialRouteName={'RegisterScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -79,6 +83,11 @@ function App() {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SendOTPRegisterScreen"
+          component={SendOTPRegisterScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -134,6 +143,16 @@ function App() {
           name="DetailProductScreen"
           component={DetailProductScreen}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CartScreen"
+          component={CartScreen}
+          options={{headerShown : false}}
+        />
+         <Stack.Screen
+          name="ProductCategory"
+          component={ProductCategory}
+          options={{headerShown : false}}
         />
 
         <Stack.Screen

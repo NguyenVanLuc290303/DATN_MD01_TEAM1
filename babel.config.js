@@ -15,7 +15,7 @@ module.exports = {
     
 		// 'inline-dotenv',
 		// 'macros',
-		// 'react-native-reanimated/plugin',
+		'react-native-reanimated/plugin',
 
 	],
 };

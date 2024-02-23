@@ -15,9 +15,12 @@ import DetailMessage from './MessageScreen/DetailMessage';
 import PaymentScreen from './PaymentScreen/PaymentScreen';
 import OrderDetailsScreen from './OrderDetails/OrderDetailsScreen';
 import CartScreen from './CartScreen/CartScreen';
+import ProductCategory from './ProductCategory/ProductCategory';
+import SendOTPRegisterScreen from './SendOTPRegisterScreen/SendOTPRegisterScreen';
 export {
   OnboardingScreen,
   LoginScreen,
+  SendOTPRegisterScreen,
   FisrtScreen,
   RegisterScreen,
   Home,
@@ -33,4 +36,5 @@ export {
   PaymentScreen,
   OrderDetailsScreen,
   CartScreen,
+  ProductCategory
 };

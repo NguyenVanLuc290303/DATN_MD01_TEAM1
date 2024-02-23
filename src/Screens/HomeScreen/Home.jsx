@@ -1,110 +1,60 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import  IconI from "react-native-vector-icons/Ionicons";
+import axios, {isCancel, AxiosError} from "axios";
+import { API_CATEGORY_PRODUCT } from "../../config/api-consts";
+import { API_PRODUCT } from "../../config/api-consts";
 
 
 const Home =  ({navigation}) => {
 
-    const [dataCategory ,setDataCategory ] = useState([
-        {
-            name : "Jeans" , 
-            image : 'https://via.placeholder.com/150/771796',
-        },
-        {
-            name : "Jeans" , 
-            image : "https://via.placeholder.com/150/771796",
-        },
-        {
-            name : "Jeans" , 
-            image : "https://via.placeholder.com/150/771796",
-        },
-        {
-            name : "Jeans" , 
-            image : "https://via.placeholder.com/150/771796",
-        },
-        {
-            name : "Jeans" , 
-            image : "https://via.placeholder.com/150/771796",
-        },
-        {
-            name : "Jeans" , 
-            image : "https://via.placeholder.com/150/771796",
-        },
-    ])
 
-    const [dataProduct , setProduct] = useState([
-        {
-            id_Product : 1,
-            id_Category : 1,
-            dicrible : "kkkkk",
-            name : "Holide Pink",
-            quantity : 2,
-            quantity_sold : 2,
-            price : 40.00,
-            state : false,
-            image :"https://via.placeholder.com/150/771796",
-        },
-        {
-            id_Product : 1,
-            id_Category : 1,
-            dicrible : "kkkkk",
-            name : "Holide Pink",
-            quantity : 2,
-            quantity_sold : 2,
-            price : 40.00,
-            state : false,
-            image :"https://via.placeholder.com/150/771796",
-        },
-        {
-            id_Product : 1,
-            id_Category : 1,
-            dicrible : "kkkkk",
-            name : "Holide Pink",
-            quantity : 2,
-            quantity_sold : 2,
-            price : 40.00,
-            state : false,
-            image :"https://via.placeholder.com/150/771796",
-        },
-        {
-            id_Product : 1,
-            id_Category : 1,
-            dicrible : "kkkkk",
-            name : "Holide Pink",
-            quantity : 2,
-            quantity_sold : 2,
-            price : 40.00,
-            state : false,
-            image :"https://via.placeholder.com/150/771796",
-        },
-        {
-            id_Product : 1,
-            id_Category : 1,
-            dicrible : "kkkkk",
-            name : "Holide Pink",
-            quantity : 2,
-            quantity_sold : 2,
-            price : 40.00,
-            state : false,
-            image :"https://via.placeholder.com/150/771796",
-        },
-        {
-            id_Product : 1,
-            id_Category : 1,
-            dicrible : "kkkkk",
-            name : "Holide Pink",
-            quantity : 2,
-            quantity_sold : 2,
-            price : 40.00,
-            state : false,
-            image :"https://via.placeholder.com/150/771796",
-        },
-    ]);
+    const [dataCategory,setDataCategory] = React.useState([]);
+    const [dataProduct,setDataProduct] = React.useState([]);
+
+const IP = "192.168.0.100";
 
 
-    const handlerItemProducts = () =>{
-        navigation.navigate('DetailProductScreen')
+    React.useEffect(() =>{
+
+        var myHeaders = new Headers();
+        myHeaders.append("Cookie", "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw");
+
+        var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+
+        fetch(API_CATEGORY_PRODUCT, requestOptions)
+        .then(response => response.json())
+        .then(result => setDataCategory(result))
+        .catch(error => console.log('error', error));
+
+    },[]);
+
+    React.useEffect(() =>{
+        var myHeaders = new Headers();
+        myHeaders.append("Cookie", "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw");
+
+        var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+
+        fetch(API_PRODUCT, requestOptions)
+        .then(response => response.json())
+        .then(result => setDataProduct(result))
+        .catch(error => console.log('error', error));
+
+    },[])
+
+    const handlerItemProducts = (item) =>{
+        console.log(item);
     }
+
+    // console.log(dataProduct[0].image);
 
     return(
         <View style = {styles.container}>
@@ -133,12 +83,14 @@ const Home =  ({navigation}) => {
                 <Text style={styles.textHead}>Category</Text>
             </View>
             <View style={{ marginTop : 10}}>
-                <FlatList horizontal data={dataCategory} renderItem={({item}) =>{
+                <FlatList horizontal data={dataCategory} renderItem={({item , index}) =>{
                     return(
-                        <View style={styles.viewItem}>
-                            <Text>{item.name}</Text>
-                            <Image style={{ width : 40 , height : 40}} source={{ uri : item.image}}/>
-                        </View>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProductCategory' , {item})}>
+                            <View style={styles.viewItem}>
+                                <Text>{item.name}</Text>
+                                <Image style={{ width : 52 , height : 52}} source={{ uri: item.image}}/>
+                            </View>
+                        </TouchableOpacity>
                     )
                 }}/>
             </View>
@@ -146,14 +98,22 @@ const Home =  ({navigation}) => {
                 <Text style={styles.textHead}>Recommend</Text>
             </View>
             
-                <FlatList numColumns={2} data={dataProduct} renderItem={({item}) =>{
+                <FlatList numColumns={2} data={dataProduct} renderItem={({item , index}) =>{
                     return(
                         <View style={styles.viewItemProducts}>
                             <TouchableOpacity style={{ 
                                         alignItems : 'center',
                                         justifyContent :"center",
                                         paddingTop : "5%"
-                            }}  onPress={handlerItemProducts}>
+                            }}  onPress={() => navigation.navigate('DetailProductScreen', item ={
+                                                                                _id : item._id,
+                                                                                name : item.name,
+                                                                                image : item.image,
+                                                                                category : item.loai,
+                                                                                price : item.price,
+                                                                                quantitySold : item.quantitySold,
+                            })
+                        }>
                                 <Image source={{ uri : item.image}} style={{ width : 90 , height : 131}}/>
                                 <Text>{item.name}</Text>
                                 <Text>{item.price} USD</Text>

@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
+import COLORS from "../../constants/colors";
 
-const styleCommon = StyleSheet.create({
+ export const styleCommon = StyleSheet.create({
     textTitle :{
         fontSize : 16,
         fontFamily : "Inter-Bold"
@@ -9,5 +10,33 @@ const styleCommon = StyleSheet.create({
         width : 350,
         height : 55,
         backgroundColor : '#000000'
+    },
+    h1 :{
+        fontSize : 30,
+        fontWeight : "bold",
+    },
+    h2:{
+        fontSize : 20,
+        fontWeight : "600",
+    },
+
+    // styles speace 
+
+    sp1:{
+        marginTop : 10
+    },
+    sp:{
+        marginTop : 20
+    }
+
+    
+});
+
+export const textStyles = StyleSheet.create({
+    white :{
+        color : COLORS.white
     }
 })
+
+
+

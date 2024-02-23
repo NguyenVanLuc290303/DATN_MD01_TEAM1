@@ -15,6 +15,19 @@ const COLORS = {
   color_EE0033: '#EE0033',
   color_A1A1A1: '#A1A1A1',
   color_D2D2D2: '#D2D2D2',
+
+  //color customs
+
+  //color texttile
+  colorTextTitle :'#2D0C57',
+
+  //colorBorder card
+  borderColor :"#D9D9D9",
+
+
+  //color border OTP
+
+  borderColorOTP :"#F49517"
 };
 
 export default COLORS;
