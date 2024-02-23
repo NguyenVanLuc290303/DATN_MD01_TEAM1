@@ -4,6 +4,7 @@ import  IconI from "react-native-vector-icons/Ionicons";
 import axios, {isCancel, AxiosError} from "axios";
 import { API_CATEGORY_PRODUCT } from "../../config/api-consts";
 import { API_PRODUCT } from "../../config/api-consts";
+import { API_PRODUCT_TOP8 } from "../../config/api-consts";
 
 
 const Home =  ({navigation}) => {
@@ -43,7 +44,7 @@ const IP = "192.168.0.100";
         redirect: 'follow'
         };
 
-        fetch(API_PRODUCT, requestOptions)
+        fetch(API_PRODUCT_TOP8, requestOptions)
         .then(response => response.json())
         .then(result => setDataProduct(result))
         .catch(error => console.log('error', error));
