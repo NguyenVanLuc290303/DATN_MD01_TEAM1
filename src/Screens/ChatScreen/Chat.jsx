@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   card: {
     width: '100%',
@@ -63,4 +64,3 @@ const styles = StyleSheet.create({
 });
 
 export default Chat;
-

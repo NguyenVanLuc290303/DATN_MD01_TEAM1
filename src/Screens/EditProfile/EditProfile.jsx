@@ -22,8 +22,27 @@ const EditProfile = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView style={{flex: 1, marginHorizontal: 22}}>
-        <View style={{marginBottom: 80, marginTop: 20, alignItems: 'center'}}>
-          <Image source={Icons.IconApp} style={{width: 100, height: 100}} />
+        <View
+          style={{
+            marginBottom: 80,
+            marginTop: 20,
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}>
+          <Image
+            source={Icons.IconApp}
+            style={{
+              width: 200,
+              height: 200,
+              borderRadius: 400 / 2,
+              borderWidth: 1,
+              borderColor: COLORS.gray,
+            }}
+          />
+          <Image
+            source={Icons.IconPlus}
+            style={{width: 35, height: 30, marginTop: -30, marginLeft: 120}}
+          />
         </View>
 
         <View style={{paddingTop: 10, justifyContent: 'center'}}>

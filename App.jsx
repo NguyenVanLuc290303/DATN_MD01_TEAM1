@@ -27,8 +27,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import FisrtScreen from './src/Screens/FisrtScreen/FisrtScreen';
 import LoginScreen from './src/Screens/LoginScreen/LoginScreen';
@@ -44,17 +44,39 @@ import {SendOTPRegisterScreen} from './src/Screens';
 import ForgotPassword from './src/Screens/ForgotPassword/ForgotPassword';
 import { UserProvider } from './src/hooks/useContext';
 
+import DetailMessage from './src/Screens/MessageScreen/DetailMessage';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Profile from './src/Screens/ProfileScreen/Profile';
+import SendOtpScreen from './src/Screens/SendOtp/SendOtpScreen';
+import PaymentScreen from './src/Screens/PaymentScreen/PaymentScreen';
+import OrderDetailsScreen from './src/Screens/OrderDetails/OrderDetailsScreen';
+
+// import {CartScreen} from './src/Screens';
+
 function App() {
-
-
   const Stack = createNativeStackNavigator();
+  const getTabBarVisibility = route => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
 
+    if (routeName === 'MessageScreen') {
+      return false;
+    }
+    return true;
+  };
+
+  const ProfileStack = ({navigation}) => {
+    <Stack.Navigator screenOptions={{headerShown: true}}>
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+    </Stack.Navigator>;
+  };
   return (
     <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
-
-        initialRouteName={'FisrtScreen'}
+        initialRouteName={'LoginScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -97,12 +119,21 @@ function App() {
         <Stack.Screen
           name="EditProfile"
           component={EditProfile}
-          options={{headerShown: false}}
+          options={{headerShown: true}}
         />
         <Stack.Screen
           name="MessageScreen"
           component={MessageScreen}
-          options={{headerShown: false}}
+          options={({route}) => ({
+            headerShown: getTabBarVisibility(route),
+            tabBarIcon: ({color, size}) => (
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          })}
         />
         {/* <Stack.Screen
           name="Chat"
@@ -119,15 +150,46 @@ function App() {
           component={DetailProductScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="CartScreen"
           component={CartScreen}
           options={{headerShown : false}}
-        />
+        /> */}
          <Stack.Screen
           name="ProductCategory"
           component={ProductCategory}
           options={{headerShown : false}}
+        />
+
+        <Stack.Screen
+          name="DetailMessage"
+          component={DetailMessage}
+          options={({route}) => ({
+            title: route.params.userName,
+            headerBackTitleVisible: false,
+            headerShown: true,
+          })}
+        />
+
+        <Stack.Screen
+          name="SendOtpScreen"
+          component={SendOtpScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PaymentScreen"
+          component={PaymentScreen}
+          options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="OrderDetailsScreen"
+          component={OrderDetailsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CartScreen"
+          component={CartScreen}
+          options={{headerShown: true}}
         />
       </Stack.Navigator>
     </NavigationContainer>

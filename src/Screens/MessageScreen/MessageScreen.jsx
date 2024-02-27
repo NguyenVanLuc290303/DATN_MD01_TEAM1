@@ -1,22 +1,19 @@
-import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
-import COLORS from '../../constants/colors';
 import {
-  Container,
-  Card,
-  UserInfo,
-  UserImgWrapper,
-  UserImg,
-  UserInfoText,
-  UserName,
-  PostTime,
-  TextSection,
-} from 'src/styles/MessageStyle';
+  Button,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import COLORS from '../../constants/colors';
 
 const Message = [
   {
     id: '1',
     userName: 'Jenny Doe',
-    //userImg: require('src/assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar2.jpg'),
     messageTime: '4 mins ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
@@ -24,23 +21,23 @@ const Message = [
   {
     id: '2',
     userName: 'Jenny Doe',
-    //userImg: require('src/assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar1.png'),
     messageTime: '2 hours ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
   },
   {
-    id: '1',
+    id: '4',
     userName: 'Jenny Doe',
-    //userImg: require('src/assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar1.png'),
     messageTime: '2 days ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
   },
   {
-    id: '1',
+    id: '5',
     userName: 'Jenny Doe',
-    //userImg: require('src/assets/images/edit_profile.png'),
+    userImg: require('../../assets/images/avatar2.jpg'),
     messageTime: '4 months ago',
     messageText:
       'Hey there, this is my test for a post of my social app in React Native',
@@ -54,9 +51,24 @@ const MessageScreen = ({navigation}) => {
         data={Message}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <View>
-            <Text style={{color: COLORS.black}}>{item.userName}</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() =>
+              navigation.navigate('DetailMessage', {userName: item.userName})
+            }>
+            <View style={styles.userInfo}>
+              <View style={styles.userImgWrapper}>
+                <Image source={item.userImg} style={styles.userImg} />
+              </View>
+              <View style={styles.textSection}>
+                <View style={styles.userInfoText}>
+                  <Text style={styles.userName}>{item.userName}</Text>
+                  <Text style={styles.postTime}>{item.messageTime}</Text>
+                </View>
+                <Text style={styles.messageText}>{item.messageText}</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -109,6 +121,10 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 14,
     color: '#333333',
+  },
+  postTime: {
+    fontSize: 12,
+    color: COLORS.palette,
   },
 });
 

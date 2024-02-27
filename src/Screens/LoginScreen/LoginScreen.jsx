@@ -68,6 +68,7 @@ const LoginScreen = ({navigation}) => {
   // const hanlderOnlickSignup = () => {
    
   // };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
       <ScrollView style={styles.container}>
@@ -102,17 +103,24 @@ const LoginScreen = ({navigation}) => {
               onChangeText={(Text) => setPassWord(Text)}
             />
           </View>
-          <Text style={styles.title2}>Forgot Password</Text>
+          <Text
+            style={styles.title2}
+            onPress={() => navigation.navigate('ForgotPassword')}>
+            Forgot Password
+          </Text>
 
           <View style={styles.formAction}>
             <TouchableOpacity onPress={handerOnlickLogin}>
+
               <View style={styles.btn}>
                 <Text style={styles.btnText}>Login</Text>
               </View>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={{marginTop: 'auto'}} onPress={() =>  navigation.navigate('RegisterScreen')}>
+          <TouchableOpacity
+            style={{marginTop: 'auto'}}
+            onPress={() => navigation.navigate('RegisterScreen')}>
             <Text style={styles.formFooter}>
               Don't have an account?{''}
               <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>
