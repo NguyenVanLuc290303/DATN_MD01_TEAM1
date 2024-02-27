@@ -4,9 +4,13 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableHighlight,
   View,
+  AsyncStorage,
 } from 'react-native';
 import COLORS from '../../constants/colors';
+import {useEffect, useState} from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Notification = () => {
   const notificationArray = [
@@ -70,12 +74,77 @@ const Notification = () => {
     },
   ];
 
-  const renderItem = ({item}) => (
-    <ScrollView style={styles.item}>
-      <Text style={styles.title}>{item.titleMessage}</Text>
-      <Text style={styles.time}>{item.time}</Text>
-    </ScrollView>
-  );
+  const [notifications, setNotifications] = useState([]);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [touchedItems, setTouchedItems] = useState([]);
+
+  useEffect(() => {
+    // Nạp lại dữ liệu khi màn hình được load
+    loadNotifications();
+  }, []);
+
+  useEffect(() => {
+    // Lưu trữ dữ liệu khi dữ liệu thay đổi
+    saveNotifications();
+  }, [notifications]);
+
+  const loadNotifications = async () => {
+    try {
+      const storedNotifications = await AsyncStorage.getItem('@notifications');
+      if (storedNotifications !== null) {
+        setNotifications(JSON.parse(storedNotifications));
+      }
+    } catch (error) {
+      console.error('Error loading notifications: ', error);
+    }
+  };
+
+  const saveNotifications = async () => {
+    try {
+      await AsyncStorage.setItem(
+        '@notifications',
+        JSON.stringify(notifications),
+      );
+    } catch (error) {
+      console.error('Error saving notifications: ', error);
+    }
+  };
+
+  const renderItem = ({item}) => {
+    const isSelected = selectedItemId === item.id;
+    const isTouched = touchedItems.includes(item.id);
+    const fontWeight = isTouched ? 'normal' : 'bold';
+
+    return (
+      <TouchableHighlight
+        underlayColor={COLORS.gray} // Màu khi chạm vào
+        onPress={() => {
+          if (!isTouched) {
+            setTouchedItems([...touchedItems, item.id]); // Thêm id của mục vào danh sách đã chạm vào
+          }
+          setSelectedItemId(item.id === selectedItemId ? null : item.id); // Nếu mục đã được chọn, hủy chọn nó. Nếu chưa, chọn mục mới.
+        }}
+        style={[
+          styles.item,
+          {backgroundColor: isSelected ? COLORS.white : COLORS.white}, // Áp dụng màu đỏ nếu mục được chọn, ngược lại áp dụng màu mặc định.
+        ]}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <ScrollView style={{flex: 1}}>
+            <Text style={[styles.title, {fontWeight}]}>
+              {item.titleMessage}
+            </Text>
+            <Text style={[styles.time, {fontWeight}]}>{item.time}</Text>
+          </ScrollView>
+          <Icon
+            name="arrow-forward-outline"
+            size={20}
+            color={isSelected ? COLORS.white : COLORS.black}
+            style={{alignSelf: 'center'}}
+          />
+        </View>
+      </TouchableHighlight>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -104,7 +173,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: COLORS.black,
-    fontWeight: 'bold',
   },
   time: {
     fontSize: 12,
