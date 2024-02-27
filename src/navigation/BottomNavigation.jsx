@@ -78,7 +78,7 @@ const BottomNavigation = ({navigation}) => {
         name="Chat"
         component={Chat}
         options={{
-          headerShown: 'Chat',
+          headerShown: '',
           tabBarIcon: ({focused, color, size}) => (
             <IconAndesign
               name="wechat"

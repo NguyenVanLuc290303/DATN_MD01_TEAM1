@@ -5,11 +5,13 @@ import axios, {isCancel, AxiosError} from "axios";
 import { API_CATEGORY_PRODUCT } from "../../config/api-consts";
 import { API_PRODUCT } from "../../config/api-consts";
 import { API_PRODUCT_TOP8 } from "../../config/api-consts";
+import { User } from "../../hooks/useContext";
 
 
 const Home =  ({navigation}) => {
 
-
+    const {dataUser} = User();
+    // const userName = dataUser.username;
     const [dataCategory,setDataCategory] = React.useState([]);
     const [dataProduct,setDataProduct] = React.useState([]);
 
@@ -64,6 +66,7 @@ const IP = "192.168.0.100";
                 <View>
                     <Image style={styles.imageTitle} source={require('@/images/logoAPP_MD01_png.png')}/>
                 </View>
+                {/* <Text>Hi {userName}</Text> */}
                 <TouchableOpacity>
                         <Image source={require('@/icons/png/local_mall.png')}/>
                 </TouchableOpacity>

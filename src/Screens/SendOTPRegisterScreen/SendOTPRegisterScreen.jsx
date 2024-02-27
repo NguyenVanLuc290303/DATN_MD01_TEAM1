@@ -23,6 +23,15 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
 
   const {verification, name, email,password , address, numberPhone} = route.params;
 
+  const dataUserRegister = {
+    name : name,
+    email : email,
+    passwd : password,
+    address : address,
+    numberPhone : numberPhone,
+    image :'',
+  }
+
 
   const {setUserData} = User();
 
@@ -34,6 +43,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
        auth().signInWithCredential(credential);
       console.log('đăng ký trên mongodb');
       // Navigate to the main screen upon successful authentication
+      setUserData(dataUserRegister);
       RegisterUserMongodb();
     } catch (error) {
       console.log(error);
@@ -49,7 +59,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
         'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
         );
 
-        console.log(numberPhone);
+        // console.log(numberPhone);
 
         const requestOptions = {
         method: 'POST',
@@ -69,7 +79,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
             
         fetch(API_ADD_USERS, requestOptions)
         .then(response => response.json())
-        .then(result => setUserData(result))
+        .then(result => console.log(result))
         .then(navigation.navigate('OnboardingScreen'))
         
         } catch (error) {
@@ -77,6 +87,10 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
         }
 
     };
+
+    const handleChangeOtp = React.useCallback((otp) => {
+      setCode(otp);
+    }, []);
 
   return (
     <View style={styles.container}>
@@ -90,7 +104,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
           </Text>
           <Text style={[styles.textPhoneNumber, styleCommon.sp1]}></Text>
           <OtpInputs
-            handleChange={otp => setCode(otp)}
+            handleChange={otp => handleChangeOtp(otp)}
             numberOfInputs={6}
             style={styles.OTP}
             inputContainerStyles={[styles.underLine]}

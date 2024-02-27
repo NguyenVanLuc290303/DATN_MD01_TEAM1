@@ -7,7 +7,7 @@ export function UserProvider({children}){
     
     const [userData,setUserData] = useState(null);
     return(
-        <UseContext.Provider value={{userData ,setUserData}} >
+        <UseContext.Provider value={{userData,setUserData}} >
             {children}
         </UseContext.Provider>
     )

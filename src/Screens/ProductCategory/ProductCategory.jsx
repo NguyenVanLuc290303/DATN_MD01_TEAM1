@@ -56,7 +56,7 @@ const ProductCategory =  ({navigation, route}) => {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Icon name='arrow-back' size={24}/>  
                 </TouchableOpacity>
-                <HeaderTitle>{name}</HeaderTitle>              
+                <Text style={styles.textTitle}>{name}</Text>
             </View>
             <View>
             <FlatList
@@ -96,6 +96,10 @@ const styles = StyleSheet.create({
         justifyContent : 'center',
         marginTop : 20,
         marginLeft : "2.5%"
+    },
+    textTitle :{
+        fontSize : 20,
+        fontFamily :"Inter-Bold"
     }
 })
 

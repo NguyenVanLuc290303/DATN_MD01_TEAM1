@@ -23,7 +23,7 @@ const LoginScreen = ({navigation}) => {
 
   const [dataUser,setDataUser] = useState({});
 
-  const { setUserData} = User();
+  const {setUserData} = User();
   // const [form, setForm] = useState({
   //   email: '',
   //   password: '',
@@ -41,7 +41,7 @@ const LoginScreen = ({navigation}) => {
       redirect: "follow"
     };
 
-    fetch(`http://192.168.0.100:3000/api-taikhoan/${phone}`, requestOptions)
+    fetch(`http://192.168.1.231:3000/api-taikhoan/${phone}`, requestOptions)
       .then((response) => response.json())
       .then((result) => loginUser(result))
       .catch((error) => console.error(error));
@@ -55,6 +55,7 @@ const LoginScreen = ({navigation}) => {
         Alert.alert('thông tin null');
       }
       if(phone === dataUser.numberPhone && password === dataUser.passwd){
+        // console.log(dataUser)
           setUserData(dataUser);
           navigation.navigate('BottomNavigation');
       }else{
