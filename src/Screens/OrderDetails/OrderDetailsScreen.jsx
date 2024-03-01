@@ -14,6 +14,7 @@ import { User } from '../../hooks/useContext';
 import {useState , useCallback} from 'react';
 import CheckBox from '@react-native-community/checkbox';
 import { API_ORDER } from '../../config/api-consts';
+import { API_PRODUCT_ORDER } from '../../config/api-consts';
 
 const OrderDetailsScreen = ({navigation , route}) => {
 
@@ -141,17 +142,57 @@ const OrderDetailsScreen = ({navigation , route}) => {
 
         try {
             
-        fetch("http://192.168.0.100:3000/api-donhang/add", requestOptions)
+        fetch(API_ORDER, requestOptions)
+        .then(response => response.json())
+        .then(result => pushProductOnOrder(result))
+     
+
+        } catch (error) {
+            console.log(error);
+        }
+  }
+
+  const pushProductOnOrder = (data) =>{
+    console.log(data._id);
+
+    const myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        myHeaders.append(
+        'Cookie',
+        'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+        );
+
+        // console.log(numberPhone);
+
+        const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify({
+            OrderId : data._id,
+            ProductId : idProduct,
+            ColorCode : color,
+            Size : size,
+            Quantity : quantityFinish,
+            PropertiesId: idPropoties,
+            Image: image,
+        }),
+        redirect: 'follow',
+        };
+
+        try {
+            
+        fetch(API_PRODUCT_ORDER, requestOptions)
         .then(response => response.json())
         .then(result => console.log(result))
-        pushProductOnOrder();
+     
 
         } catch (error) {
             console.log(error);
         }
 
-
   }
+
+  
 
 
 

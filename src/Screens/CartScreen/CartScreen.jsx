@@ -89,7 +89,7 @@ const CartScreen = ({navigation}) => {
     },
   ]);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(true);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
 
   const handleItemPress = index => {

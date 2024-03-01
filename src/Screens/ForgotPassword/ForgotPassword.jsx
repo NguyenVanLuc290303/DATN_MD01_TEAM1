@@ -9,6 +9,7 @@ import {
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
 import COLORS from '../../constants/colors';
+import auth from '@react-native-firebase/auth';
 
 const ForgotPassword = ({navigation}) => {
   return (

@@ -13,6 +13,7 @@ import {
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import { User } from '../../hooks/useContext';
+import { API_LOGIN } from '../../config/api-consts';
 import { API_ADD_USERS } from '../../config/api-consts';
 
 const LoginScreen = ({navigation}) => {
@@ -41,7 +42,7 @@ const LoginScreen = ({navigation}) => {
       redirect: "follow"
     };
 
-    fetch(`http://192.168.0.100:3000/api-taikhoan/${phone}`, requestOptions)
+    fetch(`${API_ADD_USERS}/${phone}`, requestOptions)
       .then((response) => response.json())
       .then((result) => loginUser(result))
       .catch((error) => console.error(error));
