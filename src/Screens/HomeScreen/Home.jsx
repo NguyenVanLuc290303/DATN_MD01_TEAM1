@@ -15,8 +15,6 @@ const Home =  ({navigation}) => {
     const [dataCategory,setDataCategory] = React.useState([]);
     const [dataProduct,setDataProduct] = React.useState([]);
 
-const IP = "192.168.0.100";
-
 
     React.useEffect(() =>{
 
@@ -110,14 +108,15 @@ const IP = "192.168.0.100";
                                         alignItems : 'center',
                                         justifyContent :"center",
                                         paddingTop : "5%"
-                            }}  onPress={() => navigation.navigate('DetailProductScreen', item ={
+                            }}  onPress={() => navigation.navigate('DetailProductScreen'
+                                                                                ,item ={
                                                                                 _id : item._id,
                                                                                 name : item.name,
                                                                                 image : item.image,
                                                                                 category : item.loai,
                                                                                 price : item.price,
-                                                                                quantitySold : item.quantitySold,
-                            })
+                                                                                quantitySold : item.quantitySold}
+                                                                                )
                         }>
                                 <Image source={{ uri : item.image}} style={{ width : 90 , height : 131}}/>
                                 <Text>{item.name}</Text>

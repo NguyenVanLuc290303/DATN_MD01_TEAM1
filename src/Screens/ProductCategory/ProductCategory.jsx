@@ -66,7 +66,13 @@ const ProductCategory =  ({navigation, route}) => {
                 // keyExtractor={item => item._id}     
                 renderItem={({item}) =>{
                     return(
-                        <TouchableOpacity style={styles.itemProduct} onPress={() => navigation.navigate('DetailProductScreen')}>
+                        <TouchableOpacity style={styles.itemProduct} onPress={() => navigation.navigate('DetailProductScreen',item ={
+                            _id : item._id,
+                            name : item.name,
+                            image : item.image,
+                            category : item.loai,
+                            price : item.price,
+                            quantitySold : item.quantitySold})}>
                             <Image source={{ uri : item.image}} style={{ width : '70%' , height : '70%'}}/>
                             <HeaderTitle>{item.name}</HeaderTitle>
                             <Text>{item.price}</Text>

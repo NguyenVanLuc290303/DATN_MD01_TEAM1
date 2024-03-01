@@ -15,6 +15,9 @@ const COLORS = {
   color_EE0033: '#EE0033',
   color_A1A1A1: '#A1A1A1',
   color_D2D2D2: '#D2D2D2',
+  yellow : '#FFD600',
+
+  red : '#FF1744',
 
   //color customs
 

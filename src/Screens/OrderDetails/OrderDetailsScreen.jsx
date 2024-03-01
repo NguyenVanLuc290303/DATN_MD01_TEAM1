@@ -9,8 +9,20 @@ import {
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
+import { User } from '../../hooks/useContext';
 
 const OrderDetailsScreen = ({navigation}) => {
+
+  const {userData} = User();
+
+  const idUser = userData._id;
+  const userName = userData.username;
+  const email = userData.email;
+  const address = userData.address;
+  const numberPhone = userData.numberPhone;
+
+  console.log(idUser , userName , email , address , numberPhone);
+
   //de trong view
   return (
     <View style={styles.container}>
@@ -18,9 +30,9 @@ const OrderDetailsScreen = ({navigation}) => {
         <View style={styles.address}>
           <Image source={Icons.IconAddress} style={styles.iconAddress} />
           <View style={styles.textAddress}>
-            <Text style={styles.textInfo}>Nguyen Van A</Text>
-            <Text style={styles.textInfo}>09888888888888</Text>
-            <Text style={styles.textInfo2}>Cau Giay,Ha Noi</Text>
+            <Text style={styles.textInfo}>{userName}</Text>
+            <Text style={styles.textInfo}>{numberPhone}</Text>
+            <Text style={styles.textInfo2}>{address}</Text>
           </View>
           <Image source={Icons.IconNext} style={styles.iconNext} />
         </View>
