@@ -41,7 +41,7 @@ const LoginScreen = ({navigation}) => {
       redirect: "follow"
     };
 
-    fetch(`http://192.168.1.127:3000/api-taikhoan/${phone}`, requestOptions)
+    fetch(`http://192.168.0.100:3000/api-taikhoan/${phone}`, requestOptions)
       .then((response) => response.json())
       .then((result) => loginUser(result))
       .catch((error) => console.error(error));

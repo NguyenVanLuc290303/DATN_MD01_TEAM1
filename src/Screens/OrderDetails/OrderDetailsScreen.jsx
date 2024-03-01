@@ -11,10 +11,22 @@ import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import { User } from '../../hooks/useContext';
 
-import {useState} from 'react';
+import {useState , useCallback} from 'react';
 import CheckBox from '@react-native-community/checkbox';
+import { API_ORDER } from '../../config/api-consts';
 
-const OrderDetailsScreen = ({navigation}) => {
+const OrderDetailsScreen = ({navigation , route}) => {
+
+  const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
+
+  // console.log( idProduct  + "Product ID PPPPP");
+  // console.log( size  + "size ID PPPPP");
+  // console.log( quantity  + "quantity ID PPPPP");
+  // console.log( color  + "color ID PPPPP");
+  // console.log( price  + "price ID PPPPP");
+  // console.log( image  + "image URL ID PPPPP");
+   console.log( idPropoties  + "id URL ID PPPPP");
+
 
   const {userData} = User();
 
@@ -24,17 +36,125 @@ const OrderDetailsScreen = ({navigation}) => {
   const address = userData.address;
   const numberPhone = userData.numberPhone;
 
-  console.log(idUser , userName , email , address , numberPhone);
-
-
-
+  // console.log(idUser , userName , email , address , numberPhone);
 
   const [isChecked, setIsChecked] = useState(false); // State để lưu trạng thái của checkbox
 
   const toggleCheckbox = () => {
     setIsChecked(!isChecked); // Hàm để đảo ngược trạng thái của checkbox
   };
+
+  var costTranformer = 22000;
+
+  const [total , setTotal] = useState(price * quantity + costTranformer);
+
+  const [status ,setStatus] = useState("chờ xác nhận");
+
+  const [methodPay , setMethodPay] = useState("thanh toán khi nhận hàng");
+
+  const callBackPriceProduct = useCallback ((quantityFinish)=>{
+
+    var totalPriceProduct = (price * quantityFinish) + costTranformer;
+
+    setTotal(totalPriceProduct);
+
+  },[quantityFinish])
+
+
+  const [quantityFinish, setQuantityFinish] = useState(quantity); // Số lượng mặc định là 1
+
+
+    // Hàm xử lý cộng số lượng
+    const incrementQuantity = useCallback(() => {
+      setQuantityFinish(quantityFinish + 1);
+
+      callBackPriceProduct(quantityFinish + 1);
+    });
+
+
+  
+    // Hàm xử lý trừ số lượng, không cho giảm dưới 1
+    const decrementQuantity = () => {
+      if (quantityFinish > 1) {
+        setQuantityFinish(quantityFinish - 1);
+
+        
+        callBackPriceProduct(quantityFinish -1);
+      }
+    };
   //de trong view
+
+  const year = new Date().getFullYear();
+
+  console.log("year :" + year);
+
+  const month = new Date().getMonth() + 1;
+
+  console.log("month :" +month);
+
+  const date = new Date().getDate();
+
+  console.log("date :" + date);
+
+  const hour = new Date().getHours();
+
+  console.log("hour :" + hour);
+
+  const minutes = new Date().getMinutes();
+
+  const secounds = new Date().getSeconds();
+  console.log("mines :" + minutes);
+
+  // const formatDateTimeOrder = year + '-' + month + '-' + date + ' ' + hour + ":" + minutes  + ":" + secounds ;
+
+  // const stringFormatDateTimeOrder = formatDateTimeOrder.toString();
+
+  const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
+
+
+  
+  console.log(formattedDate);
+
+  
+
+  const handleOrderProduct = () =>{
+      const myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        myHeaders.append(
+        'Cookie',
+        'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+        );
+
+        // console.log(numberPhone);
+
+        const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify({
+            UserId : idUser,
+            status : status,
+            date : formattedDate,
+            PTTT : methodPay
+        }),
+        redirect: 'follow',
+        };
+
+        try {
+            
+        fetch("http://192.168.0.100:3000/api-donhang/add", requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        pushProductOnOrder();
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+  }
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.borderStyles}>
@@ -53,33 +173,33 @@ const OrderDetailsScreen = ({navigation}) => {
         <View style={styles.item}>
           <View style={styles.productInfo}>
             <Image
-              source={require('../../assets/images/image_product.png')}
+              source={{ uri : image}}
               style={styles.imgStyle}
             />
             <View style={styles.textContainer}>
               <Text numberOfLines={2} style={styles.textStyle}>
-                Áo khoác sang trọng thời trang nam
+                {name}
               </Text>
               <View style={styles.productDetailsWrapper}>
-                <Text style={styles.productDetails}>Màu Be,size L</Text>
+                <Text style={styles.productDetails}>{size}</Text>
               </View>
               <View style={styles.rowContainer}>
                 <View style={styles.priceContainer}>
-                  <Text style={styles.salePrice}>300000d</Text>
-                  <Text style={styles.regularPrice}>799000d</Text>
+                  <Text style={styles.salePrice}>{price}</Text>
+                  {/* <Text style={styles.regularPrice}>799000d</Text> */}
                 </View>
-
                 <View
                   style={[
                     styles.countProduct,
                     {
-                      flex: 5,
+                      // flex: 5,
+                      width : '50%',
                       flexDirection: 'row',
                       borderWidth: 1,
                       borderColor: '#272727',
                     },
                   ]}>
-                  <TouchableOpacity style={styles.borderCount}>
+                  <TouchableOpacity style={styles.borderCount} onPress={decrementQuantity}>
                     <Text style={{textAlign: 'center', color: COLORS.black}}>
                       -
                     </Text>
@@ -95,9 +215,9 @@ const OrderDetailsScreen = ({navigation}) => {
                       borderColor: '#272727',
                       color: COLORS.black,
                     }}>
-                    1
+                    {quantityFinish}
                   </Text>
-                  <TouchableOpacity style={styles.borderCount}>
+                  <TouchableOpacity style={styles.borderCount} onPress={incrementQuantity}>
                     <Text style={{textAlign: 'center', color: COLORS.black}}>
                       +
                     </Text>
@@ -110,7 +230,7 @@ const OrderDetailsScreen = ({navigation}) => {
 
         <View style={styles.textTransport}>
           <Text style={styles.transportInfo}>Vận chuyển tiêu chuẩn</Text>
-          <Text style={styles.priceTransport}>22.000</Text>
+          <Text style={styles.priceTransport}>{costTranformer}</Text>
         </View>
         <View style={styles.addressTransport}>
           <Image
@@ -162,7 +282,7 @@ const OrderDetailsScreen = ({navigation}) => {
             }}>
             Sản phẩm
           </Text>
-          <Text style={styles.priceTransport}>222.000</Text>
+          <Text style={styles.priceTransport}>{price}</Text>
         </View>
         <View style={styles.textTransport}>
           <Text
@@ -174,7 +294,7 @@ const OrderDetailsScreen = ({navigation}) => {
             }}>
             Vận chuyển
           </Text>
-          <Text style={styles.priceTransport}>22.000</Text>
+          <Text style={styles.priceTransport}>{costTranformer}</Text>
         </View>
         <View style={styles.textTransport2}>
           <Text
@@ -186,7 +306,7 @@ const OrderDetailsScreen = ({navigation}) => {
             }}>
             Tổng
           </Text>
-          <Text style={styles.priceTransport2}>244.000</Text>
+          <Text style={styles.priceTransport2}>{total}</Text>
         </View>
       </View>
       <View
@@ -313,6 +433,24 @@ const OrderDetailsScreen = ({navigation}) => {
           </Text>
         </View>
       </View>
+      <TouchableOpacity
+              style={{
+                width: '80%',
+                height: 40,
+                backgroundColor: COLORS.red,
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: 15,
+                right: 50,
+                left: 50,
+                borderRadius: 5,
+              }}
+              onPress={handleOrderProduct}>
+              <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
+                Đặt hàng
+              </Text>
+            </TouchableOpacity>
     </View>
   );
 };

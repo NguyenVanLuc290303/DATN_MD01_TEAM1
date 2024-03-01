@@ -41,6 +41,8 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const [selectSize, setSelectSize] = useState();
 
+  const [idPropotiesS , setIdPropoties ] = useState();
+
   const [quantity, setQuantity] = useState(1); // Số lượng mặc định là 1
 
   // Hàm xử lý cộng số lượng
@@ -68,7 +70,7 @@ const DetailProductScreen = ({navigation, route}) => {
       redirect: 'follow',
     };
 
-    fetch(`http://192.168.1.127:3000/api-mausanpham/${_id}`, requestOptions)
+    fetch(`http://192.168.0.100:3000/api-mausanpham/${_id}`, requestOptions)
       .then(response => response.json())
       .then(result => setDaProperties(result))
       .catch(error => console.error(error));
@@ -106,23 +108,27 @@ const DetailProductScreen = ({navigation, route}) => {
   };
 
   const handleToSale = () => {
-    console.log('add to sale');
     navigation.navigate(
       'OrderDetailsScreen',
       (productSelect = {
         idProduct: _id,
+        idPropoties : idPropotiesS,
+        name : name,
         size: selectSize,
         quantity: quantity,
-        color: selectedColor,
+        color: selectedColor.colorId,
         price: price,
-        image: image,
+        image: selectedColor.image,
+
       }),
     );
   };
 
-  const handleOnpressSize = size => {
+  const handleOnpressSize = (size , id) => {
     // setIsSelectedSize(size);
     setSelectSize(size);
+    setIdPropoties(id);
+
   };
   // console.log(selectSize);
   // if(selectedColor){
@@ -371,7 +377,7 @@ const DetailProductScreen = ({navigation, route}) => {
                               marginTop: 10,
                               marginBottom: 10,
                             }}
-                            onPress={() => handleOnpressSize(item.size)}>
+                            onPress={() => handleOnpressSize(item.size , item._id)}>
                             <Text
                               style={{
                                 width: '85%',
@@ -527,9 +533,9 @@ const DetailProductScreen = ({navigation, route}) => {
                       <TouchableOpacity
                         style={{
                           width:
-                            selectedColor.colorId === item.colorId ? 40 : 35,
+                          selectedColor &&  selectedColor.colorId === item.colorId ? 40 : 35,
                           height:
-                            selectedColor.colorId === item.colorId ? 40 : 35,
+                          selectedColor &&  selectedColor.colorId === item.colorId ? 40 : 35,
                           marginRight: 20,
                           marginTop: 10,
                           borderRadius: 5,
@@ -580,7 +586,7 @@ const DetailProductScreen = ({navigation, route}) => {
                               marginTop: 10,
                               marginBottom: 10,
                             }}
-                            onPress={() => handleOnpressSize(item.size)}>
+                            onPress={() => handleOnpressSize(item.size , item._id)}>
                             <Text
                               style={{
                                 width: '85%',
