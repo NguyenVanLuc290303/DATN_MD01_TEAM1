@@ -68,7 +68,7 @@ const DetailProductScreen = ({navigation, route}) => {
       redirect: 'follow',
     };
 
-    fetch(`http://192.168.1.127:3000/api-mausanpham/${_id}`, requestOptions)
+    fetch(`http://192.168.1.9:3000/api-mausanpham/${_id}`, requestOptions)
       .then(response => response.json())
       .then(result => setDaProperties(result))
       .catch(error => console.error(error));
