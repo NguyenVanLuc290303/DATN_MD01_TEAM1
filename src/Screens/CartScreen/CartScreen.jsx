@@ -104,6 +104,8 @@ const CartScreen = ({navigation}) => {
     const newArray = [...productArray];
     newArray[index].isChecked = !newArray[index].isChecked;
     setProductArray(newArray);
+    const atLeastOneUnchecked = newArray.some(item => !item.isChecked);
+    setAllChecked(!atLeastOneUnchecked);
   };
 
   // Hàm để cập nhật trạng thái của tất cả các checkbox
@@ -211,35 +213,28 @@ const CartScreen = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         nestedScrollEnabled={true}
+        style={{paddingBottom: 100}}
       />
-      {/*<Modal*/}
-      {/*  transparent={true}*/}
-      {/*  visible={isBottomSheetVisible}*/}
-      {/*  animationType="slide">*/}
-      {/*  <View style={styles.modalContainer}>*/}
-      {/*    <ScrollView contentContainerStyle={styles.scrollViewContent}>*/}
-      {/*      <View style={styles.bottomSheet}>*/}
-      {/*        <View style={styles.rowContainer2}>*/}
-      {/*          /!* Checkbox *!/*/}
-      {/*          <View style={styles.checkboxContainer}>*/}
-      {/*            <Checkbox*/}
-      {/*              color={'red'}*/}
-      {/*              status={allChecked ? 'checked' : 'unchecked'}*/}
-      {/*              onPress={allChecked ? handleUncheckAll : handleChooseAll}*/}
-      {/*            />*/}
-      {/*            <Text style={styles.checkboxLabel}>Choose All</Text>*/}
-      {/*          </View>*/}
-      {/*          /!* Title *!/*/}
-      {/*          <Text style={styles.title}>300000</Text>*/}
-      {/*          /!* Order Button *!/*/}
-      {/*          <TouchableOpacity style={styles.orderButton}>*/}
-      {/*            <Text style={styles.orderButtonText}>Order</Text>*/}
-      {/*          </TouchableOpacity>*/}
-      {/*        </View>*/}
-      {/*      </View>*/}
-      {/*    </ScrollView>*/}
-      {/*  </View>*/}
-      {/*</Modal>*/}
+      {/* Phần nội dung dưới màn hình */}
+      <View style={styles.bottomSheet}>
+        <View style={styles.rowContainer2}>
+          {/* Checkbox */}
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              color={'red'}
+              status={allChecked ? 'checked' : 'unchecked'}
+              onPress={allChecked ? handleUncheckAll : handleChooseAll}
+            />
+            <Text style={styles.checkboxLabel}>Choose All</Text>
+          </View>
+          {/* Title */}
+          <Text style={styles.title}>300000</Text>
+          {/* Order Button */}
+          <TouchableOpacity style={styles.orderButton}>
+            <Text style={styles.orderButtonText}>Order</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
@@ -360,6 +355,7 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     marginLeft: 10,
+    color: COLORS.black,
   },
   title: {
     fontSize: 18,
