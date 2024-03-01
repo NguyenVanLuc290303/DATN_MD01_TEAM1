@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   Alert,
   Image,
@@ -14,6 +14,7 @@ import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import { User } from '../../hooks/useContext';
 import { API_ADD_USERS } from '../../config/api-consts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -22,6 +23,24 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassWord] = useState();
 
   const [dataUser,setDataUser] = useState({});
+
+  const [luu,setluu]=useState("0");
+
+  const [imageUri, setImageUri] = useState('https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180')
+
+  const changeImage = () => {
+    if(imageUri ==='https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180'){
+    setImageUri('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU');
+  
+
+  }else{
+    setImageUri('https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180');
+  }
+  };
+
+
+
+
 
   const {setUserData} = User();
   // const [form, setForm] = useState({
@@ -41,7 +60,9 @@ const LoginScreen = ({navigation}) => {
       redirect: "follow"
     };
 
-    fetch(`http://192.168.0.100:3000/api-taikhoan/${phone}`, requestOptions)
+
+    fetch(`http://192.168.1.9:3000/api-taikhoan/${phone}`, requestOptions)
+
       .then((response) => response.json())
       .then((result) => loginUser(result))
       .catch((error) => console.error(error));
@@ -49,6 +70,8 @@ const LoginScreen = ({navigation}) => {
   };
 
   const loginUser = (dataUser) =>{
+
+    // setdata(dataUser);
 
     try {
       if(dataUser === null){
@@ -66,9 +89,64 @@ const LoginScreen = ({navigation}) => {
     }
  
   }
-  // const hanlderOnlickSignup = () => {
+
+  
+
+  async function getData() {
+    const luu = await AsyncStorage.getItem('luu');
+    console.log('luu:', luu);
+  if(luu==="1"){
+    try {
+      const username = await AsyncStorage.getItem('username');
+      const account = await AsyncStorage.getItem('pass');
+      const img = await AsyncStorage.getItem('img');
+      
+      setPhoneNumber(username);
+      setPassWord(account);
+      setImageUri(img);
+      console.log('Username:', username);
+      console.log('pass:', account);
+    } catch (error) {
+      console.log(error);
+    }
    
-  // };
+  }else{
+  
+  }
+  }
+
+  async function saveData(user1, pass1) {
+
+    if(user1 == null || pass1 == null){
+      Alert.alert('Chưa Nhập Thông Tin');
+      return ;
+    }
+
+    if(imageUri !=='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU'){
+    try {
+      await AsyncStorage.setItem('username', user1);
+      await AsyncStorage.setItem('pass', pass1);
+      await AsyncStorage.setItem('img', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU');
+      await AsyncStorage.setItem('luu', "1");
+    
+      console.log("Lưu Thành Công");
+    } catch (error) {
+      console.log(error);
+    }
+  }else{
+    console.log("Không Lưu ");
+    await AsyncStorage.setItem('luu', "0");
+    
+    await AsyncStorage.setItem('img', 'https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180');
+
+  }
+}
+
+  useEffect(() =>{
+    
+    getData();
+  }, [])
+
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
@@ -83,6 +161,7 @@ const LoginScreen = ({navigation}) => {
         <View style={styles.form}>
           <View style={styles.input}>
             <TextInput
+            defaultValue={phone}
               autoCapitalize="none"
               autoCorrect={false}
               // keyboardType="phone-pad"
@@ -96,6 +175,7 @@ const LoginScreen = ({navigation}) => {
 
           <View style={styles.input}>
             <TextInput
+            defaultValue={password}
               secureTextEntry
               style={styles.inputControl}
               // value={form.password}
@@ -117,6 +197,12 @@ const LoginScreen = ({navigation}) => {
                 <Text style={styles.btnText}>Login</Text>
               </View>
             </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{saveData(phone,password);changeImage()}}  style = {{marginTop:20,marginLeft:160}}><Image 
+                
+                source={{ uri: imageUri }}
+                style={{ width: 20, height: 20 ,borderRadius:10,marginLeft:170}}
+              /></TouchableOpacity>
+              <Text  style = {{color:'blue',marginTop:0,marginLeft:220}}>Remember Me ?</Text>
           </View>
 
           <TouchableOpacity
