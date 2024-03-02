@@ -2,7 +2,7 @@
 
 import { Children } from "react";
 
-export const IP_ADDRESS = "192.168.50.125";
+export const IP_ADDRESS = "192.168.45.125";
 
 
 
