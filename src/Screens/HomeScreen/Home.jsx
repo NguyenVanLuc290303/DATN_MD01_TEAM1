@@ -4,15 +4,16 @@ import  IconI from "react-native-vector-icons/Ionicons";
 import axios, {isCancel, AxiosError} from "axios";
 import { API_CATEGORY_PRODUCT } from "../../config/api-consts";
 import { API_PRODUCT } from "../../config/api-consts";
+import { API_PRODUCT_TOP8 } from "../../config/api-consts";
+import { User } from "../../hooks/useContext";
 
 
 const Home =  ({navigation}) => {
 
-
+    const {dataUser} = User();
+    // const userName = dataUser.username;
     const [dataCategory,setDataCategory] = React.useState([]);
     const [dataProduct,setDataProduct] = React.useState([]);
-
-const IP = "192.168.0.100";
 
 
     React.useEffect(() =>{
@@ -43,13 +44,14 @@ const IP = "192.168.0.100";
         redirect: 'follow'
         };
 
-        fetch(API_PRODUCT, requestOptions)
+        fetch(API_PRODUCT_TOP8, requestOptions)
         .then(response => response.json())
         .then(result => setDataProduct(result))
         .catch(error => console.log('error', error));
 
     },[])
 
+    // console.log(dataProduct);
     const handlerItemProducts = (item) =>{
         console.log(item);
     }
@@ -62,6 +64,7 @@ const IP = "192.168.0.100";
                 <View>
                     <Image style={styles.imageTitle} source={require('@/images/logoAPP_MD01_png.png')}/>
                 </View>
+                {/* <Text>Hi {userName}</Text> */}
                 <TouchableOpacity>
                         <Image source={require('@/icons/png/local_mall.png')}/>
                 </TouchableOpacity>
@@ -85,7 +88,7 @@ const IP = "192.168.0.100";
             <View style={{ marginTop : 10}}>
                 <FlatList horizontal data={dataCategory} renderItem={({item , index}) =>{
                     return(
-                        <TouchableOpacity onPress={() => navigation.navigate('ProductCategory' , {item})}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProductCategory' , item = {name: item.name})}>
                             <View style={styles.viewItem}>
                                 <Text>{item.name}</Text>
                                 <Image style={{ width : 52 , height : 52}} source={{ uri: item.image}}/>
@@ -105,14 +108,15 @@ const IP = "192.168.0.100";
                                         alignItems : 'center',
                                         justifyContent :"center",
                                         paddingTop : "5%"
-                            }}  onPress={() => navigation.navigate('DetailProductScreen', item ={
+                            }}  onPress={() => navigation.navigate('DetailProductScreen'
+                                                                                ,item ={
                                                                                 _id : item._id,
                                                                                 name : item.name,
                                                                                 image : item.image,
                                                                                 category : item.loai,
                                                                                 price : item.price,
-                                                                                quantitySold : item.quantitySold,
-                            })
+                                                                                quantitySold : item.quantitySold}
+                                                                                )
                         }>
                                 <Image source={{ uri : item.image}} style={{ width : 90 , height : 131}}/>
                                 <Text>{item.name}</Text>

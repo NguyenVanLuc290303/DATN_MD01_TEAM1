@@ -35,20 +35,24 @@ import LoginScreen from './src/Screens/LoginScreen/LoginScreen';
 import RegisterScreen from './src/Screens/RegisterScreen/RegisterScreen';
 import BottomNavigation from './src/navigation/BottomNavigation';
 import DetailProductScreen from './src/Screens/DetailProductScreen/DetailProductScreen';
-import OnboardingScreen from './src/Screens/OnboardingScreen/OnboardingScreen';
-import {EditProfile} from './src/Screens';
-import {MessageScreen} from './src/Screens';
+import  OnboardingScreen  from './src/Screens/OnboardingScreen/OnboardingScreen';
+import { EditProfile } from './src/Screens';
+import {MessageScreen } from './src/Screens';
+import {CartScreen} from './src/Screens';
 import {ProductCategory} from './src/Screens';
 import {SendOTPRegisterScreen} from './src/Screens';
-
 import ForgotPassword from './src/Screens/ForgotPassword/ForgotPassword';
+import { UserProvider } from './src/hooks/useContext';
+
 import DetailMessage from './src/Screens/MessageScreen/DetailMessage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from './src/Screens/ProfileScreen/Profile';
 import SendOtpScreen from './src/Screens/SendOtp/SendOtpScreen';
 import PaymentScreen from './src/Screens/PaymentScreen/PaymentScreen';
 import OrderDetailsScreen from './src/Screens/OrderDetails/OrderDetailsScreen';
-import CartScreen from './src/Screens/CartScreen/CartScreen';
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
+
+// import {CartScreen} from './src/Screens';
 
 function App() {
   const Stack = createNativeStackNavigator();
@@ -70,9 +74,11 @@ function App() {
     </Stack.Navigator>;
   };
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+    <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'CartScreen'}
+        initialRouteName={'LoginScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -147,7 +153,7 @@ function App() {
         <Stack.Screen
           name="ProductCategory"
           component={ProductCategory}
-          options={{headerShown: false}}
+          options={{headerShown : false}}
         />
 
         <Stack.Screen
@@ -182,8 +188,8 @@ function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-
-    // </SafeAreaView>
+    </UserProvider>
+    </GestureHandlerRootView>
   );
 }
 

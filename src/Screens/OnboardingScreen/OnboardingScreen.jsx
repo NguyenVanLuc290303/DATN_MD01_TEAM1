@@ -15,7 +15,7 @@ export default function OnboardingScreen() {
   const navigation = useNavigation();
 
   const handleDone = () => {
-    navigation.navigate('RegisterScreen');
+    navigation.navigate('BottomNavigation');
   };
 
   const doneButton = ({...props}) => {

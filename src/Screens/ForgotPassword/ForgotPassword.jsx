@@ -9,8 +9,13 @@ import {
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
 import COLORS from '../../constants/colors';
+import auth from '@react-native-firebase/auth';
+import { useState } from 'react';
 
 const ForgotPassword = ({navigation}) => {
+
+  const [phoneNumber , setPhoneNumber] = useState();
+
   return (
     <View style={styles.container}>
       <Image style={styles.imageStyle} source={Icons.ImageForogtPassword} />
@@ -26,9 +31,12 @@ const ForgotPassword = ({navigation}) => {
         style={styles.textInput}
         placeholder="Enter the phone"
         placeholderTextColor={COLORS.color_7E7D7D}
+        onChangeText={(Text) => setPhoneNumber(Text)}
       />
       <View style={styles.formAction}>
-        <TouchableOpacity onPress={() => navigation.navigate('SendOtpScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SendOtpScreen', data ={
+            phoneNumber : phoneNumber,
+        })}>
           <View style={styles.btn}>
             <Text style={styles.btnText}>Continue</Text>
           </View>
