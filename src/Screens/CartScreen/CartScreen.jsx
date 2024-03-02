@@ -137,6 +137,23 @@ const CartScreen = ({navigation}) => {
     }
   };
 
+  const checkedItemCount = productArray.filter(item => item.isChecked).length;
+  const checkedItems = productArray.filter(item => item.isChecked);
+  const totalPrice = checkedItems.reduce(
+    (accumulator, currentItem) =>
+      accumulator + parseFloat(currentItem.priceSale) * currentItem.quantity,
+    0,
+  );
+
+  const formatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 3,
+  });
+  const formatNumber = num => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
+  };
+
   const renderItem = ({item, index}) => (
     <View style={styles.item}>
       <View style={styles.productInfo}>
@@ -213,10 +230,21 @@ const CartScreen = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         nestedScrollEnabled={true}
-        style={{paddingBottom: 100}}
+        style={{paddingBottom: 100, marginBottom: 100}}
       />
       {/* Phần nội dung dưới màn hình */}
-      <View style={styles.bottomSheet}>
+      <View
+        style={[
+          styles.bottomSheet,
+          {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 100,
+            zIndex: 1,
+          },
+        ]}>
         <View style={styles.rowContainer2}>
           {/* Checkbox */}
           <View style={styles.checkboxContainer}>
@@ -225,10 +253,12 @@ const CartScreen = ({navigation}) => {
               status={allChecked ? 'checked' : 'unchecked'}
               onPress={allChecked ? handleUncheckAll : handleChooseAll}
             />
-            <Text style={styles.checkboxLabel}>Choose All</Text>
+            <Text style={styles.checkboxLabel}>
+              Choose All ({checkedItemCount})
+            </Text>
           </View>
           {/* Title */}
-          <Text style={styles.title}>300000</Text>
+          <Text style={styles.title}>{formatter.format(totalPrice)}</Text>
           {/* Order Button */}
           <TouchableOpacity style={styles.orderButton}>
             <Text style={styles.orderButtonText}>Order</Text>
