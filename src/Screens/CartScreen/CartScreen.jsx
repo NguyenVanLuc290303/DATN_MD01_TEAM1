@@ -23,6 +23,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
     {
       id: 2,
@@ -32,6 +33,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
     {
       id: 3,
@@ -41,6 +43,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
     {
       id: 4,
@@ -50,6 +53,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
     {
       id: 5,
@@ -59,6 +63,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
     {
       id: 6,
@@ -68,6 +73,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
     {
       id: 7,
@@ -77,6 +83,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
     {
       id: 8,
@@ -86,6 +93,7 @@ const CartScreen = ({navigation}) => {
       priceSale: '399.000 đ',
       price: '799.000 đ',
       isChecked: false,
+      quantity: 1,
     },
   ]);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -96,6 +104,8 @@ const CartScreen = ({navigation}) => {
     const newArray = [...productArray];
     newArray[index].isChecked = !newArray[index].isChecked;
     setProductArray(newArray);
+    const atLeastOneUnchecked = newArray.some(item => !item.isChecked);
+    setAllChecked(!atLeastOneUnchecked);
   };
 
   // Hàm để cập nhật trạng thái của tất cả các checkbox
@@ -110,6 +120,23 @@ const CartScreen = ({navigation}) => {
     setProductArray(newArray);
     setAllChecked(false);
   };
+
+  const handleDecreaseQuantity = index => {
+    const newArray = [...productArray];
+    if (newArray[index].quantity > 1) {
+      newArray[index].quantity -= 1;
+      setProductArray(newArray);
+    }
+  };
+
+  const handleIncreaseQuantity = index => {
+    const newArray = [...productArray];
+    if (newArray[index].quantity < 99) {
+      newArray[index].quantity += 1;
+      setProductArray(newArray);
+    }
+  };
+
   const renderItem = ({item, index}) => (
     <View style={styles.item}>
       <View style={styles.productInfo}>
@@ -144,8 +171,12 @@ const CartScreen = ({navigation}) => {
                     borderColor: '#272727',
                   },
                 ]}>
-                <TouchableOpacity style={styles.borderCount}>
-                  <Text style={{textAlign: 'center'}}>-</Text>
+                <TouchableOpacity
+                  style={styles.borderCount}
+                  onPress={() => handleDecreaseQuantity(index)}>
+                  <Text style={{textAlign: 'center', color: COLORS.black}}>
+                    -
+                  </Text>
                 </TouchableOpacity>
                 <Text
                   style={{
@@ -156,11 +187,16 @@ const CartScreen = ({navigation}) => {
                     textAlign: 'center',
                     borderWidth: 0.5,
                     borderColor: '#272727',
+                    color: COLORS.black,
                   }}>
-                  1
+                  {item.quantity}
                 </Text>
-                <TouchableOpacity style={styles.borderCount}>
-                  <Text style={{textAlign: 'center'}}>+</Text>
+                <TouchableOpacity
+                  style={styles.borderCount}
+                  onPress={() => handleIncreaseQuantity(index)}>
+                  <Text style={{textAlign: 'center', color: COLORS.black}}>
+                    +
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -177,31 +213,28 @@ const CartScreen = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         nestedScrollEnabled={true}
+        style={{paddingBottom: 100}}
       />
-      <Modal
-        transparent={true}
-        visible={isBottomSheetVisible}
-        animationType="slide">
-        <View style={styles.bottomSheet}>
-          <View style={styles.rowContainer2}>
-            {/* Checkbox */}
-            <View style={styles.checkboxContainer}>
-              <Checkbox
-                color={'red'}
-                status={allChecked ? 'checked' : 'unchecked'}
-                onPress={allChecked ? handleUncheckAll : handleChooseAll}
-              />
-              <Text style={styles.checkboxLabel}>Choose All</Text>
-            </View>
-            {/* Title */}
-            <Text style={styles.title}>300000</Text>
-            {/* Order Button */}
-            <TouchableOpacity style={styles.orderButton}>
-              <Text style={styles.orderButtonText}>Order</Text>
-            </TouchableOpacity>
+      {/* Phần nội dung dưới màn hình */}
+      <View style={styles.bottomSheet}>
+        <View style={styles.rowContainer2}>
+          {/* Checkbox */}
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              color={'red'}
+              status={allChecked ? 'checked' : 'unchecked'}
+              onPress={allChecked ? handleUncheckAll : handleChooseAll}
+            />
+            <Text style={styles.checkboxLabel}>Choose All</Text>
           </View>
+          {/* Title */}
+          <Text style={styles.title}>300000</Text>
+          {/* Order Button */}
+          <TouchableOpacity style={styles.orderButton}>
+            <Text style={styles.orderButtonText}>Order</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
+      </View>
     </View>
   );
 };
@@ -322,6 +355,7 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     marginLeft: 10,
+    color: COLORS.black,
   },
   title: {
     fontSize: 18,
@@ -336,6 +370,13 @@ const styles = StyleSheet.create({
   orderButtonText: {
     color: '#FFF',
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
 });
 
