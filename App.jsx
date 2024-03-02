@@ -35,10 +35,9 @@ import LoginScreen from './src/Screens/LoginScreen/LoginScreen';
 import RegisterScreen from './src/Screens/RegisterScreen/RegisterScreen';
 import BottomNavigation from './src/navigation/BottomNavigation';
 import DetailProductScreen from './src/Screens/DetailProductScreen/DetailProductScreen';
-import  OnboardingScreen  from './src/Screens/OnboardingScreen/OnboardingScreen';
-import { EditProfile } from './src/Screens';
-import {MessageScreen } from './src/Screens';
-import {CartScreen} from './src/Screens';
+import OnboardingScreen from './src/Screens/OnboardingScreen/OnboardingScreen';
+import {EditProfile} from './src/Screens';
+import {MessageScreen} from './src/Screens';
 import {ProductCategory} from './src/Screens';
 import {SendOTPRegisterScreen} from './src/Screens';
 
@@ -73,7 +72,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'RegisterScreen'}
+        initialRouteName={'CartScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -144,15 +143,11 @@ function App() {
           component={DetailProductScreen}
           options={{headerShown: false}}
         />
+
         <Stack.Screen
-          name="CartScreen"
-          component={CartScreen}
-          options={{headerShown : false}}
-        />
-         <Stack.Screen
           name="ProductCategory"
           component={ProductCategory}
-          options={{headerShown : false}}
+          options={{headerShown: false}}
         />
 
         <Stack.Screen
