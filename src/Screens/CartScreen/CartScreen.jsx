@@ -137,6 +137,23 @@ const CartScreen = ({navigation}) => {
     }
   };
 
+  const checkedItemCount = productArray.filter(item => item.isChecked).length;
+  const checkedItems = productArray.filter(item => item.isChecked);
+  const totalPrice = checkedItems.reduce(
+    (accumulator, currentItem) =>
+      accumulator + parseFloat(currentItem.priceSale) * currentItem.quantity,
+    0,
+  );
+
+  const formatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 3, // Đảm bảo có đủ số 0 phía sau dấu thập phân
+  });
+  const formatNumber = num => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
+  };
+
   const renderItem = ({item, index}) => (
     <View style={styles.item}>
       <View style={styles.productInfo}>
@@ -225,10 +242,12 @@ const CartScreen = ({navigation}) => {
               status={allChecked ? 'checked' : 'unchecked'}
               onPress={allChecked ? handleUncheckAll : handleChooseAll}
             />
-            <Text style={styles.checkboxLabel}>Choose All</Text>
+            <Text style={styles.checkboxLabel}>
+              Choose All ({checkedItemCount})
+            </Text>
           </View>
           {/* Title */}
-          <Text style={styles.title}>300000</Text>
+          <Text style={styles.title}>{formatter.format(totalPrice)}</Text>
           {/* Order Button */}
           <TouchableOpacity style={styles.orderButton}>
             <Text style={styles.orderButtonText}>Order</Text>
