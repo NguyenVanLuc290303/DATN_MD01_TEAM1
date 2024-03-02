@@ -148,7 +148,7 @@ const CartScreen = ({navigation}) => {
   const formatter = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
-    minimumFractionDigits: 3, // Đảm bảo có đủ số 0 phía sau dấu thập phân
+    minimumFractionDigits: 3,
   });
   const formatNumber = num => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
@@ -230,10 +230,21 @@ const CartScreen = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         nestedScrollEnabled={true}
-        style={{paddingBottom: 100}}
+        style={{paddingBottom: 100, marginBottom: 100}}
       />
       {/* Phần nội dung dưới màn hình */}
-      <View style={styles.bottomSheet}>
+      <View
+        style={[
+          styles.bottomSheet,
+          {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 100,
+            zIndex: 1,
+          },
+        ]}>
         <View style={styles.rowContainer2}>
           {/* Checkbox */}
           <View style={styles.checkboxContainer}>
