@@ -3,13 +3,15 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View }
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { API_GET_TO_LOVE } from "../../config/api-consts";
+import { User } from "../../hooks/useContext";
 
 const Love = ({ navigation }) => {
     const [dataLove, setDataLove] = useState([]);
+    const { userData } = User(); 
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(API_GET_TO_LOVE, {
+            const response = await axios.get(`${API_GET_TO_LOVE}/${userData?._id}`, {
                 headers: {
                     Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
                 }
@@ -27,7 +29,7 @@ const Love = ({ navigation }) => {
         });
 
         return unsubscribe;
-    }, [navigation]);
+    }, [navigation, userData]); 
     
     console.log("Mảng dataLove:", dataLove);
 
