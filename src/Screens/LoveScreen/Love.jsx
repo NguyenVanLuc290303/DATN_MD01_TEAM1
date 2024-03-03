@@ -15,7 +15,7 @@ const Love = ({ navigation }) => {
                 }
             });
             setDataLove(response.data);
-            console.log("Danh sách sản phẩm yêu thích:", response.data);
+            console.log("Dữ liệu trả về từ API:", response.data);
         } catch (error) {
             console.error("Lỗi khi lấy danh sách sản phẩm yêu thích:", error);
         }
@@ -28,6 +28,8 @@ const Love = ({ navigation }) => {
 
         return unsubscribe;
     }, [navigation]);
+    
+    console.log("Mảng dataLove:", dataLove);
 
     return (
         <View style={styles.container}>
@@ -35,7 +37,7 @@ const Love = ({ navigation }) => {
                 <Text style={styles.textHeadTitle}>Love Clothes</Text>
             </View>
             <ScrollView style={styles.viewListLove}>
-                {dataLove.map((item) => (
+                {dataLove.data && dataLove.data.map((item) => (
                     <TouchableOpacity key={item._id} onPress={() => navigation.navigate('DetailProductScreen', { /* pass item data to detail screen */ })}>
                         <View style={styles.viewItemLove}>
                             <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
@@ -47,6 +49,7 @@ const Love = ({ navigation }) => {
             </ScrollView>
         </View>
     );
+    
 };
 
 const styles = StyleSheet.create({

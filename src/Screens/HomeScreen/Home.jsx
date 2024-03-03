@@ -11,28 +11,43 @@ import { User } from "../../hooks/useContext";
 
 const Home = ({ navigation }) => {
 
-    const { dataUser } = User();
+    const { userData } = User();
     const [dataCategory, setDataCategory] = React.useState([]);
     const [dataProduct, setDataProduct] = React.useState([]);
-    const [addToLoveSuccess, setAddToLoveSuccess] = React.useState(false);
+    const [favoriteProducts, setFavoriteProducts] = useState([]);
     
     const addToLove = async (productId) => {
         try {
-            const response = await axios.post(API_ADD_TO_LOVE, { productId }, {
+            console.log("userData:", userData);
+            console.log("ID của sản phẩm:", productId); 
+            if (!productId) {
+                console.error('ID của sản phẩm không hợp lệ');
+                return;
+            }
+            
+            const response = await axios.post(API_ADD_TO_LOVE, { 
+                UserId: userData?._id,
+                ProductId: productId 
+            }, {
                 headers: {
                     Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
                 }
             });
-            console.log("Sản phẩm đã được thêm vào trang Love");
-            setAddToLoveSuccess(true);
-            navigation.navigate('Love'); // Chuyển đến màn hình "Love"
+            console.log("Response từ server:", response.data);
+            setFavoriteProducts([...favoriteProducts, productId]);
+    
         } catch (error) {
             console.error("Lỗi khi thêm sản phẩm vào trang Love:", error);
         }
     };
     
     React.useEffect(() => {
-
+        console.log("Danh sách sản phẩm yêu thích:", favoriteProducts);
+    }, [favoriteProducts]);
+    
+    
+    
+    React.useEffect(() => {
         var myHeaders = new Headers();
         myHeaders.append("Cookie", "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw");
 
@@ -95,7 +110,7 @@ const Home = ({ navigation }) => {
             <View style={{ marginTop: 10 }}>
                 <FlatList horizontal data={dataCategory} renderItem={({ item, index }) => {
                     return (
-                        <TouchableOpacity onPress={() => navigation.navigate('ProductCategory', item = { name: item.name })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProductCategory', { name: item.name })}>
                             <View style={styles.viewItem}>
                                 <Text>{item.name}</Text>
                                 <Image style={{ width: 52, height: 52 }} source={{ uri: item.image }} />
@@ -111,7 +126,7 @@ const Home = ({ navigation }) => {
             <FlatList numColumns={2} data={dataProduct} renderItem={({ item, index }) => {
                 return (
                     <View style={styles.viewItemProducts}>
-                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", paddingTop: "5%" }} onPress={() => navigation.navigate('DetailProductScreen', item = { _id: item._id, name: item.name, image: item.image, category: item.loai, price: item.price, quantitySold: item.quantitySold })}>
+                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", paddingTop: "5%" }} onPress={() => navigation.navigate('DetailProductScreen', { _id: item._id, name: item.name, image: item.image, category: item.loai, price: item.price, quantitySold: item.quantitySold })}>
                             <Image source={{ uri: item.image }} style={{ width: 90, height: 131 }} />
                             <Text>{item.name}</Text>
                             <Text>{item.price} USD</Text>
