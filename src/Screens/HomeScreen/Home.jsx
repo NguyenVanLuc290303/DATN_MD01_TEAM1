@@ -18,17 +18,14 @@ const Home = ({ navigation }) => {
     
     const addToLove = async (productId) => {
         try {
-            console.log("userData:", userData);
-            console.log("ID của sản phẩm:", productId); 
+            // console.log("userData:", userData);
+            // console.log("ID của sản phẩm:", productId); 
             if (!productId) {
                 console.error('ID của sản phẩm không hợp lệ');
                 return;
             }
             
-            const response = await axios.post(API_ADD_TO_LOVE, { 
-                UserId: userData?._id,
-                ProductId: productId 
-            }, {
+            const response = await axios.post(`${API_ADD_TO_LOVE}/${userData._id}/${productId}`, null, {
                 headers: {
                     Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
                 }
@@ -41,9 +38,9 @@ const Home = ({ navigation }) => {
         }
     };
     
-    React.useEffect(() => {
-        console.log("Danh sách sản phẩm yêu thích:", favoriteProducts);
-    }, [favoriteProducts]);
+    // React.useEffect(() => {
+    //     console.log("Danh sách sản phẩm yêu thích:", favoriteProducts);
+    // }, [favoriteProducts]);
     
     
     
@@ -127,9 +124,9 @@ const Home = ({ navigation }) => {
                 return (
                     <View style={styles.viewItemProducts}>
                         <TouchableOpacity style={{ alignItems: 'center', justifyContent: "center", paddingTop: "5%" }} onPress={() => navigation.navigate('DetailProductScreen', { _id: item._id, name: item.name, image: item.image, category: item.loai, price: item.price, quantitySold: item.quantitySold })}>
-                            <Image source={{ uri: item.image }} style={{ width: 90, height: 131 }} />
-                            <Text>{item.name}</Text>
-                            <Text>{item.price} USD</Text>
+                            <Image source={{ uri: item.image }} style={{ width: 90, height: 131, marginBottom: 10 }} />
+                            <Text style={styles.boldText}>{item.name}</Text>
+                            <Text style={[styles.redText]}>{item.price} USD</Text>
                             {/* Thêm icon trái tim */}
                             <TouchableOpacity style={styles.heartIcon} onPress={() => addToLove(item._id)}>
                                 <Icon name="heart" size={20} color="red" />
@@ -210,7 +207,14 @@ const styles = StyleSheet.create({
     heartIcon: { 
         position: 'absolute', 
         top: 5, right: 5 
-    }
+    },
+    boldText: {
+        fontWeight: 'bold',
+        fontSize: 15
+    },
+    redText: {
+        color: 'red',
+    },
 });
 
 export default Home;

@@ -7,7 +7,7 @@ import { User } from "../../hooks/useContext";
 
 const Love = ({ navigation }) => {
     const [dataLove, setDataLove] = useState([]);
-    const { userData } = User(); 
+    const { userData } = User();
 
     const fetchData = async () => {
         try {
@@ -29,8 +29,8 @@ const Love = ({ navigation }) => {
         });
 
         return unsubscribe;
-    }, [navigation, userData]); 
-    
+    }, [navigation, userData]);
+
     console.log("Mảng dataLove:", dataLove);
 
     return (
@@ -40,18 +40,30 @@ const Love = ({ navigation }) => {
             </View>
             <ScrollView style={styles.viewListLove}>
                 {dataLove.data && dataLove.data.map((item) => (
-                    <TouchableOpacity key={item._id} onPress={() => navigation.navigate('DetailProductScreen', { /* pass item data to detail screen */ })}>
-                        <View style={styles.viewItemLove}>
-                            <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} />
-                            <Text>{item.name}</Text>
-                            <Text>{item.price}</Text>
+                    <TouchableOpacity
+                        key={item._id}
+                        onPress={() => navigation.navigate('DetailProductScreen', {
+                            _id: item._id,
+                            name: item.name,
+                            image: item.image,
+                            category: item.loai,
+                            price: item.price,
+                            quantitySold: item.quantitySold
+                        })}
+                    >
+                         <View style={styles.viewItemLove}>
+                            <Image source={{ uri: item.image }} style={styles.image} />
+                            <View style={styles.textContainer}>
+                                <Text style={styles.nameText}>{item.name}</Text>
+                                <Text style={styles.priceText}>{item.price} USD</Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 ))}
             </ScrollView>
         </View>
     );
-    
+
 };
 
 const styles = StyleSheet.create({
@@ -81,7 +93,24 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
+    },
+    image: {
+        width: "30%",
+        height: 85,
+        marginLeft: "7%"
+    },
+    textContainer: {
+        width: "68%",
+        flexDirection: 'column',
+        marginLeft: "12%",
+    },
+    nameText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: '4%'
+    },
+    priceText: {
+        color: 'red', 
     }
 });
 
