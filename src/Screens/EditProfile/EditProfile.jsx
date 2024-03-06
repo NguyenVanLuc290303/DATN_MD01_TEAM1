@@ -11,14 +11,33 @@ import {
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {useState} from 'react';
+import { User } from '../../hooks/useContext';
+import ImagePicker, {launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 const EditProfile = ({navigation}) => {
+
+  const {userData} = User();
+
+  // console.log(userData);
+
+  
+
   const [email, setEmail] = useState();
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [address, setAddress] = useState();
-
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+
+  const handleOnpressImagePicker = async () =>{
+
+    const result = await launchImageLibrary({
+      mediaType : 'photo',
+      quality : 1,
+      
+    });
+
+    console.log(result.assets[0].uri);
+  }
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView style={{flex: 1, marginHorizontal: 22}}>
@@ -39,10 +58,12 @@ const EditProfile = ({navigation}) => {
               borderColor: COLORS.gray,
             }}
           />
+          <TouchableOpacity onPress={handleOnpressImagePicker}>
           <Image
             source={Icons.IconPlus}
             style={{width: 35, height: 30, marginTop: -30, marginLeft: 120}}
           />
+          </TouchableOpacity>
         </View>
 
         <View style={{paddingTop: 10, justifyContent: 'center'}}>
@@ -61,6 +82,7 @@ const EditProfile = ({navigation}) => {
               }}>
               <TextInput
                 placeholder=""
+                value={userData.username}
                 placeholderTextColor={COLORS.black}
                 keyboardType="default"
                 style={{
@@ -85,6 +107,7 @@ const EditProfile = ({navigation}) => {
               }}>
               <TextInput
                 placeholder=""
+                value={userData.email}
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
@@ -108,6 +131,7 @@ const EditProfile = ({navigation}) => {
               }}>
               <TextInput
                 placeholder=""
+                value={userData.numberPhone}
                 placeholderTextColor={COLORS.black}
                 keyboardType="phone-pad"
                 style={{
@@ -132,6 +156,7 @@ const EditProfile = ({navigation}) => {
               }}>
               <TextInput
                 placeholder=""
+                value={userData.address}
                 style={{
                   width: '100%',
                 }}

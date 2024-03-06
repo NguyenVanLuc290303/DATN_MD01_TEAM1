@@ -8,6 +8,8 @@ import { API_PRODUCT_TOP8 } from "../../config/api-consts";
 import { User } from "../../hooks/useContext";
 
 
+
+
 const Home =  ({navigation}) => {
 
     const {dataUser} = User();
@@ -65,7 +67,7 @@ const Home =  ({navigation}) => {
                     <Image style={styles.imageTitle} source={require('@/images/logoAPP_MD01_png.png')}/>
                 </View>
                 {/* <Text>Hi {userName}</Text> */}
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
                         <Image source={require('@/icons/png/local_mall.png')}/>
                 </TouchableOpacity>
             </View>

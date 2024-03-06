@@ -1,27 +1,38 @@
-import {Modal, Text, View} from 'react-native';
+import {Modal, Text, TouchableOpacity, View , Dimensions} from 'react-native';
 import COLORS from '../../constants/colors';
 import {FontText} from '../../constants/Constant';
 import {StyleSheet} from 'react-native';
-import {OutlinedButton} from '../../components/button/OutlinedButton';
-import {FilledButton} from '../../components/button/FilledButton';
+import OutlinedButton from '../../components/button/OutlinedButton';
+import FilledButton from '../../components/button/FilledButton';
 
-const ModalConfirm = ({
-  title,
-  message,
-  cancelText,
-  confirmText,
-  cancelCallback,
-  confirmCallBack,
-}) => {
+const {height , width} = Dimensions.get('window');
+
+const ModalConfirm = (props) => {
+
+  const {
+    title,
+    message,
+    cancelText,
+    confirmText,
+    cancelCallback,
+    confirmCallBack,
+    visible
+  } = props;
+
+
+
   return (
-    <Modal statusBarTranslucent={false}>
+    <Modal
+      visible={visible}
+      statusBarTranslucent={false}
+    >
       <View style={styles.container}>
         <Text style={styles.textTitle}>{title}</Text>
         <Text style={styles.textMessage}>{message}</Text>
         <View style={{flexDirection: 'row'}}>
           <OutlinedButton label={cancelText} onPress={cancelCallback} />
           <View style={{width: 8}} />
-          <FilledButton label={cancelText} onPress={confirmCallBack} />
+          <FilledButton label={confirmText} onPress={confirmCallBack} />
         </View>
       </View>
     </Modal>
@@ -30,12 +41,12 @@ const ModalConfirm = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.white,
     borderRadius: 10,
     flexDirection: 'column',
     paddingHorizontal: 12,
     paddingVertical: 16,
-    flex: 1,
+    justifyContent : 'center',
+    alignItems : 'center',
   },
   textTitle: {
     color: COLORS.black,

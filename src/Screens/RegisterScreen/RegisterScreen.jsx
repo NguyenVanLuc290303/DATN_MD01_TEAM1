@@ -66,7 +66,7 @@ const RegisterScreen = ({navigation}) => {
     }
    };
 
-
+   
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView style={{flex: 1, marginHorizontal: 22}}>
