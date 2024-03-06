@@ -2,7 +2,7 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import COLORS from '../../constants/colors';
 import {FontText} from '../../constants/Constant';
 
-export const OutlinedButton = props => {
+const  OutlinedButton = props => {
   const {label, onPressed, isEnabled = true} = props;
   return (
     <TouchableOpacity style={styles.button} onPress={onPressed}>
@@ -29,3 +29,4 @@ const styles = StyleSheet.create({
     fontFamily: FontText.FS_PF_BeauSans_Pro_SemiBold,
   },
 });
+export default OutlinedButton;

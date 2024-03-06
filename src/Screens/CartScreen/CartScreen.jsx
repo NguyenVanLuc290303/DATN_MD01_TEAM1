@@ -8,94 +8,53 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Animated,
+  
 } from 'react-native';
 import COLORS from '../../constants/colors';
-import {useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Checkbox} from 'react-native-paper';
+import {User} from '../../hooks/useContext';
+import {API_PRODUCT_TO_CART} from '../../config/api-consts';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Icon from 'react-native-vector-icons/AntDesign';
+import {API_PRODUCT} from '../../config/api-consts';
+import ModalConfirm from '../../components/dialog/ModalConfirm';
 
 const CartScreen = ({navigation}) => {
-  const [productArray, setProductArray] = useState([
-    {
-      id: 1,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-    {
-      id: 3,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-    {
-      id: 4,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-    {
-      id: 5,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-    {
-      id: 6,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-    {
-      id: 7,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-    {
-      id: 8,
-      imageProduct: require('../../assets/images/image_product.png'),
-      nameProduct: 'Áo khoác Vest sang trọng thời trang nam',
-      color: 'Màu Be,size L',
-      priceSale: '399.000 đ',
-      price: '799.000 đ',
-      isChecked: false,
-      quantity: 1,
-    },
-  ]);
+  const {userData} = User();
+
+  const idUser = userData._id;
+
+  const [visible ,setVisible] = useState(false);
+
+  const [productArray, setProductArray] = useState([]);
+
+  const [itemDelete ,setItemDelete] = useState();
+
+  const [indexDelete , setIndexDelete] = useState();
+
+  useEffect(() => {
+    const myHeaders = new Headers();
+    myHeaders.append(
+      'Cookie',
+      'connect.sid=s%3A2ZxJ5qiC033izH_apThtJr0MlnV8Uz4z.N3Nf0xYBaBKssx0FkCehJrfHAfR3bNl85nnEvrjfLfA',
+    );
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(`${API_PRODUCT_TO_CART}`, requestOptions)
+      .then(response => response.json())
+      .then(result => setProductArray(result))
+      .catch(error => console.error(error));
+  }, []);
+
+  // console.log(productArray +" =====================>");
+
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
@@ -137,73 +96,157 @@ const CartScreen = ({navigation}) => {
     }
   };
 
+  const checkedItemCount = productArray.filter(item => item.isChecked).length;
+  const checkedItems = productArray.filter(item => item.isChecked);
+  const totalPrice = checkedItems.reduce(
+    (accumulator, currentItem) =>
+      accumulator + parseFloat(currentItem.Price) * currentItem.Quantity,
+    0,
+  );
+
+  const formatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 3,
+  });
+  const formatNumber = num => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
+  };
+
+  const handleOrderProduct = () => {
+    console.log(checkedItems);
+    // console.log(productArray + "product order =========)00000000000");
+    navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems});
+  };
+
+  const renderRightActions = (item, index, progress , dragX) => {
+    // Define the content of the swipeable view (e.g., delete button)
+    // You can customize this according to your app's needs
+    // const trans = dragX.interpolate({
+    //   inputRange: [0, 50, 100, 101],
+    //   outputRange: [-100, 0, 0, 1],
+    // });
+    return (
+      <Animated.View
+        style={{
+          backgroundColor: 'red',
+          padding: 10,
+          marginVertical: 5,
+          justifyContent : 'center',
+          alignItems : 'center',
+          // transform :[{
+          //   translateX : trans
+          // }]
+        }}>
+        <TouchableOpacity onPress={() => handleDeleteProductCart(item, index)}>
+          <Icon name="delete" size={32} color={COLORS.white} />
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  };
+
+  // const OpenModalDeleteCart = useCallback((item , index)=>{
+  //     setVisible(true);
+  //     setItemDelete(item);
+  //     setIndexDelete(index);
+
+  // },[indexDelete])
+
+  const handleDeleteProductCart = (item, index) => {    
+    console.log(item._id , index );
+    // Tạo một bản sao của mảng sản phẩm
+    const newArray = [...productArray];
+    // Xóa sản phẩm ở vị trí index khỏi mảng
+    newArray.splice(index, 1);
+    // Cập nhật lại state productArray với mảng mới đã xóa sản phẩm
+    setProductArray(newArray);
+
+    const urlencoded = new URLSearchParams();
+    const requestOptions = {
+      method: 'DELETE',
+      body: urlencoded,
+      redirect: 'follow',
+    };
+
+    fetch(`${API_PRODUCT}/${item._id}`, requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.error(error));
+ 
+  };
+
+
   const renderItem = ({item, index}) => (
-    <View style={styles.item}>
-      <View style={styles.productInfo}>
-        <View style={styles.checkboxStyle}>
-          <Checkbox
-            status={item.isChecked ? 'checked' : 'unchecked'}
-            color={'red'}
-            onPress={() => handleItemPress(index)}
-          />
-        </View>
-        <Image source={item.imageProduct} style={styles.image} />
-        <View style={styles.borderInfo}>
-          <View style={styles.imageContainer}>
-            <Text numberOfLines={2} style={styles.productName}>
-              {item.nameProduct}
-            </Text>
-            <View style={styles.productDetailsWrapper}>
-              <Text style={styles.productDetails}>{item.color}</Text>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.priceContainer}>
-                <Text style={styles.salePrice}>{item.priceSale}</Text>
-                <Text style={styles.regularPrice}>{item.price}</Text>
+    <Swipeable renderRightActions={() => renderRightActions(item , index)}>
+      <View style={styles.item}>
+        <View style={styles.productInfo}>
+          <View style={styles.checkboxStyle}>
+            <Checkbox
+              status={item.isChecked ? 'checked' : 'unchecked'}
+              color={'red'}
+              onPress={() => handleItemPress(index)}
+            />
+          </View>
+          <Image source={{uri: item.Image}} style={styles.image} />
+          <View style={styles.borderInfo}>
+            <View style={styles.imageContainer}>
+              <Text numberOfLines={2} style={styles.productName}>
+                {item.Name}
+              </Text>
+              <View style={styles.productDetailsWrapper}>
+                <Text style={styles.productDetails}>{item.ColorCode}</Text>
+                <Text style={styles.productDetails}>{item.Size}</Text>
+
               </View>
-              <View
-                style={[
-                  styles.countProduct,
-                  {
-                    flex: 5,
-                    flexDirection: 'row',
-                    borderWidth: 1,
-                    borderColor: '#272727',
-                  },
-                ]}>
-                <TouchableOpacity
-                  style={styles.borderCount}
-                  onPress={() => handleDecreaseQuantity(index)}>
-                  <Text style={{textAlign: 'center', color: COLORS.black}}>
-                    -
+              <View style={styles.rowContainer}>
+                <View style={styles.priceContainer}>
+                  <Text style={styles.salePrice}>{item.priceSale}</Text>
+                  <Text style={styles.regularPrice}>{item.Price}</Text>
+                </View>
+                <View
+                  style={[
+                    styles.countProduct,
+                    {
+                      width: '60%',
+                      flexDirection: 'row',
+                      borderWidth: 1,
+                      borderColor: '#272727',
+                    },
+                  ]}>
+                  <TouchableOpacity
+                    style={styles.borderCount}
+                    onPress={() => handleDecreaseQuantity(index)}>
+                    <Text style={{textAlign: 'center', color: COLORS.black}}>
+                      -
+                    </Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      flex: 3,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center',
+                      textAlign: 'center',
+                      borderWidth: 0.5,
+                      borderColor: '#272727',
+                      color: COLORS.black,
+                    }}>
+                    {item.Quantity}
                   </Text>
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    flex: 3,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    textAlign: 'center',
-                    borderWidth: 0.5,
-                    borderColor: '#272727',
-                    color: COLORS.black,
-                  }}>
-                  {item.quantity}
-                </Text>
-                <TouchableOpacity
-                  style={styles.borderCount}
-                  onPress={() => handleIncreaseQuantity(index)}>
-                  <Text style={{textAlign: 'center', color: COLORS.black}}>
-                    +
-                  </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.borderCount}
+                    onPress={() => handleIncreaseQuantity(index)}>
+                    <Text style={{textAlign: 'center', color: COLORS.black}}>
+                      +
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
         </View>
       </View>
-    </View>
+    </Swipeable>
   );
 
   return (
@@ -211,12 +254,32 @@ const CartScreen = ({navigation}) => {
       <FlatList
         data={productArray}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item._id.toString()}
         nestedScrollEnabled={true}
-        style={{paddingBottom: 100}}
+        style={{paddingBottom: 100, marginBottom: 100}}
       />
+      {/* <ModalConfirm
+        title={"Xóa"}
+        message={"Bạn có muốn xóa không"}
+        cancelText={"hủy"}
+        confirmText={"Xác nhận"}
+        visible={visible}
+        cancelCallback={setVisible(false)}
+        confirmCallBack={() => handleDeleteProductCart(itemDelete , indexDelete)}
+      /> */}
       {/* Phần nội dung dưới màn hình */}
-      <View style={styles.bottomSheet}>
+      <View
+        style={[
+          styles.bottomSheet,
+          {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 100,
+            zIndex: 1,
+          },
+        ]}>
         <View style={styles.rowContainer2}>
           {/* Checkbox */}
           <View style={styles.checkboxContainer}>
@@ -225,16 +288,22 @@ const CartScreen = ({navigation}) => {
               status={allChecked ? 'checked' : 'unchecked'}
               onPress={allChecked ? handleUncheckAll : handleChooseAll}
             />
-            <Text style={styles.checkboxLabel}>Choose All</Text>
+            <Text style={styles.checkboxLabel}>
+              Choose All ({checkedItemCount})
+            </Text>
           </View>
           {/* Title */}
-          <Text style={styles.title}>300000</Text>
+          <Text style={styles.title}>{totalPrice}</Text>
           {/* Order Button */}
-          <TouchableOpacity style={styles.orderButton}>
+          <TouchableOpacity
+            style={styles.orderButton}
+            onPress={handleOrderProduct}>
             <Text style={styles.orderButtonText}>Order</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+
     </View>
   );
 };
@@ -249,7 +318,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: 10,
     marginVertical: 5,
-    borderRadius: 10,
   },
   productName: {
     fontSize: 18,
@@ -277,7 +345,7 @@ const styles = StyleSheet.create({
   regularPrice: {
     fontSize: 16,
     color: '#666',
-    textDecorationLine: 'line-through',
+    // textDecorationLine: 'line-through',
   },
   productInfo: {
     flex: 1,

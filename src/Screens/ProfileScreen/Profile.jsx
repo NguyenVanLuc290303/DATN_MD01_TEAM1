@@ -171,12 +171,33 @@ const Profile = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{position: 'absolute', left: 0}}
-        />
+        /> */}
 
-        <ScrollView style={{marginBottom: 12}}>
+        <ScrollView style={{flex : 1,marginBottom: 12}}>
+        <View
+          style={{
+            marginTop: 20,
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}>
+          <Image
+            source={Icons.IconApp}
+            style={{
+              width: 200,
+              height: 200,
+              borderRadius: 400 / 2,
+              borderWidth: 1,
+              borderColor: COLORS.gray,
+            }}
+          />
+          {/* <Image
+            source={Icons.IconPlus}
+            style={{width: 35, height: 30, marginTop: -30, marginLeft: 120}}
+          /> */}
+        </View>
           {/*Account Setting*/}
           <View style={{marginBottom: 12}}>
             <Text style={{marginVertical: 10, color: COLORS.black}}>

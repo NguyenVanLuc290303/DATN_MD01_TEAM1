@@ -92,7 +92,7 @@ const BottomNavigation = ({navigation}) => {
         name="Profile"
         component={Profile}
         options={{
-          headerShown: 'Profile',
+          headerShown: '',
           tabBarIcon: ({focused, color, size}) => (
             <Icon name="person" color={color} size={focused ? 32 : 26} />
           ),

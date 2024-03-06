@@ -47,12 +47,12 @@ import { UserProvider } from './src/hooks/useContext';
 import DetailMessage from './src/Screens/MessageScreen/DetailMessage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from './src/Screens/ProfileScreen/Profile';
-import SendOtpScreen from './src/Screens/SendOtp/SendOtpScreen';
+import SendOtpScreen from './src/Screens/SendOtp/SendOtpScreenForgotPassword';
 import PaymentScreen from './src/Screens/PaymentScreen/PaymentScreen';
 import OrderDetailsScreen from './src/Screens/OrderDetails/OrderDetailsScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
-import AddDeliveryScreen from './src/Screens/AddDeliveryScreen/AddDeliveryScreen'
-import DeliveryScreen from './src/Screens/DeliveryScreen/DeliveryScreen'
+import DeliveryScreen from './src/Screens/DeliveryScreen/DeliveryScreen';
+import AddDeliveryScreen from './src/Screens/AddDeliveryScreen/AddDeliveryScreen';
 
 // import {CartScreen} from './src/Screens';
 
@@ -149,6 +149,12 @@ function App() {
           component={ForgotPassword}
           options={{headerShown: false}}
         />
+
+        <Stack.Screen
+          name="ResetForgotPasswordScreen"
+          component={ResetForgotPasswordScreen}
+          options={{headerShown: false}}
+        />
         
           <Stack.Screen
             name="DetailProductScreen"
@@ -190,7 +196,7 @@ function App() {
         <Stack.Screen
           name="OrderDetailsScreen"
           component={OrderDetailsScreen}
-          options={{headerShown: false}}
+          options={{headerShown: true}}
         />
         <Stack.Screen
           name="CartScreen"

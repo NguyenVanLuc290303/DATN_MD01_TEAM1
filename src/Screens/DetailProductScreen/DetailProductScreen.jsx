@@ -11,6 +11,7 @@ import {
   FlatList,
   TouchableOpacityBase,
   TouchableHighlight,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
@@ -29,9 +30,15 @@ import {
 } from '@gorhom/bottom-sheet';
 import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
+import {API_PRODUCT_TO_CART} from '../../config/api-consts';
+import {User} from '../../hooks/useContext';
 
 const DetailProductScreen = ({navigation, route}) => {
   const {_id, name, price, quantitySold, image, category} = route.params;
+
+  const {userData} = User();
+
+  const idUser = userData._id;
 
   const [dataProperties, setDaProperties] = useState([]);
 
@@ -41,7 +48,7 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const [selectSize, setSelectSize] = useState();
 
-  const [idPropotiesS , setIdPropoties ] = useState();
+  const [idPropotiesS, setIdPropoties] = useState();
 
   const [quantity, setQuantity] = useState(1); // Số lượng mặc định là 1
 
@@ -76,7 +83,10 @@ const DetailProductScreen = ({navigation, route}) => {
       .catch(error => console.error(error));
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+
+    // checkProductCart();
+  }, []);
 
   const bottomSheetModalRef = useRef(null);
 
@@ -103,32 +113,72 @@ const DetailProductScreen = ({navigation, route}) => {
     bottomSheetModalSaleRef.current?.close();
   }, []);
 
-  const handleToCart = () => {
-    console.log('add to cart');
+  const [checkProductCarts, setCheckProductCarts] = useState(null);
+
+  const handleToCart =  () => {
+
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append(
+      'Cookie',
+      'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+    );
+
+    // console.log(numberPhone);
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify({
+        CartId: idUser,
+        ProductId: _id,
+        Name: name,
+        Price: price,
+        ColorCode: selectedColor.colorId,
+        Size: selectSize,
+        Quantity: quantity,
+        PropertiesId: idPropotiesS,
+        Image: selectedColor.image,
+      }),
+      redirect: 'follow',
+    };
+
+    try {
+      fetch(`${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}`, requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result));
+      handleClosePress();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+
 
   const handleToSale = () => {
-    navigation.navigate(
-      'OrderDetailsScreen',
-      (productSelect = {
-        idProduct: _id,
-        idPropoties : idPropotiesS,
-        name : name,
-        size: selectSize,
-        quantity: quantity,
-        color: selectedColor.colorId,
-        price: price,
-        image: selectedColor.image,
+    const productSelect = [
+      {
+        ProductId: _id,
+        PropertiesId: idPropotiesS,
+        Name: name,
+        Size: selectSize,
+        Quantity: quantity,
+        ColorCode: selectedColor.colorId,
+        Price: price,
+        Image: selectedColor.image,
+      },
+    ];
 
-      }),
-    );
+    navigation.navigate('OrderDetailsScreen', {
+      dataProductOrder: productSelect,
+    });
   };
 
-  const handleOnpressSize = (size , id) => {
+  const handleOnpressSize = (size, id) => {
     // setIsSelectedSize(size);
     setSelectSize(size);
     setIdPropoties(id);
-
   };
   // console.log(selectSize);
   // if(selectedColor){
@@ -377,7 +427,9 @@ const DetailProductScreen = ({navigation, route}) => {
                               marginTop: 10,
                               marginBottom: 10,
                             }}
-                            onPress={() => handleOnpressSize(item.size , item._id)}>
+                            onPress={() =>
+                              handleOnpressSize(item.size, item._id)
+                            }>
                             <Text
                               style={{
                                 width: '85%',
@@ -533,9 +585,15 @@ const DetailProductScreen = ({navigation, route}) => {
                       <TouchableOpacity
                         style={{
                           width:
-                          selectedColor &&  selectedColor.colorId === item.colorId ? 40 : 35,
+                            selectedColor &&
+                            selectedColor.colorId === item.colorId
+                              ? 40
+                              : 35,
                           height:
-                          selectedColor &&  selectedColor.colorId === item.colorId ? 40 : 35,
+                            selectedColor &&
+                            selectedColor.colorId === item.colorId
+                              ? 40
+                              : 35,
                           marginRight: 20,
                           marginTop: 10,
                           borderRadius: 5,
@@ -586,7 +644,9 @@ const DetailProductScreen = ({navigation, route}) => {
                               marginTop: 10,
                               marginBottom: 10,
                             }}
-                            onPress={() => handleOnpressSize(item.size , item._id)}>
+                            onPress={() =>
+                              handleOnpressSize(item.size, item._id)
+                            }>
                             <Text
                               style={{
                                 width: '85%',

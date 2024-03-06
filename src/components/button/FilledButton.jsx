@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.color_EEEEEE,
     height: 48,
     borderRadius: 10,
+    justifyContent: 'center',
   }),
   buttonLabel: isEnabled => ({
     backgroundColor: isEnabled ? COLORS.white : COLORS.color_text_main,
@@ -31,3 +32,5 @@ const styles = StyleSheet.create({
     fontFamily: FontText.FS_PF_BeauSans_Pro_SemiBold,
   }),
 });
+
+export default FilledButton;

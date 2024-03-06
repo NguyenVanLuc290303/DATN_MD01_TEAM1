@@ -28,6 +28,9 @@ import IconCardNumber from '../assets/images/iconCardNumber.png';
 import IconCVC from '../assets/images/iconCVC.png';
 import Avatar1 from '../assets/images/avatar1.png';
 import Avatar2 from '../assets/images/avatar2.jpg';
+import Ellipse from '../assets/images/Ellipse.png';
+import fi_check from '../assets/images/fi_check.png';
+
 export const Icons = {
   IconEye,
   IconEyeHide,
@@ -59,4 +62,6 @@ export const Icons = {
   IconCVC,
   Avatar1,
   Avatar2,
+  Ellipse,
+  fi_check,
 };
