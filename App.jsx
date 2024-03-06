@@ -51,6 +51,8 @@ import SendOtpScreen from './src/Screens/SendOtp/SendOtpScreen';
 import PaymentScreen from './src/Screens/PaymentScreen/PaymentScreen';
 import OrderDetailsScreen from './src/Screens/OrderDetails/OrderDetailsScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import AddDeliveryScreen from './src/Screens/AddDeliveryScreen/AddDeliveryScreen'
+import DeliveryScreen from './src/Screens/DeliveryScreen/DeliveryScreen'
 
 // import {CartScreen} from './src/Screens';
 
@@ -78,7 +80,7 @@ function App() {
     <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'LoginScreen'}
+        initialRouteName={'DeliveryScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -194,6 +196,16 @@ function App() {
           name="CartScreen"
           component={CartScreen}
           options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="DeliveryScreen"
+          component={DeliveryScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddDeliveryScreen"
+          component={AddDeliveryScreen}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

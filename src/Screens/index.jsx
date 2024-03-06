@@ -17,6 +17,8 @@ import OrderDetailsScreen from './OrderDetails/OrderDetailsScreen';
 import CartScreen from './CartScreen/CartScreen';
 import ProductCategory from './ProductCategory/ProductCategory';
 import SendOTPRegisterScreen from './SendOTPRegisterScreen/SendOTPRegisterScreen';
+import DeliveryScreen from './DeliveryScreen/DeliveryScreen';
+import AddDeliveryScreen from './AddDeliveryScreen/AddDeliveryScreen';
 export {
   OnboardingScreen,
   LoginScreen,
@@ -36,5 +38,7 @@ export {
   PaymentScreen,
   OrderDetailsScreen,
   CartScreen,
-  ProductCategory
+  ProductCategory,
+  DeliveryScreen, 
+  AddDeliveryScreen
 };
