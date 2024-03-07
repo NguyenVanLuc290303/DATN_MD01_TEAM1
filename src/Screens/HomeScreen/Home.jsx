@@ -121,7 +121,7 @@ const Home = ({ navigation }) => {
             </View>
 
             
-                <FlatList numColumns={2} data={dataProduct} renderItem={({item , index}) =>{
+                {/* <FlatList numColumns={2} data={dataProduct} renderItem={({item , index}) =>{
                     return(
                         <View style={styles.viewItemProducts}>
                             <TouchableOpacity style={{ 
@@ -144,7 +144,7 @@ const Home = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     )
-                }}/>
+                }}/> */}
             
 
 

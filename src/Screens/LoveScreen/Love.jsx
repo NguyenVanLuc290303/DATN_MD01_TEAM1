@@ -11,13 +11,13 @@ const Love = ({ navigation }) => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${API_GET_TO_LOVE}/${userData?._id}`, {
+            const response = await axios.get(`${API_GET_TO_LOVE}/${userData._id}`, {
                 headers: {
                     Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
                 }
             });
             setDataLove(response.data);
-            console.log("Dữ liệu trả về từ API:", response.data);
+            // console.log("Dữ liệu trả về từ API:", response.data);
         } catch (error) {
             console.error("Lỗi khi lấy danh sách sản phẩm yêu thích:", error);
         }
@@ -39,7 +39,7 @@ const Love = ({ navigation }) => {
                 <Text style={styles.textHeadTitle}>Love Clothes</Text>
             </View>
             <ScrollView style={styles.viewListLove}>
-                {dataLove.data && dataLove.data.map((item) => (
+                {dataLove && dataLove.map((item) => (
                     <TouchableOpacity
                         key={item._id}
                         onPress={() => navigation.navigate('DetailProductScreen', {
@@ -55,7 +55,7 @@ const Love = ({ navigation }) => {
                             <Image source={{ uri: item.image }} style={styles.image} />
                             <View style={styles.textContainer}>
                                 <Text style={styles.nameText}>{item.name}</Text>
-                                <Text style={styles.priceText}>{item.price} USD</Text>
+                                <Text style={styles.priceText}>{item.price} VND</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
