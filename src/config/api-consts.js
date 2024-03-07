@@ -1,6 +1,6 @@
 // write api use to app
 
-export const IP_ADDRESS = '192.168.0.100';
+export const IP_ADDRESS = '192.168.0.104';
 
 // api users
 
@@ -32,5 +32,8 @@ export const API_PRODUCT_ORDER = `http://${IP_ADDRESS}:3000/api-sanpham/SPD`;
 
 export const API_PRODUCT_TO_CART = `http://${IP_ADDRESS}:3000/api-sanpham/SPG`;
 
+//api address 
+
+export const API_ADDRESS =`http://${IP_ADDRESS}:3000/api-dcgh`;
 
 

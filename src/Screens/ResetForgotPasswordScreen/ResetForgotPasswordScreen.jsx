@@ -5,44 +5,62 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
 import COLORS from '../../constants/colors';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
+import SuccessNotificationModal from '../../components/organisms/SuccessNotificationModal/SuccessNotificationModal';
+import { API_RESSET_PASSWORD } from '../../config/api-consts';
 
-const ForgotPassword = ({navigation}) => {
-  const [phoneNumber, setPhoneNumber] = useState();
+const ResetForgotPasswordScreen = ({navigation ,route}) => {
 
-  function onAuthStateChanged(user) {
-    if (user) {
-      // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
-      // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
-      // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
-      // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
-    }
-  }
+  const {phoneNumber} = route.params;
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  console.log("Your number phone" + phoneNumber);
 
-  const handerForgotPassword = async () => {
+
+  const [visible, setVisible] = useState(false);
+
+
+  const [passwordReset, setPasswordReset] = useState();
+
+  const [passwordConfirm, setPasswordConfirm] = useState();
+
+  const handerForgotPasswordReset = () => {
+    //api reset password
+
+    if(passwordReset === passwordConfirm){
+ 
     try {
-      const confirmationResult = await auth().signInWithPhoneNumber(phoneNumber);
-      navigation.navigate(
-        'SendOTPRegisterScreen',
-        (data = {
-          verification: confirmationResult.verificationId,
-          numberPhone: phoneNumber,
-        }),
+      const myHeaders = new Headers();
+      myHeaders.append(
+        'Cookie',
+        'connect.sid=s%3AONtAlWU07R3RPkvL4ydlKOwh9p944hba.qBfnHMcC2Yt203yxaDbUEqQ%2B%2FLbl9g5QiPX7d43k8NI',
       );
+  
+      const urlencoded = new URLSearchParams();
+  
+      const requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: 'follow',
+      };
+  
+      fetch(`${API_RESSET_PASSWORD}/${phoneNumber}`, requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result)).then(() =>  setVisible(true))
+        .catch(error => console.error(error));
+
     } catch (error) {
-      console.log(error);
-      Alert.alert('Error', 'Failed to send OTP');
+      console.log(error)
     }
+  } else{
+    Alert.alert('Password nhập lại không đúng')
+  }
   };
 
   return (
@@ -58,18 +76,31 @@ const ForgotPassword = ({navigation}) => {
       </Text>
       <TextInput
         style={styles.textInput}
-        placeholder="Enter the phone"
+        placeholder="Nhập mật khẩu mới"
         placeholderTextColor={COLORS.color_7E7D7D}
-        onChangeText={Text => setPhoneNumber(Text)}
+        onChangeText={Text => setPasswordReset(Text)}
+      />
+      <TextInput
+        style={styles.textInput}
+        placeholderTextColor={COLORS.color_7E7D7D}
+
+        placeholder="Xác nhận mật khẩu"
+        onChangeText={Text => setPasswordConfirm(Text)}
       />
       <View style={styles.formAction}>
-        <TouchableOpacity
-          onPress={handerForgotPassword}>
+        <TouchableOpacity onPress={handerForgotPasswordReset}>
           <View style={styles.btn}>
-            <Text style={styles.btnText}>Continue</Text>
+            <Text style={styles.btnText}>Thay đổi mật khẩu</Text>
           </View>
         </TouchableOpacity>
       </View>
+
+      <SuccessNotificationModal 
+        visible={visible}
+        textContent={"Thay đổi thành công"}
+        
+        >
+      </SuccessNotificationModal>
     </View>
   );
 };
@@ -110,6 +141,7 @@ const styles = StyleSheet.create({
       width: 1,
     },
     padding: 12,
+    marginTop : 10
   },
   formAction: {},
   btn: {
@@ -134,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPassword;
+export default ResetForgotPasswordScreen;

@@ -18,35 +18,23 @@ import { User } from '../../hooks/useContext';
 
 const SendOtpScreen = ({navigation , route}) => {
 
-  const { phoneNumber } = route.params;
+  const {verification , phoneNumber } = route.params;
 
   const [code, setCode] = React.useState('');
 
-  // const dataUserRegister = {
-  //   name : name,
-  //   email : email,
-  //   passwd : password,
-  //   address : address,
-  //   numberPhone : numberPhone,
-  //   image :'',
-  // }
-
-
-  const handleVerifyOTP = () => {
+  const handleVerifyOTP =  ()  => {
     try {
-      // const credential = auth.PhoneAuthProvider.credential(verification, code);
-      //  auth().signInWithCredential(credential);
-      
-       // Navigate to the main screen upon successful authentication
+      const credential =  auth().PhoneAuthProvider.credential(verification, code);
+       auth().signInWithCredential(credential);
+       navigation.navigate('ResetForgotPasswordScreen' , {phoneNumber : phoneNumber})
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'Failed to verify OTP');
     }
   };
-
-    const handleChangeOtp = React.useCallback((otp) => {
+    const handleChangeOtp = ((otp) => {
       setCode(otp);
-    }, []);
+    });
 
 
   return (
@@ -68,7 +56,7 @@ const SendOtpScreen = ({navigation , route}) => {
           clearTextOnFocus
         />
         <Text style={styleCommon.sp1}>00:30</Text>
-        <TouchableOpacity style={styles.btn_Otp} >
+        <TouchableOpacity style={styles.btn_Otp} onPress={handleVerifyOTP}>
           <Text style={textStyles.white}>Submit</Text>
         </TouchableOpacity>
       </ImageBackground>

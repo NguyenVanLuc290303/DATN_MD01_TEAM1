@@ -1,4 +1,5 @@
 import {
+  Alert,
   ImageBackground,
   KeyboardAvoidingView,
   Modal,
@@ -77,11 +78,11 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
 
         try {
             
-        fetch(API_ADD_USERS, requestOptions)
+        fetch(`${API_ADD_USERS}/${numberPhone}/${email}`, requestOptions)
         .then(response => response.json())
-        .then(result => console.log(result))
-        .then(navigation.navigate('OnboardingScreen'))
-        
+        .then(result => {
+          if(result._id !== null){ navigation.navigate('OnboardingScreen')}else{ Alert.alert("Đã tồn tại tài khoản")}
+        }) 
         } catch (error) {
             console.log(error);
         }

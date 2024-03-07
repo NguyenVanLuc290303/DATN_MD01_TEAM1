@@ -43,6 +43,7 @@ const Profile = ({navigation}) => {
   };
   const navigateToSecurity = () => {
     console.log('Security Action');
+    navigation.navigate('YourOrderScreen')
   };
 
   const navigateToNotifications = () => {
@@ -62,7 +63,7 @@ const Profile = ({navigation}) => {
 
     {
       icon: Icons.IconSecurity,
-      text: 'Security',
+      text: 'Your Order',
       action: navigateToSecurity,
     },
 
@@ -257,7 +258,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   header: {
-    marginHorizontal: 12,
+    // marginHorizontal: 12,
+    paddingLeft : 10,
     flexDirection: 'row',
   },
   iconStyle: {

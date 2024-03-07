@@ -47,12 +47,15 @@ import { UserProvider } from './src/hooks/useContext';
 import DetailMessage from './src/Screens/MessageScreen/DetailMessage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Profile from './src/Screens/ProfileScreen/Profile';
-import SendOtpScreen from './src/Screens/SendOtp/SendOtpScreenForgotPassword';
+import SendOtpScreen from './src/Screens/SendOtp/SendOtpForgotPasswordScreen';
 import PaymentScreen from './src/Screens/PaymentScreen/PaymentScreen';
 import OrderDetailsScreen from './src/Screens/OrderDetails/OrderDetailsScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import DeliveryScreen from './src/Screens/DeliveryScreen/DeliveryScreen';
 import AddDeliveryScreen from './src/Screens/AddDeliveryScreen/AddDeliveryScreen';
+import ResetForgotPasswordScreen from './src/Screens/ResetForgotPasswordScreen/ResetForgotPasswordScreen';
+import Home from './src/Screens/HomeScreen/Home';
+import YourOrderScreen from './src/Screens/YourOrderScreen/YourOrderScreen';
 
 // import {CartScreen} from './src/Screens';
 
@@ -80,7 +83,7 @@ function App() {
     <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'DeliveryScreen'}
+        initialRouteName={'LoginScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -90,6 +93,11 @@ function App() {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name="YourOrderScreen"
+          component={YourOrderScreen}
           options={{headerShown: false}}
         />
       
@@ -162,11 +170,11 @@ function App() {
             options={{headerShown: false}}
           />
         
-        {/* <Stack.Screen
-          name="CartScreen"
-          component={CartScreen}
+         <Stack.Screen
+          name="HomeScreen"
+          component={Home}
           options={{headerShown : false}}
-        /> */}
+        /> 
          <Stack.Screen
           name="ProductCategory"
           component={ProductCategory}

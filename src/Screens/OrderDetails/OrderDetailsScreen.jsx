@@ -227,7 +227,9 @@ const OrderDetailsScreen = ({navigation, route}) => {
               <Text style={styles.textInfo}>{numberPhone}</Text>
               <Text style={styles.textInfo2}>{address}</Text>
             </View>
-            <Image source={Icons.IconNext} style={styles.iconNext} />
+            <TouchableOpacity onPress={() => navigation.navigate('DeliveryScreen')}>
+              <Image source={Icons.IconNext} style={styles.iconNext} />
+            </TouchableOpacity>
           </View>
           <View style={styles.viewImageContainer}>
             <Image source={Icons.IconView} style={styles.iconView} />
@@ -573,8 +575,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   iconNext: {
-    width: 15,
-    height: 10,
+    width: 24,
+    height: 24,
     marginRight: 20,
   },
   borderStyles: {

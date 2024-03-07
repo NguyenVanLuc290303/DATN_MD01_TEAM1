@@ -241,6 +241,7 @@ const DetailProductScreen = ({navigation, route}) => {
 
         <View style={styles.footer}>
           <TouchableOpacity
+          onPress={() => navigation.navigate('BottomNavigation')}
             style={{flexDirection: 'column', alignItems: 'center'}}>
             <Text style={{color: COLORS.black}}>Home</Text>
             <IconF name="home" size={28} color={COLORS.black} />
