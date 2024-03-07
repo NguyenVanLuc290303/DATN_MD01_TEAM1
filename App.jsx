@@ -50,6 +50,7 @@ import Profile from './src/Screens/ProfileScreen/Profile';
 import SendOtpScreen from './src/Screens/SendOtp/SendOtpScreen';
 import PaymentScreen from './src/Screens/PaymentScreen/PaymentScreen';
 import OrderDetailsScreen from './src/Screens/OrderDetails/OrderDetailsScreen';
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 
 // import {CartScreen} from './src/Screens';
 
@@ -73,6 +74,7 @@ function App() {
     </Stack.Navigator>;
   };
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
@@ -145,11 +147,13 @@ function App() {
           component={ForgotPassword}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="DetailProductScreen"
-          component={DetailProductScreen}
-          options={{headerShown: false}}
-        />
+        
+          <Stack.Screen
+            name="DetailProductScreen"
+            component={DetailProductScreen}
+            options={{headerShown: false}}
+          />
+        
         {/* <Stack.Screen
           name="CartScreen"
           component={CartScreen}
@@ -194,6 +198,7 @@ function App() {
       </Stack.Navigator>
     </NavigationContainer>
     </UserProvider>
+    </GestureHandlerRootView>
   );
 }
 

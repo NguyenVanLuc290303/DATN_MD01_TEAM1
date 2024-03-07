@@ -9,6 +9,7 @@ import { API_ADD_TO_LOVE } from "../../config/api-consts";
 import { User } from "../../hooks/useContext";
 
 
+
 const Home = ({ navigation }) => {
 
     const { userData } = User();
@@ -38,13 +39,12 @@ const Home = ({ navigation }) => {
         }
     };
     
-    // React.useEffect(() => {
-    //     console.log("Danh sách sản phẩm yêu thích:", favoriteProducts);
-    // }, [favoriteProducts]);
+
     
     
     
     React.useEffect(() => {
+
         var myHeaders = new Headers();
         myHeaders.append("Cookie", "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw");
 
@@ -119,6 +119,34 @@ const Home = ({ navigation }) => {
             <View style={{ paddingLeft: 10, marginTop: 10 }}>
                 <Text style={styles.textHead}>Recommend</Text>
             </View>
+
+            
+                <FlatList numColumns={2} data={dataProduct} renderItem={({item , index}) =>{
+                    return(
+                        <View style={styles.viewItemProducts}>
+                            <TouchableOpacity style={{ 
+                                        alignItems : 'center',
+                                        justifyContent :"center",
+                                        paddingTop : "5%"
+                            }}  onPress={() => navigation.navigate('DetailProductScreen'
+                                                                                ,item ={
+                                                                                _id : item._id,
+                                                                                name : item.name,
+                                                                                image : item.image,
+                                                                                category : item.loai,
+                                                                                price : item.price,
+                                                                                quantitySold : item.quantitySold}
+                                                                                )
+                        }>
+                                <Image source={{ uri : item.image}} style={{ width : 90 , height : 131}}/>
+                                <Text>{item.name}</Text>
+                                <Text>{item.price} USD</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }}/>
+            
+
 
             <FlatList numColumns={2} data={dataProduct} renderItem={({ item, index }) => {
                 return (

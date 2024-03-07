@@ -1,9 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import COLORS from '../../constants/colors';
 import axios from 'axios';
 import { User } from "../../hooks/useContext"; 
 import { API_NOTIFICATION } from '../../config/api-consts';
+
+
 
 const Notification = () => {
   const [notificationData, setNotificationData] = useState([]);
@@ -49,6 +52,7 @@ const Notification = () => {
 
   console.log("User data:", userData); // Kiểm tra giá trị của userData
 
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -82,7 +86,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: COLORS.black,
-    fontWeight: 'bold',
   },
   time: {
     fontSize: 12,

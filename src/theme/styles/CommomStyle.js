@@ -19,6 +19,15 @@ import COLORS from "../../constants/colors";
         fontSize : 20,
         fontWeight : "600",
     },
+    h3 :{
+        fontSize : 18,
+        fontWeight : '500'
+    },
+    h4 :{
+        fontSize : 16,
+        fontWeight : '400'
+    },
+
 
     // styles speace 
 

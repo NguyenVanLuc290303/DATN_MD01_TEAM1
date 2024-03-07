@@ -1,15 +1,20 @@
 import {
   FlatList,
   Image,
+  Modal,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import COLORS from '../../constants/colors';
+import {useState} from 'react';
+import {Checkbox} from 'react-native-paper';
 
 const CartScreen = ({navigation}) => {
-  const productArray = [
+  const [productArray, setProductArray] = useState([
     {
       id: 1,
       imageProduct: require('../../assets/images/image_product.png'),
@@ -17,6 +22,7 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
     {
       id: 2,
@@ -25,6 +31,7 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
     {
       id: 3,
@@ -33,6 +40,7 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
     {
       id: 4,
@@ -41,6 +49,7 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
     {
       id: 5,
@@ -49,6 +58,7 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
     {
       id: 6,
@@ -57,6 +67,7 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
     {
       id: 7,
@@ -65,6 +76,7 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
     {
       id: 8,
@@ -73,20 +85,85 @@ const CartScreen = ({navigation}) => {
       color: 'Màu Be,size L',
       priceSale: '399.000 đ',
       price: '799.000 đ',
+      isChecked: false,
     },
-  ];
-  const renderItem = ({item}) => (
+  ]);
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(true);
+  const [allChecked, setAllChecked] = useState(false);
+
+  const handleItemPress = index => {
+    const newArray = [...productArray];
+    newArray[index].isChecked = !newArray[index].isChecked;
+    setProductArray(newArray);
+  };
+
+  // Hàm để cập nhật trạng thái của tất cả các checkbox
+  const handleChooseAll = () => {
+    const newArray = productArray.map(item => ({...item, isChecked: true}));
+    setProductArray(newArray);
+    setAllChecked(true);
+  };
+
+  const handleUncheckAll = () => {
+    const newArray = productArray.map(item => ({...item, isChecked: false}));
+    setProductArray(newArray);
+    setAllChecked(false);
+  };
+  const renderItem = ({item, index}) => (
     <View style={styles.item}>
       <View style={styles.productInfo}>
+        <View style={styles.checkboxStyle}>
+          <Checkbox
+            status={item.isChecked ? 'checked' : 'unchecked'}
+            color={'red'}
+            onPress={() => handleItemPress(index)}
+          />
+        </View>
         <Image source={item.imageProduct} style={styles.image} />
-        <View style={styles.imageContainer}>
-          <Text numberOfLines={2} style={styles.productName}>
-            {item.nameProduct}
-          </Text>
-          <Text style={styles.productDetails}>{item.color}</Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.salePrice}>{item.priceSale}</Text>
-            <Text style={styles.regularPrice}>{item.price}</Text>
+        <View style={styles.borderInfo}>
+          <View style={styles.imageContainer}>
+            <Text numberOfLines={2} style={styles.productName}>
+              {item.nameProduct}
+            </Text>
+            <View style={styles.productDetailsWrapper}>
+              <Text style={styles.productDetails}>{item.color}</Text>
+            </View>
+            <View style={styles.rowContainer}>
+              <View style={styles.priceContainer}>
+                <Text style={styles.salePrice}>{item.priceSale}</Text>
+                <Text style={styles.regularPrice}>{item.price}</Text>
+              </View>
+              <View
+                style={[
+                  styles.countProduct,
+                  {
+                    flex: 5,
+                    flexDirection: 'row',
+                    borderWidth: 1,
+                    borderColor: '#272727',
+                  },
+                ]}>
+                <TouchableOpacity style={styles.borderCount}>
+                  <Text style={{textAlign: 'center'}}>-</Text>
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    flex: 3,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                    borderWidth: 0.5,
+                    borderColor: '#272727',
+                  }}>
+                  1
+                </Text>
+                <TouchableOpacity style={styles.borderCount}>
+                  <Text style={{textAlign: 'center'}}>+</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -99,7 +176,32 @@ const CartScreen = ({navigation}) => {
         data={productArray}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
+        nestedScrollEnabled={true}
       />
+      <Modal
+        transparent={true}
+        visible={isBottomSheetVisible}
+        animationType="slide">
+        <View style={styles.bottomSheet}>
+          <View style={styles.rowContainer2}>
+            {/* Checkbox */}
+            <View style={styles.checkboxContainer}>
+              <Checkbox
+                color={'red'}
+                status={allChecked ? 'checked' : 'unchecked'}
+                onPress={allChecked ? handleUncheckAll : handleChooseAll}
+              />
+              <Text style={styles.checkboxLabel}>Choose All</Text>
+            </View>
+            {/* Title */}
+            <Text style={styles.title}>300000</Text>
+            {/* Order Button */}
+            <TouchableOpacity style={styles.orderButton}>
+              <Text style={styles.orderButtonText}>Order</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -112,22 +214,26 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#FFFFFF',
-    padding: 15,
-    marginVertical: 8,
+    padding: 10,
+    marginVertical: 5,
     borderRadius: 10,
   },
   productName: {
     fontSize: 18,
     fontWeight: 'bold',
     flex: 1,
+    flexShrink: 2,
+    color: COLORS.black,
+    marginLeft: 20,
+    marginRight: 10,
   },
   productDetails: {
     fontSize: 14,
     marginTop: 5,
+    color: '#939393',
   },
   priceContainer: {
     flexDirection: 'column',
-    marginTop: 10,
   },
   salePrice: {
     fontSize: 16,
@@ -144,11 +250,92 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
     flexDirection: 'row',
+    marginRight: 100,
   },
   image: {
     width: 69, // Set the width and height according to your preference
     height: 69,
-    resizeMode: 'cover', // You can use other options like 'contain' as per your need
+    resizeMode: 'cover',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  productDetailsContainer: {
+    marginLeft: 20,
+    marginRight: 20,
+    backgroundColor: COLORS.black,
+  },
+  productDetailsWrapper: {
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 20,
+    backgroundColor: '#EFEFEF',
+    paddingHorizontal: 10,
+    paddingVertical: 1,
+    borderRadius: 5,
+    alignSelf: 'flex-start', // Căn chỉnh cho phù hợp với vùng chữ
+  },
+  checkboxStyle: {
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  borderInfo: {
+    flexDirection: 'row',
+  },
+  countProduct: {
+    backgroundColor: COLORS.white,
+    justifyContent: 'flex-end',
+    marginLeft: 30,
+    height: 22,
+    borderRadius: 8,
+    flexDirection: 'row',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    flex: 0.5,
+    marginLeft: 30,
+  },
+  borderCount: {
+    flex: 1,
+  },
+  bottomSheet: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    backgroundColor: '#FFF',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    elevation: 5,
+    justifyContent: 'center', // Thêm dòng này để đẩy bottom sheet xuống dưới
+  },
+  rowContainer2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkboxLabel: {
+    marginLeft: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  orderButton: {
+    backgroundColor: '#FF2271',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  orderButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
   },
 });
 
