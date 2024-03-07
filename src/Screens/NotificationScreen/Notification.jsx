@@ -13,78 +13,106 @@ import {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Notification = () => {
-  const notificationArray = [
-    {
-      id: 1,
-      titleMessage: 'Notification 1: This is a notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 2,
-      titleMessage: 'Notification 2: This is another notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 3,
-      titleMessage:
-        'Notification 3: This is yet another notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 4,
-      titleMessage: 'Notification 4: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 5,
-      titleMessage: 'Notification 5: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 6,
-      titleMessage: 'Notification 6: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 7,
-      titleMessage: 'Notification 7: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 8,
-      titleMessage: 'Notification 8: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 9,
-      titleMessage: 'Notification 9: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 10,
-      titleMessage:
-        'Notification 10: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 11,
-      titleMessage:
-        'Notification 11: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-  ];
+  // const notificationArray = [
+  //   {
+  //     id: 1,
+  //     titleMessage: 'Notification 1: This is a notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 2,
+  //     titleMessage: 'Notification 2: This is another notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 3,
+  //     titleMessage:
+  //       'Notification 3: This is yet another notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 4,
+  //     titleMessage: 'Notification 4: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 5,
+  //     titleMessage: 'Notification 5: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 6,
+  //     titleMessage: 'Notification 6: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 7,
+  //     titleMessage: 'Notification 7: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 8,
+  //     titleMessage: 'Notification 8: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 9,
+  //     titleMessage: 'Notification 9: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 10,
+  //     titleMessage:
+  //       'Notification 10: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  //   {
+  //     id: 11,
+  //     titleMessage:
+  //       'Notification 11: This is one more notification to the user',
+  //     time: '2000/12/12',
+  //   },
+  // ];
 
   const [notifications, setNotifications] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [touchedItems, setTouchedItems] = useState([]);
+  const [data, setData] = useState([]);
 
+
+
+  
   useEffect(() => {
+
+
+
+
     // Nạp lại dữ liệu khi màn hình được load
     loadNotifications();
   }, []);
 
+  const getData = async () =>{
+    const myHeaders = new Headers();
+    myHeaders.append("Cookie", "connect.sid=s%3A2ZxJ5qiC033izH_apThtJr0MlnV8Uz4z.N3Nf0xYBaBKssx0FkCehJrfHAfR3bNl85nnEvrjfLfA");
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow"
+    };
+
+
+    fetch(`http://192.168.1.9:3000/api-thongbao`, requestOptions)
+
+      .then((response) => response.json())
+      .then((result) => setData(result))
+      .catch((error) => console.error(error));
+  }
+
+
   useEffect(() => {
     // Lưu trữ dữ liệu khi dữ liệu thay đổi
+    getData();
     saveNotifications();
   }, [notifications]);
 
@@ -98,6 +126,7 @@ const Notification = () => {
       console.error('Error loading notifications: ', error);
     }
   };
+
 
   const saveNotifications = async () => {
     try {
@@ -131,9 +160,9 @@ const Notification = () => {
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <ScrollView style={{flex: 1}}>
             <Text style={[styles.title, {fontWeight}]}>
-              {item.titleMessage}
+              {item.status}
             </Text>
-            <Text style={[styles.time, {fontWeight}]}>{item.time}</Text>
+            <Text style={[styles.time, {fontWeight}]}>{item.date}</Text>
           </ScrollView>
           <Icon
             name="arrow-forward-outline"
@@ -149,9 +178,9 @@ const Notification = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={notificationArray}
+        data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()} // Ensure keyExtractor uses a unique value for each item
+        keyExtractor={item => item._id.toString()} // Ensure keyExtractor uses a unique value for each item
       />
     </SafeAreaView>
   );

@@ -15,6 +15,8 @@ export const API_PRODUCT_TOP8 = "http://192.168.1.9:3000/api-sanpham/top8";
 
 export const API_COLOR_PRODUCT = "http://192.168.1.9:3000/api-mausanpham";
 
+export const API_CHAT = "http://192.168.1.5:3000/api-tinnhan";
+
 
 
 export const API_ORDER = "http://192.168.0.100:3000/api-donhang";

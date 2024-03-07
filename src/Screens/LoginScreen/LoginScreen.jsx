@@ -61,7 +61,7 @@ const LoginScreen = ({navigation}) => {
     };
 
 
-    fetch(`http://192.168.1.9:3000/api-taikhoan/${phone}`, requestOptions)
+    fetch(`http://192.168.1.5:3000/api-taikhoan/${phone}`, requestOptions)
 
       .then((response) => response.json())
       .then((result) => loginUser(result))
