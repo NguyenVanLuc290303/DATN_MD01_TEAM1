@@ -14,5 +14,7 @@ export const API_ADD_TO_LOVE = "http://192.168.1.8:3000/api-sanpham/SPL"
 
 export const API_PRODUCT_TOP8 = "http://192.168.1.8:3000/api-sanpham/top8"
 
+export const API_NOTIFICATION = "http://192.168.1.8:3000/api-thongbao"
+
 
 

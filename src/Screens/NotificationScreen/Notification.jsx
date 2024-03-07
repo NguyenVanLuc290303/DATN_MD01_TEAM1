@@ -1,88 +1,66 @@
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import COLORS from '../../constants/colors';
+import axios from 'axios';
+import { User } from "../../hooks/useContext"; 
+import { API_NOTIFICATION } from '../../config/api-consts';
 
 const Notification = () => {
-  const notificationArray = [
-    {
-      id: 1,
-      titleMessage: 'Notification 1: This is a notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 2,
-      titleMessage: 'Notification 2: This is another notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 3,
-      titleMessage:
-        'Notification 3: This is yet another notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 4,
-      titleMessage: 'Notification 4: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 5,
-      titleMessage: 'Notification 5: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 6,
-      titleMessage: 'Notification 6: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 7,
-      titleMessage: 'Notification 7: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 8,
-      titleMessage: 'Notification 8: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 9,
-      titleMessage: 'Notification 9: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 10,
-      titleMessage:
-        'Notification 10: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-    {
-      id: 11,
-      titleMessage:
-        'Notification 11: This is one more notification to the user',
-      time: '2000/12/12',
-    },
-  ];
+  const [notificationData, setNotificationData] = useState([]);
+  const { userData } = User();
 
-  const renderItem = ({item}) => (
-    <ScrollView style={styles.item}>
-      <Text style={styles.title}>{item.titleMessage}</Text>
-      <Text style={styles.time}>{item.time}</Text>
-    </ScrollView>
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!userData) {
+          console.error("User data is not provided.");
+          return;
+        }
+
+        console.log("User data:", userData);
+
+        // Gửi request lấy thông báo dựa trên userId
+        const response = await axios.get(API_NOTIFICATION, {
+          params: { id: userData._id },
+          headers: {
+            Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
+          }
+        });
+        
+        console.log("Dữ liệu trả về từ API thông báo:", response.data); 
+        setNotificationData(response.data);
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ API thông báo:", error); 
+      }
+    };
+
+    fetchData();
+
+  }, [userData]); // Đảm bảo useEffect chạy lại khi userData thay đổi
+
+  const renderItem = ({ item }) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{item.status}</Text>
+      <Text style={styles.time}>{item.date}</Text>
+    </View>
   );
+  
+
+  console.log("User data:", userData); // Kiểm tra giá trị của userData
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={notificationArray}
+        data={notificationData}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()} // Ensure keyExtractor uses a unique value for each item
+        keyExtractor={(item, index) => {
+          if (item.id) {
+            return item.id.toString();
+          } else {
+            return index.toString();
+          }
+        }}
       />
     </SafeAreaView>
   );
