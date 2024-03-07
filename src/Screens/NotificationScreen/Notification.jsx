@@ -9,11 +9,32 @@ import { API_NOTIFICATION } from '../../config/api-consts';
 
 
 const Notification = () => {
+
   const [notificationData, setNotificationData] = useState([]);
   const { userData } = User();
 
 
+  const getData = async () =>{
+    const myHeaders = new Headers();
+    myHeaders.append("Cookie", "connect.sid=s%3A2ZxJ5qiC033izH_apThtJr0MlnV8Uz4z.N3Nf0xYBaBKssx0FkCehJrfHAfR3bNl85nnEvrjfLfA");
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow"
+    };
+
+
+    fetch(`http://192.168.1.9:3000/api-thongbao`, requestOptions)
+
+      .then((response) => response.json())
+      .then((result) => setData(result))
+      .catch((error) => console.error(error));
+  }
+
+
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         if (!userData) {
@@ -53,9 +74,11 @@ const Notification = () => {
   console.log("User data:", userData); // Kiểm tra giá trị của userData
 
 
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+
         data={notificationData}
         renderItem={renderItem}
         keyExtractor={(item, index) => {
@@ -65,6 +88,7 @@ const Notification = () => {
             return index.toString();
           }
         }}
+
       />
     </SafeAreaView>
   );

@@ -21,7 +21,10 @@ export const API_ADD_TO_LOVE = "http://192.168.1.8:3000/api-sanpham/SPL"
 
 export const API_COLOR_PRODUCT = "http://192.168.1.9:3000/api-mausanpham";
 
+
 export const API_NOTIFICATION = "http://192.168.1.8:3000/api-thongbao"
+
+export const API_CHAT = "http://192.168.1.5:3000/api-tinnhan";
 
 
 

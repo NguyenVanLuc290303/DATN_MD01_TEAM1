@@ -17,6 +17,8 @@ import HeaderTitle from '../../components/atoms/HeaderTitle/HeaderTitle';
 import {User} from '../../hooks/useContext';
 import {useCallback, useEffect, useState , useRef} from 'react';
 import {firebase} from '@react-native-firebase/database';
+import { API_CHAT } from '../../config/api-consts';
+import moment from 'moment';
 // import { Animated } from 'react-native-reanimated';
 const Chat = ({navigation}) => {
 
@@ -28,57 +30,96 @@ const Chat = ({navigation}) => {
 
   const [contentMessage, setContentMessage] = useState();
 
-  const [dataMessage, setDataMessage] = useState([]);
+  const [dataMessage, setDataMessage] = useState([ ]);
+  
 
   const conversation = userData._id;
 
   const idSend = userData._id;
 
-  const refConversation = firebase
-    .app()
-    .database(
-      'https://app-koru-default-rtdb.asia-southeast1.firebasedatabase.app/',
-    )
-    .ref('/conversation')
-    .child(conversation);
+  // const refConversation = firebase
+  //   .app()
+  //   .database(
+  //     'https://app-koru-default-rtdb.asia-southeast1.firebasedatabase.app/',
+  //   )
+  //   .ref('/conversation')
+  //   .child(conversation);
 
 
   useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append("Cookie", "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw");
 
-    const dataArray = [];
-    refConversation.once('value', snapshot => {
-      snapshot.forEach(childSnapshot => {
+    var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+    };
+    
+    fetch(`${API_CHAT}/${idSend}`, requestOptions)
+    .then(response => response.json())
+    .then(result => setDataMessage(result))
+    .catch(error => console.log('error', error));
 
-        const chilDataMessage = childSnapshot.val();
-        dataArray.push(chilDataMessage);
-        setDataMessage(dataArray);
-      });
-    });
   }, []);
 
   console.log(dataMessage);
 
-  // const idUserReciver = idUser;
 
   const handleOnclickSend = () => {
-    refConversation.push({
-      idUser: idSend,
-      content: contentMessage,
-    });
-    setContentMessage('');
+    const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    console.log(currentTime); // In ra ngày giờ hiện tại
+
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append(
+    'Cookie',
+    'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+    );
+
+   
+
+    const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: JSON.stringify({
+      content : contentMessage,
+      date : currentTime,
+      sender : "user",
+      UserId : userData._id,
+    }),
+    redirect: 'follow',
+    };
+
+    try {
+        
+    fetch(API_CHAT, requestOptions)
+    .then(response => response.json())
+    .then(result => console.log(result))
+    
+    } catch (error) {
+        console.log(error);
+    }
+
     reLoadChat();
   };
 
   const reLoadChat = useCallback (() =>{
-    const dataArray = [];
-    refConversation.once('value', snapshot => {
-      snapshot.forEach(childSnapshot => {
+    var myHeaders = new Headers();
+    myHeaders.append("Cookie", "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw");
 
-        const chilDataMessage = childSnapshot.val();
-        dataArray.push(chilDataMessage);
-        setDataMessage(dataArray);
-      });
-    });
+    var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+    };
+    
+    fetch(`${API_CHAT}/${idSend}`, requestOptions)
+    .then(response => response.json())
+    .then(result => setDataMessage(result))
+    .catch(error => console.log('error', error));
+
   },[])
 
   let scrollOffsetY = useRef(new Animated.Value(0)).current;  
@@ -126,12 +167,12 @@ const Chat = ({navigation}) => {
            scrollOffsetY.setValue(e.nativeEvent.contentOffset.y)
           }}
           renderItem={({item}) => {
-            const isYour = userData._id === item.idUser;
+            const isYour = userData._id === item.UserId && item.sender !=="admin";
             return (
               <View
                 style={{
                   alignItems:
-                    userData._id === item.idUser ? 'flex-end' : 'flex-start',
+                    userData._id === item.UserId && item.sender !=="admin" ? 'flex-end' : 'flex-start',
                   margin: 8,
                   justifyContent: 'center',
                 }}>
@@ -139,15 +180,15 @@ const Chat = ({navigation}) => {
                   <View
                     style={{
                       height: 45,
-                      borderWidth: userData._id === item.idUser ? 1 : 1,
-                      borderRadius: userData._id === item.idUser ? 20 : 20,
+                      borderWidth: userData._id === item.UserId && item.sender !=="admin" ? 1 : 1,
+                      borderRadius: userData._id === item.UserId && item.sender !=="admin" ? 20 : 20,
                       backgroundColor:
-                        userData._id === item.idUser ? '#212121' : '#FFFFFF',
+                      userData._id === item.UserId && item.sender !=="admin" ? '#212121' : '#FFFFFF',
                     }}>
                     <Text
                       style={{
                         color:
-                          userData._id === item.idUser
+                        userData._id === item.UserId && item.sender !=="admin"
                             ? '#FFFFFF'
                             : '#000000',
                         fontSize: 20,
@@ -165,17 +206,18 @@ const Chat = ({navigation}) => {
                     <View
                       style={{
                         height: 45,
-                        borderWidth: userData._id === item.idUser ? 1 : 1,
-                        borderRadius: userData._id === item.idUser ? 20 : 20,
+                        borderWidth: userData._id === item.UserId && item.sender !=="admin" ? 1 : 1,
+                        borderRadius: userData._id === item.UserId && item.sender !=="admin" ? 20 : 20,
                         backgroundColor:
-                          userData._id === item.idUser
+                        userData._id === item.UserId && item.sender !=="admin"
                             ? '#212121'
                             : '#FFFFFF',
                       }}>
                       <Text
                         style={{
                           color:
-                            userData._id === item.idUser
+                          userData._id === item.UserId && item.sender !=="admin"
+
                               ? '#FFFFFF'
                               : '#000000',
                           fontSize: 20,
