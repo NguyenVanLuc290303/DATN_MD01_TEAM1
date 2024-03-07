@@ -19,6 +19,7 @@ import ProductCategory from './ProductCategory/ProductCategory';
 import SendOTPRegisterScreen from './SendOTPRegisterScreen/SendOTPRegisterScreen';
 import DeliveryScreen from './DeliveryScreen/DeliveryScreen';
 import AddDeliveryScreen from './AddDeliveryScreen/AddDeliveryScreen';
+import VoucherScreen from './VoucherScreen/VoucherScreen';
 
 export {
   OnboardingScreen,

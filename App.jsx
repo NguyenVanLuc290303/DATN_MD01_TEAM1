@@ -56,6 +56,7 @@ import AddDeliveryScreen from './src/Screens/AddDeliveryScreen/AddDeliveryScreen
 import ResetForgotPasswordScreen from './src/Screens/ResetForgotPasswordScreen/ResetForgotPasswordScreen';
 import Home from './src/Screens/HomeScreen/Home';
 import YourOrderScreen from './src/Screens/YourOrderScreen/YourOrderScreen';
+import VoucherScreen from './src/Screens/VoucherScreen/VoucherScreen'
 
 // import {CartScreen} from './src/Screens';
 
@@ -83,7 +84,7 @@ function App() {
     <UserProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'LoginScreen'}
+        initialRouteName={'VoucherScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -219,6 +220,11 @@ function App() {
         <Stack.Screen
           name="AddDeliveryScreen"
           component={AddDeliveryScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="VoucherScreen"
+          component={VoucherScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
