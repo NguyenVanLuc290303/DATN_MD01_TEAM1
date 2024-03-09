@@ -208,8 +208,8 @@ const DetailProductScreen = ({navigation, route}) => {
             <TextInput placeholder="Tìm kiếm" />
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
-            <IconF name="shopping-cart" size={28} color={COLORS.black} />
-          </TouchableOpacity>
+          <Image source={require('@/icons/png/local_mall.png')} />
+        </TouchableOpacity>
         </View>
         <View style={styles.ViewImageProduct}>
           <Image
@@ -266,7 +266,7 @@ const DetailProductScreen = ({navigation, route}) => {
                 fontSize: 18,
                 fontFamily: 'Inter-Bold',
               }}>
-              Thêm vào giỏ hàng
+              Thêm vào giỏ
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -727,6 +727,7 @@ const styles = StyleSheet.create({
     height: '6%',
     flexDirection: 'row',
     paddingLeft: '5%',
+    paddingRight : '5%',
     justifyContent: 'space-between',
     alignItems: 'center',
   },

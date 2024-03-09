@@ -32,7 +32,11 @@ const DeliveryScreen = ({navigation}) => {
       });
   }, []);
 
-  console.log(dataDelivery)
+  console.log(dataDelivery);
+
+  const handleAddAddressToOrder = ( item , index) =>{
+    
+  }
 
   return (
     <View style={styles.container}>
@@ -111,6 +115,7 @@ const DeliveryScreen = ({navigation}) => {
                       marginTop: 10,
                     }}>
                     <TouchableOpacity
+                        onPress={() => handleAddAddressToOrder(item , index)}
                       style={{flexDirection: 'column', flex: 1}}>
                       <Text style={{fontSize: 15, color: 'black'}}>
                         {item.name}

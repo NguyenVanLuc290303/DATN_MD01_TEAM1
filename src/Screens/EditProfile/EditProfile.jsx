@@ -11,16 +11,18 @@ import {
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {useState} from 'react';
-import { User } from '../../hooks/useContext';
-import ImagePicker, {launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {User} from '../../hooks/useContext';
+import ImagePicker, {
+  launchCamera,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+import LinearGradient from 'react-native-linear-gradient';
+import IconI from 'react-native-vector-icons/Ionicons';
 
 const EditProfile = ({navigation}) => {
-
   const {userData} = User();
 
   // console.log(userData);
-
-  
 
   const [email, setEmail] = useState();
   const [name, setName] = useState();
@@ -28,16 +30,15 @@ const EditProfile = ({navigation}) => {
   const [address, setAddress] = useState();
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
-  const handleOnpressImagePicker = async () =>{
-
+  const handleOnpressImagePicker = async () => {
     const result = await launchImageLibrary({
-      mediaType : 'photo',
-      quality : 1,
+      mediaType: 'photo',
+      quality: 1,
       
     });
 
-    console.log(result.assets[0].uri);
-  }
+    console.log(result.assets[0].originalPath);
+  };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView style={{flex: 1, marginHorizontal: 22}}>
@@ -58,11 +59,22 @@ const EditProfile = ({navigation}) => {
               borderColor: COLORS.gray,
             }}
           />
-          <TouchableOpacity onPress={handleOnpressImagePicker}>
-          <Image
-            source={Icons.IconPlus}
-            style={{width: 35, height: 30, marginTop: -30, marginLeft: 120}}
-          />
+
+          <TouchableOpacity
+            onPress={handleOnpressImagePicker}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              marginTop: -30,
+              marginLeft: 120,
+              backgroundColor: '#42A5F5',
+            }}>
+              {/* <Image
+                source={Icons.IconPlus}
+                style={{width: 30, height: 30 }}
+              /> */}
+              <IconI name="add" size={30} color={COLORS.white} />
           </TouchableOpacity>
         </View>
 

@@ -210,7 +210,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
     try {
       fetch(API_PRODUCT_ORDER, requestOptions)
         .then(response => response.json())
-        .then(result => console.log(result)).then(() => setVisible(true));
+        .then(result => console.log(result));
     } catch (error) {
       console.log(error);
     }
@@ -530,13 +530,13 @@ const OrderDetailsScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <SuccessNotificationModal
+      {/* <SuccessNotificationModal
         visible={visible}
         textContent={"Đặt đơn thành công"}
         
       >
 
-      </SuccessNotificationModal>
+      </SuccessNotificationModal> */}
     </View>
   );
 };

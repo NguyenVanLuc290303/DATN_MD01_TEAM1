@@ -23,7 +23,8 @@ const ProductCategory =  ({navigation, route}) => {
   
   const [dataPr,setDataPr] = React.useState([]);
   const {name} = route.params;
-  // console.log(name);
+
+
 
     React.useEffect(() =>{
 
@@ -44,7 +45,8 @@ const ProductCategory =  ({navigation, route}) => {
   },[]);
 
   const filterDataByName = (data) => {
-    const filtered = data.filter(item => item.loai === name);
+
+    const filtered = data.filter(item => item.category === name);
     setDataPr(filtered);
     // console.log(filtered);
   };
@@ -89,7 +91,7 @@ const ProductCategory =  ({navigation, route}) => {
 
 const styles = StyleSheet.create({
     container :{
-        // flex : 1, 
+        flex : 1, 
         backgroundColor : '#FFFFFF'
     },
     itemProduct:{

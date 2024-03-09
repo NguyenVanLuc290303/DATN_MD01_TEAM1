@@ -6,7 +6,7 @@ const VoucherScreen = () => {
         {
             name: 'Giảm giá 10K',
             content: 'Shop tặng voucher giảm 10K cho tất cả các đơn hàng',
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQPipz0L1bCcHv8fIR-q1t0LwjAnILnMwxqg&usqp=CAU',
+            image: '@/images/logoAPP_MD01_png.png',
             price: 10000,
             fromDate: '01/03/2024',
             toDate: '08/03/2024'
@@ -14,7 +14,7 @@ const VoucherScreen = () => {
         {
             name: 'Giảm giá 10K',
             content: 'Shop tặng voucher giảm 10K cho tất cả các đơn hàng',
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQPipz0L1bCcHv8fIR-q1t0LwjAnILnMwxqg&usqp=CAU',
+            image: '@/images/logoAPP_MD01_png.png',
             price: 10000,
             fromDate: '01/03/2024',
             toDate: '08/03/2024'
@@ -22,7 +22,7 @@ const VoucherScreen = () => {
         {
             name: 'Giảm giá 10K',
             content: 'Shop tặng voucher giảm 10K cho tất cả các đơn hàng',
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQPipz0L1bCcHv8fIR-q1t0LwjAnILnMwxqg&usqp=CAU',
+            image: '@/images/logoAPP_MD01_png.png',
             price: 10000,
             fromDate: '01/03/2024',
             toDate: '08/03/2024'
@@ -63,7 +63,7 @@ const VoucherScreen = () => {
                                 padding: 10
                             }}>
                                 <View style={{ borderBlockColor: 'black' }}>
-                                    <Image style={{ width: 100, height: 100, borderRadius: 10 }} source={{ uri: item.image }} />
+                                    <Image style={{ width: 100, height: 100, borderRadius: 10 }} source={require('@/images/logoAPP_MD01_png.png')} />
                                 </View>
 
 

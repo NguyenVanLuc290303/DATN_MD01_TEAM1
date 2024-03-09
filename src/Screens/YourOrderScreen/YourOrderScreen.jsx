@@ -11,26 +11,37 @@ function YourOrderScreen({navigation}) {
   const [oderArray, setOderArray] = useState([]);
 
 
-  useEffect(()=>{
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_ORDER}/${userData._id}`);
+        const data = Array.isArray(response.data) ? response.data : [response.data];
+        setOderArray(data);
+        
+        // Gọi lại API hoặc thực hiện bất kỳ hành động nào khác ở đây sau khi response được trả về
+        // Ví dụ: Gọi API khác  
 
-    axios
-    .get(`${API_ORDER}/${userData._id}`)
-    .then(function (response) {
 
-      const data = Array.isArray(response.data) ? response.data : [response.data];
-      setOderArray(data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  },[]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchData();
+  }, []); 
 
   console.log(oderArray);
+
+  const handleNavigationDetails = (OrderId ,status) =>{
+    console.log(OrderId , "---------")
+      navigation.navigate('YourOrderDetailScreen' ,{ OrderId : OrderId , status : status});
+  }
 
 
 
   const renderItem = ({item, index}) => (
-    <View style={styles.item}>
+  
+    <TouchableOpacity style={styles.item} onPress={() => handleNavigationDetails(item._id , item.status)}>
       <View style={styles.ViewImg}>
         <View style={styles.ImgItem}></View>
 
@@ -53,7 +64,7 @@ function YourOrderScreen({navigation}) {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (

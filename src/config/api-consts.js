@@ -1,6 +1,6 @@
 // write api use to app
 
-export const IP_ADDRESS = '192.168.0.104';
+export const IP_ADDRESS = '192.168.1.210';
 
 // api users
 
@@ -11,7 +11,7 @@ export const API_LOGIN = `http://${IP_ADDRESS}:3000/api-taikhoan`;
 export const API_RESSET_PASSWORD =`http://${IP_ADDRESS}:3000/api-taikhoan/mk`;
 
 
-// api categorys
+// api categorysr
 
 export const API_CATEGORY_PRODUCT = `http://${IP_ADDRESS}:3000/api-theloai`;
 
@@ -23,10 +23,20 @@ export const API_PRODUCT_TOP8 = `http://${IP_ADDRESS}:3000/api-sanpham/top8`;
 
 export const API_COLOR_PRODUCT = `http://${IP_ADDRESS}:3000/api-mausanpham`;
 
+// api product love
+
+
+export const API_GET_TO_LOVE = `http://${IP_ADDRESS}:3000/api-sanpham/SPL`;
+
+export const API_ADD_TO_LOVE = `http://${IP_ADDRESS}:3000/api-sanpham/SPL`;
+
 // api order
 export const API_ORDER = `http://${IP_ADDRESS}:3000/api-donhang`;
 
 export const API_PRODUCT_ORDER = `http://${IP_ADDRESS}:3000/api-sanpham/SPD`;
+
+export const API_PRODUCT_ORDER_ID = `http://${IP_ADDRESS}:3000/api-sanpham/getOD`;
+
 
 // api cart
 
