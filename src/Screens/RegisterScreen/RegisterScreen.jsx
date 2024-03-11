@@ -1,4 +1,4 @@
-import {useState , useEffect , useContext} from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   Button,
   Image,
@@ -9,23 +9,32 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Icons} from '../../constants/images';
-import {ToggleButton} from 'react-native-paper';
+import { Icons } from '../../constants/images';
+import { ToggleButton } from 'react-native-paper';
 import axios, { Axios } from 'axios';
 import auth from '@react-native-firebase/auth';
 
 
 
 
-const RegisterScreen = ({navigation}) => {
-  const [email, setEmail] = useState();
-  const [name, setName] = useState();
-  const [password, setPassword] = useState();
-  const [address, setAddress] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
+const RegisterScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const [errorMessages, setErrorMessages] = useState({
+    phoneNumber: '',
+    email: '',
+    name: '',
+    password: '',
+    address: '',
+  });
 
 
   // const [verification,setVerification] = useState(null);
@@ -48,32 +57,75 @@ const RegisterScreen = ({navigation}) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const handerOnlickCreateAccount = async  ()  => {
+  const validateEmail = (email) => {
+    // Kiểm tra định dạng email
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
-    try {
-      const confirmationResult = await auth().signInWithPhoneNumber(phoneNumber);
-      navigation.navigate('SendOTPRegisterScreen' , data = {
-                                                    verification : confirmationResult.verificationId,
-                                                    email : email,
-                                                    name : name,
-                                                    password : password,
-                                                    address : address,
-                                                    numberPhone : phoneNumber,
-                                                  });
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Error', 'Failed to send OTP');
+  const handerOnlickCreateAccount = async () => {
+
+    const errors = {};
+
+    // Kiểm tra trống và định dạng email
+    if (phoneNumber === '') {
+      errors.phoneNumber = 'Vui lòng nhập số điện thoại';
     }
-   };
+    if (email === '') {
+      errors.email = 'Vui lòng nhập email';
+    }
+    if (!validateEmail(email)) {
+      errors.email = 'Vui lòng nhập đúng định dạng email';
+    }
+    if (name === '') {
+      errors.name = 'Vui lòng nhập tên';
+    }
+    if (password === '') {
+      errors.password = 'Vui lòng nhập password';
+    }
+    if (address === '') {
+      errors.address = 'Vui lòng nhập địa chỉ';
+    }
 
-   
+    setErrorMessages(errors);
+
+    if (Object.keys(errors).length === 0) {
+      // Nếu không có lỗi, bạn có thể tiến hành đăng ký tài khoản ở đây
+
+      // chuyển số điện thoại 0 -> +84
+      let formattedPhoneNumber = phoneNumber.trim();
+      if (formattedPhoneNumber.startsWith('0')) {
+        formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
+        
+        // chuyển đổi xong thì bắt đầu thực hiện đăng ký
+        try {
+          console.log(formattedPhoneNumber);
+          const confirmationResult = await auth().signInWithPhoneNumber(formattedPhoneNumber);
+          navigation.navigate('SendOTPRegisterScreen', data = {
+            verification: confirmationResult.verificationId,
+            email: email,
+            name: name,
+            password: password,
+            address: address,
+            numberPhone: phoneNumber,
+          });
+        } catch (error) {
+          console.log(error);
+          Alert.alert('Error', 'Failed to send OTP');
+        }
+      }
+
+    }
+  };
+
+
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <ScrollView style={{flex: 1, marginHorizontal: 22}}>
-        <View style={{marginBottom: 80, marginTop: 20, alignItems: 'center'}}>
-          <Image source={Icons.IconApp} style={{width: 100, height: 100}} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <ScrollView style={{ flex: 1, marginHorizontal: 22 }}>
+        <View style={{ marginBottom: 80, marginTop: 20, alignItems: 'center' }}>
+          <Image source={Icons.IconApp} style={{ width: 100, height: 100 }} />
         </View>
-        <View style={{marginVertical: 22}}>
+        <View style={{ marginVertical: 22 }}>
           <Text
             style={{
               fontSize: 22,
@@ -85,8 +137,8 @@ const RegisterScreen = ({navigation}) => {
           </Text>
         </View>
 
-        <View style={{paddingTop: 10, justifyContent: 'center'}}>
-        <View style={{marginBottom: 22}}>
+        <View style={{ paddingTop: 10, justifyContent: 'center' }}>
+          <View style={{ marginBottom: 22 }}>
             <View
               style={{
                 width: '100%',
@@ -108,8 +160,11 @@ const RegisterScreen = ({navigation}) => {
                 onChangeText={(Text) => setPhoneNumber(Text)}
               />
             </View>
+            {errorMessages.phoneNumber ? (
+              <Text style={{ color: 'red' }}>{errorMessages.phoneNumber}</Text>
+            ) : null}
           </View>
-          <View style={{marginBottom: 22}}>
+          <View style={{ marginBottom: 22 }}>
             <View
               style={{
                 width: '100%',
@@ -131,9 +186,12 @@ const RegisterScreen = ({navigation}) => {
                 onChangeText={(Text) => setEmail(Text)}
               />
             </View>
+            {errorMessages.email ? (
+              <Text style={{ color: 'red' }}>{errorMessages.email}</Text>
+            ) : null}
           </View>
 
-          <View style={{marginBottom: 22}}>
+          <View style={{ marginBottom: 22 }}>
             <View
               style={{
                 width: '100%',
@@ -155,9 +213,12 @@ const RegisterScreen = ({navigation}) => {
 
               />
             </View>
+            {errorMessages.name ? (
+              <Text style={{ color: 'red' }}>{errorMessages.name}</Text>
+            ) : null}
           </View>
 
-          <View style={{marginBottom: 22}}>
+          <View style={{ marginBottom: 22 }}>
             <View
               style={{
                 width: '100%',
@@ -188,9 +249,12 @@ const RegisterScreen = ({navigation}) => {
                 <Image source={Icons.IconEye} />
               </TouchableOpacity>
             </View>
+            {errorMessages.password ? (
+              <Text style={{ color: 'red' }}>{errorMessages.password}</Text>
+            ) : null}
           </View>
 
-          <View style={{marginBottom: 22}}>
+          <View style={{ marginBottom: 22 }}>
             <View
               style={{
                 width: '100%',
@@ -225,8 +289,11 @@ const RegisterScreen = ({navigation}) => {
                 )}
               </TouchableOpacity>
             </View>
+            {errorMessages.address ? (
+              <Text style={{ color: 'red' }}>{errorMessages.address}</Text>
+            ) : null}
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
               onPress={handerOnlickCreateAccount}
               style={{
