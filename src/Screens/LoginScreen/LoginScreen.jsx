@@ -46,7 +46,7 @@
 //       .then((response) => response.json())
 //       .then((result) => loginUser(result))
 //       .catch((error) => console.error(error));
-  
+
 //   };
 
 //   const loginUser = (dataUser) =>{
@@ -65,10 +65,10 @@
 //     } catch (error) {
 //       console.log(error);
 //     }
- 
+
 //   }
 //   // const hanlderOnlickSignup = () => {
-   
+
 //   // };
 
 //   return (
@@ -234,7 +234,7 @@
 
 
 
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   Image,
@@ -247,38 +247,38 @@ import {
   View,
 } from 'react-native';
 import COLORS from '../../constants/colors';
-import {Icons} from '../../constants/images';
+import { Icons } from '../../constants/images';
 import { User } from '../../hooks/useContext';
 import { API_ADD_USERS } from '../../config/api-consts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [phone, setPhoneNumber] = useState();
 
   const [password, setPassWord] = useState();
 
-  const [dataUser,setDataUser] = useState({});
+  const [dataUser, setDataUser] = useState({});
 
-  const [luu,setluu]=useState("0");
+  const [luu, setluu] = useState("0");
 
   const [imageUri, setImageUri] = useState('https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180')
 
   const changeImage = () => {
-    if(imageUri ==='https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180'){
-    setImageUri('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU');
-  
+    if (imageUri === 'https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180') {
+      setImageUri('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU');
 
-  }else{
-    setImageUri('https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180');
-  }
+
+    } else {
+      setImageUri('https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180');
+    }
   };
 
 
 
 
 
-  const {setUserData} = User();
+  const { setUserData } = User();
   // const [form, setForm] = useState({
   //   email: '',
   //   password: '',
@@ -302,90 +302,90 @@ const LoginScreen = ({navigation}) => {
       .then((response) => response.json())
       .then((result) => loginUser(result))
       .catch((error) => console.error(error));
-  
+
   };
 
-  const loginUser = (dataUser) =>{
+  const loginUser = (dataUser) => {
 
     // setdata(dataUser);
 
     try {
-      if(dataUser === null){
+      if (dataUser === null) {
         Alert.alert('thông tin null');
       }
-      if(phone === dataUser.numberPhone && password === dataUser.passwd){
+      if (phone === dataUser.numberPhone && password === dataUser.passwd) {
         // console.log(dataUser)
-          setUserData(dataUser);
-          navigation.navigate('BottomNavigation');
-      }else{
+        setUserData(dataUser);
+        navigation.navigate('BottomNavigation');
+      } else {
         Alert.alert('thông tin sai');
       }
     } catch (error) {
       console.log(error);
     }
- 
+
   }
 
-  
+
 
   async function getData() {
     const luu = await AsyncStorage.getItem('luu');
     console.log('luu:', luu);
-  if(luu==="1"){
-    try {
-      const username = await AsyncStorage.getItem('username');
-      const account = await AsyncStorage.getItem('pass');
-      const img = await AsyncStorage.getItem('img');
-      
-      setPhoneNumber(username);
-      setPassWord(account);
-      setImageUri(img);
-console.log('Username:', username);
-      console.log('pass:', account);
-    } catch (error) {
-      console.log(error);
+    if (luu === "1") {
+      try {
+        const username = await AsyncStorage.getItem('username');
+        const account = await AsyncStorage.getItem('pass');
+        const img = await AsyncStorage.getItem('img');
+
+        setPhoneNumber(username);
+        setPassWord(account);
+        setImageUri(img);
+        console.log('Username:', username);
+        console.log('pass:', account);
+      } catch (error) {
+        console.log(error);
+      }
+
+    } else {
+
     }
-   
-  }else{
-  
-  }
   }
 
   async function saveData(user1, pass1) {
 
-    if(user1 == null || pass1 == null){
+    if (user1 == null || pass1 == null) {
       Alert.alert('Chưa Nhập Thông Tin');
-      return ;
+      return;
     }
 
-    if(imageUri !=='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU'){
-    try {
-      await AsyncStorage.setItem('username', user1);
-      await AsyncStorage.setItem('pass', pass1);
-      await AsyncStorage.setItem('img', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU');
-      await AsyncStorage.setItem('luu', "1");
-    
-      console.log("Lưu Thành Công");
-    } catch (error) {
-      console.log(error);
-    }
-  }else{
-    console.log("Không Lưu ");
-    await AsyncStorage.setItem('luu', "0");
-    
-    await AsyncStorage.setItem('img', 'https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180');
+    if (imageUri !== 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU') {
+      try {
+        await AsyncStorage.setItem('username', user1);
+        await AsyncStorage.setItem('pass', pass1);
+        await AsyncStorage.setItem('img', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkDBlwOArs4utZVc2M4SJmhWeMbhlyKu9zhg&usqp=CAU');
+        await AsyncStorage.setItem('luu', "1");
 
+        console.log("Lưu Thành Công");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("Không Lưu ");
+      await AsyncStorage.setItem('luu', "0");
+
+      await AsyncStorage.setItem('img', 'https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180');
+
+    }
   }
-}
 
-  useEffect(() =>{
-    
+  useEffect(() => {
+
     getData();
   }, [])
 
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#e8ecf4' }}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image source={Icons.IconApp} style={styles.iconShop} alt="Logo" />
@@ -397,7 +397,7 @@ console.log('Username:', username);
         <View style={styles.form}>
           <View style={styles.input}>
             <TextInput
-            defaultValue={phone}
+              defaultValue={phone}
               autoCapitalize="none"
               autoCorrect={false}
               // keyboardType="phone-pad"
@@ -405,13 +405,19 @@ console.log('Username:', username);
               // value={form.email}
               placeholder="Enter your phone"
               placeholderTextColor="#6b7280"
-              onChangeText={(Text) => setPhoneNumber(Text)}
+              onChangeText={(text) => {
+                let formattedText = text.trim();
+                if (formattedText.startsWith('0')) {
+                  formattedText = '+84' + formattedText.slice(1);
+                }
+                setPhoneNumber(formattedText);
+              }}
             />
           </View>
 
           <View style={styles.input}>
             <TextInput
-            defaultValue={password}
+              defaultValue={password}
               secureTextEntry
               style={styles.inputControl}
               // value={form.password}
@@ -433,20 +439,20 @@ console.log('Username:', username);
                 <Text style={styles.btnText}>Login</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{saveData(phone,password);changeImage()}}  style = {{marginTop:20,marginLeft:160}}><Image 
-                
-                source={{ uri: imageUri }}
-style={{ width: 20, height: 20 ,borderRadius:10,marginLeft:170}}
-              /></TouchableOpacity>
-              <Text  style = {{color:'blue',marginTop:0,marginLeft:220}}>Remember Me ?</Text>
+            <TouchableOpacity onPress={() => { saveData(phone, password); changeImage() }} style={{ marginTop: 20, marginLeft: 160 }}><Image
+
+              source={{ uri: imageUri }}
+              style={{ width: 20, height: 20, borderRadius: 10, marginLeft: 170 }}
+            /></TouchableOpacity>
+            <Text style={{ color: 'blue', marginTop: 0, marginLeft: 220 }}>Remember Me ?</Text>
           </View>
 
           <TouchableOpacity
-            style={{marginTop: 'auto'}}
+            style={{ marginTop: 'auto' }}
             onPress={() => navigation.navigate('RegisterScreen')}>
             <Text style={styles.formFooter}>
               Don't have an account?{''}
-              <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>
+              <Text style={{ textDecorationLine: 'underline' }}>Sign up</Text>
             </Text>
           </TouchableOpacity>
         </View>
