@@ -69,6 +69,10 @@ const Home = ({navigation}) => {
       .catch(error => console.log('error', error));
   }, []);
 
+  React.useEffect(() =>{
+    
+  },[])
+
   React.useEffect(() => {
     var myHeaders = new Headers();
     myHeaders.append(

@@ -1,6 +1,6 @@
 // write api use to app
 
-export const IP_ADDRESS = '192.168.1.210';
+export const IP_ADDRESS = '192.168.1.169';
 
 // api users
 
@@ -9,6 +9,8 @@ export const API_ADD_USERS = `http://${IP_ADDRESS}:3000/api-taikhoan`;
 export const API_LOGIN = `http://${IP_ADDRESS}:3000/api-taikhoan`;
 
 export const API_RESSET_PASSWORD =`http://${IP_ADDRESS}:3000/api-taikhoan/mk`;
+
+export const API_UPDATE_USER = `http://${IP_ADDRESS}:3000/api-taikhoan`;
 
 
 // api categorysr

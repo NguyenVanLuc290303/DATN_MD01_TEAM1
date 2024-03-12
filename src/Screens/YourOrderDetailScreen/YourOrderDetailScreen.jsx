@@ -14,11 +14,11 @@ import COLORS from '../../constants/colors';
 import {User} from '../../hooks/useContext';
 
 const YourOrderDetailScreen = ({navigation, route}) => {
-  const {OrderId , status} = route.params;
+  const {OrderId, status} = route.params;
 
   console.log(OrderId, 'OrderId 000000');
 
-  console.log(status);
+  console.log(status, 'status : --------');
 
   const {userData} = User();
 
@@ -49,8 +49,10 @@ const YourOrderDetailScreen = ({navigation, route}) => {
             source={require('@/images/back.png')}
           />
         </TouchableOpacity>
-        <View style={{ marginLeft : '5%'}}>
-          <Text style={{ fontSize : 24 , fontFamily : 'Inter-SemiBold'}}>{status}</Text>
+        <View style={{marginLeft: '5%'}}>
+          <Text style={{fontSize: 24, fontFamily: 'Inter-SemiBold'}}>
+            {status}
+          </Text>
           <Text>Ngày giao dự kiến : Jan 21 - Jan 23</Text>
         </View>
         <View></View>
@@ -62,9 +64,7 @@ const YourOrderDetailScreen = ({navigation, route}) => {
           <Text style={styles.textInfo}>{userData.numberPhone}</Text>
           <Text style={styles.textInfo2}>{userData.address}</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('DeliveryScreen')}>
-          <Image source={Icons.IconNext} style={styles.iconNext} />
-        </TouchableOpacity>
+
       </View>
 
       <View>
@@ -114,27 +114,51 @@ const YourOrderDetailScreen = ({navigation, route}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <TouchableOpacity
-          style={{
-            width: 350,
-            height: 55,
-            borderRadius: 56,
-            borderWidth: 1,
-            borderColor: COLORS.black,
-            backgroundColor: COLORS.white,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 20,
-          }}>
-          <Text
+        {status === 'Đã giao' ? (
+          <TouchableOpacity
             style={{
-              fontFamily: 'Lato-Black',
-              fontSize: 20,
-              color: COLORS.black,
+              width: 350,
+              height: 55,
+              borderRadius: 56,
+              borderWidth: 1,
+              borderColor: COLORS.black,
+              backgroundColor: COLORS.white,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 20,
             }}>
-            Hủy đơn hàng
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                fontFamily: 'Lato-Black',
+                fontSize: 20,
+                color: COLORS.black,
+              }}>
+              Mua lại
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={{
+              width: 350,
+              height: 55,
+              borderRadius: 56,
+              borderWidth: 1,
+              borderColor: COLORS.black,
+              backgroundColor: COLORS.white,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 20,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Lato-Black',
+                fontSize: 20,
+                color: COLORS.black,
+              }}>
+              Hủy đơn hàng
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -146,11 +170,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   header: {
-    flexDirection : 'row',
+    flexDirection: 'row',
     width: '100%',
     height: 80,
     backgroundColor: COLORS.white,
-    alignItems :'center'
+    alignItems: 'center',
+    paddingLeft: '2%',
+    paddingRight: '2%',
   },
   textTransport: {
     flexDirection: 'row',
@@ -162,6 +188,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     backgroundColor: COLORS.white,
+    paddingLeft: '2%',
+    paddingRight: '2%',
   },
   textAddress: {
     marginLeft: 30,
@@ -201,7 +229,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
 
     elevation: 3,
-    borderRadius : 5
+    borderRadius: 5,
   },
   imgStyle: {
     width: 80,

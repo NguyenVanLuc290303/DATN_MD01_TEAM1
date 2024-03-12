@@ -13,8 +13,9 @@ import {API_ADDRESS} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import axios, { Axios } from 'axios';
 
-const DeliveryScreen = ({navigation}) => {
+const DeliveryScreen = ({navigation , route}) => {
 
+  const {dataProductOrder} = route?.params;
   const {userData} =  User();
   console.log(userData._id);
   const [dataDelivery, setdataDelivery] = useState([]);
@@ -35,7 +36,7 @@ const DeliveryScreen = ({navigation}) => {
   console.log(dataDelivery);
 
   const handleAddAddressToOrder = ( item , index) =>{
-    
+    navigation.navigate('OrderDetailsScreen' , {dataAddress : item , dataProductOrder : dataProductOrder});
   }
 
   return (

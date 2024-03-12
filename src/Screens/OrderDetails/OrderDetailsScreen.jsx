@@ -12,7 +12,7 @@ import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {User} from '../../hooks/useContext';
 
-import {useState, useCallback} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
 import {API_ORDER} from '../../config/api-consts';
 import {API_PRODUCT_ORDER} from '../../config/api-consts';
@@ -21,9 +21,9 @@ import SuccessNotificationModal from '../../components/organisms/SuccessNotifica
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
 
-  const {dataProductOrder} = route.params;
+  const {dataProductOrder , dataAddress} = route.params;
 
-  // console.log(dataProductOrder , "PPPPPPPP");
+  console.log(dataAddress , "PPPPPPPP");
 
 
 
@@ -71,6 +71,10 @@ const OrderDetailsScreen = ({navigation, route}) => {
   // );
 
   // const [quantityFinish, setQuantityFinish] = useState(dataProductOrder.Quantity); // Số lượng mặc định là 1
+
+  useEffect(() => {
+
+  },[]);
 
   // Hàm xử lý cộng số lượng
   const incrementQuantity = useCallback(() => {
@@ -223,11 +227,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
           <View style={styles.address}>
             <Image source={Icons.IconAddress} style={styles.iconAddress} />
             <View style={styles.textAddress}>
-              <Text style={styles.textInfo}>{userName}</Text>
-              <Text style={styles.textInfo}>{numberPhone}</Text>
-              <Text style={styles.textInfo2}>{address}</Text>
+              <Text style={styles.textInfo}>{dataAddress === undefined ? userName : dataAddress.name}</Text>
+              <Text style={styles.textInfo}>{dataAddress === undefined ? numberPhone : dataAddress.phone}</Text>
+              <Text style={styles.textInfo2}>{dataAddress === undefined ?  address : `${dataAddress.street}-${dataAddress.city}`}</Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('DeliveryScreen')}>
+            <TouchableOpacity onPress={() => navigation.navigate('DeliveryScreen' , {dataProductOrder : dataProductOrder})}>
               <Image source={Icons.IconNext} style={styles.iconNext} />
             </TouchableOpacity>
           </View>
