@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   Image,
@@ -10,44 +10,44 @@ import {
 } from 'react-native';
 import IconI from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import axios, {isCancel, AxiosError} from 'axios';
-import {API_CATEGORY_PRODUCT} from '../../config/api-consts';
-import {API_PRODUCT} from '../../config/api-consts';
-import {API_PRODUCT_TOP8} from '../../config/api-consts';
-import {User} from '../../hooks/useContext';
+import axios, { isCancel, AxiosError } from 'axios';
+import { API_CATEGORY_PRODUCT } from '../../config/api-consts';
+import { API_PRODUCT } from '../../config/api-consts';
+import { API_PRODUCT_TOP8 } from '../../config/api-consts';
+import { User } from '../../hooks/useContext';
 import { API_ADD_TO_LOVE } from "../../config/api-consts";
 
 import COLORS from '../../constants/colors';
 
-const Home = ({navigation}) => {
-  const {userData} = User();
+const Home = ({ navigation }) => {
+  const { userData } = User();
   // const userName = dataUser.username;
   const [dataCategory, setDataCategory] = React.useState([]);
   const [dataProduct, setDataProduct] = React.useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
-    
+
   const addToLove = async (productId) => {
-      try {
-          // console.log("userData:", userData);
-          // console.log("ID của sản phẩm:", productId); 
-          if (!productId) {
-              console.error('ID của sản phẩm không hợp lệ');
-              return;
-          }
-          
-          const response = await axios.post(`${API_ADD_TO_LOVE}/${userData._id}/${productId}`, null, {
-              headers: {
-                  Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
-              }
-          });
-          console.log("Response từ server:", response.data);
-          setFavoriteProducts([...favoriteProducts, productId]);
-  
-      } catch (error) {
-          console.error("Lỗi khi thêm sản phẩm vào trang Love:", error);
+    try {
+      // console.log("userData:", userData);
+      // console.log("ID của sản phẩm:", productId); 
+      if (!productId) {
+        console.error('ID của sản phẩm không hợp lệ');
+        return;
       }
+
+      const response = await axios.post(`${API_ADD_TO_LOVE}/${userData._id}/${productId}`, null, {
+        headers: {
+          Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
+        }
+      });
+      console.log("Response từ server:", response.data);
+      setFavoriteProducts([...favoriteProducts, productId]);
+
+    } catch (error) {
+      console.error("Lỗi khi thêm sản phẩm vào trang Love:", error);
+    }
   };
-  
+
 
 
   React.useEffect(() => {
@@ -69,9 +69,9 @@ const Home = ({navigation}) => {
       .catch(error => console.log('error', error));
   }, []);
 
-  React.useEffect(() =>{
-    
-  },[])
+  React.useEffect(() => {
+
+  }, [])
 
   React.useEffect(() => {
     var myHeaders = new Headers();
@@ -113,40 +113,44 @@ const Home = ({navigation}) => {
           <Image source={require('@/icons/png/local_mall.png')} />
         </TouchableOpacity>
       </View>
-      <View style={{paddingLeft: 10}}>
+      <View style={{ paddingLeft: 10 }}>
         <Text style={styles.textTitle}>Men Clothes Store</Text>
       </View>
       <View style={styles.viewSearch}>
         <View style={styles.search}>
           <View>
-            <TextInput style={styles.textInputSearch} placeholder="Search" />
+            <TouchableOpacity onPress={() => navigation.navigate('SearchProductScreen')} >
+              <TextInput style={styles.textInputSearch} placeholder="Tìm kiếm sản phẩm ở đây" editable={false}/>
+            </TouchableOpacity>
           </View>
           <View>
-            <IconI name="search-outline" size={30} color={'gray'} />
+            <TouchableOpacity onPress={() => navigation.navigate('SearchProductScreen')}>
+              <IconI name="search-outline" size={30} color={'gray'} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
-      <View style={{paddingLeft: 10, marginTop: 10}}>
+      <View style={{ paddingLeft: 10, marginTop: 10 }}>
         <Text style={styles.textHead}>Category</Text>
       </View>
-      <View style={{marginTop: 10}}>
+      <View style={{ marginTop: 10 }}>
         <FlatList
           horizontal
           data={dataCategory}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate(
                     'ProductCategory',
-                    (item = {name: item.name}),
+                    (item = { name: item.name }),
                   )
                 }>
                 <View style={styles.viewItem}>
                   <Text>{item.name}</Text>
                   <Image
-                    style={{width: 52, height: 52}}
-                    source={{uri: item.image}}
+                    style={{ width: 52, height: 52 }}
+                    source={{ uri: item.image }}
                   />
                 </View>
               </TouchableOpacity>
@@ -154,14 +158,14 @@ const Home = ({navigation}) => {
           }}
         />
       </View>
-      <View style={{paddingLeft: 10, marginTop: 10}}>
+      <View style={{ paddingLeft: 10, marginTop: 10 }}>
         <Text style={styles.textHead}>Recommend</Text>
       </View>
 
       <FlatList
         numColumns={2}
         data={dataProduct}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           return (
             <View style={styles.viewItemProducts}>
               <TouchableOpacity
@@ -184,17 +188,17 @@ const Home = ({navigation}) => {
                   )
                 }>
                 <Image
-                  source={{uri: item.image}}
-                  style={{width: 90, height: 131}}
+                  source={{ uri: item.image }}
+                  style={{ width: 90, height: 131 }}
                 />
                 <Text>{item.name}</Text>
                 <Text>{item.price} USD</Text>
                 {/* Thêm icon trái tim */}
                 <TouchableOpacity style={styles.heartIcon} onPress={() => addToLove(item._id)}>
-                                <Icon name="heart" size={20} color="red" />
+                  <Icon name="heart" size={20} color="red" />
                 </TouchableOpacity>
 
-                </TouchableOpacity>
+              </TouchableOpacity>
             </View>
           );
         }}
@@ -248,7 +252,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#DEDEDE',
   },
-  textInputSearch: {},
+  textInputSearch: {
+    fontSize: 18
+  },
   viewItem: {
     width: 75,
     height: 105,
@@ -259,7 +265,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     borderColor: '#DEDEDE',
     shadowColor: '#000',
-    backgroundColor : COLORS.white,
+    backgroundColor: COLORS.white,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -288,10 +294,10 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
-  heartIcon: { 
-    position: 'absolute', 
-    top: 5, right: 5 
-},
+  heartIcon: {
+    position: 'absolute',
+    top: 5, right: 5
+  },
 });
 
 export default Home;
