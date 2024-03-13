@@ -62,7 +62,7 @@ const LoginScreen = ({navigation}) => {
 
 
 
-    fetch(`http://192.168.1.5:3000/api-taikhoan/${phone}`, requestOptions)
+    fetch(`${API_ADD_USERS}/${phone}`, requestOptions)
 
 
 
