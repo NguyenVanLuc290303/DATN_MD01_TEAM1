@@ -58,7 +58,11 @@ import Home from './src/Screens/HomeScreen/Home';
 import YourOrderScreen from './src/Screens/YourOrderScreen/YourOrderScreen';
 import VoucherScreen from './src/Screens/VoucherScreen/VoucherScreen';
 import YourOrderDetailScreen from './src/Screens/YourOrderDetailScreen/YourOrderDetailScreen';
+
 import { CartProvider } from './src/hooks/cartContext';
+
+import SearchProductScreen from './src/Screens/SearchProductScreen/SearchProductScreen'
+
 
 // import {CartScreen} from './src/Screens';
 
@@ -233,6 +237,11 @@ function App() {
         <Stack.Screen
           name="VoucherScreen"
           component={VoucherScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SearchProductScreen"
+          component={SearchProductScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

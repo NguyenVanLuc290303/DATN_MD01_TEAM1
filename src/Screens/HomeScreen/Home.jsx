@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   Image,
@@ -12,28 +12,24 @@ import {
 import IconI from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios, {isCancel, AxiosError} from 'axios';
-import {
-  API_CATEGORY_PRODUCT,
-  API_PRODUCT_TO_CART,
-} from '../../config/api-consts';
+import {API_CATEGORY_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TOP8} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
-import {API_ADD_TO_LOVE} from '../../config/api-consts';
-import Loading from '../../components/organisms/Loading/Loading';
-import LottieView from 'lottie-react-native';
+import { API_ADD_TO_LOVE } from "../../config/api-consts";
+import { API_PRODUCT_TO_CART } from '../../config/api-consts';
 import COLORS from '../../constants/colors';
 import { Cart } from '../../hooks/cartContext';
+import Loading from '../../components/organisms/Loading/Loading';
 
-const Home = ({navigation}) => {
-  const {userData} = User();
+const Home = ({ navigation }) => {
+  const { userData } = User();
   // const userName = dataUser.username;
   const [dataCategory, setDataCategory] = React.useState([]);
   const [dataProduct, setDataProduct] = React.useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
-  // const [dataCart, setdataCart] = useState([]);
-  const {setDataCart , dataCart} = Cart();
 
+  const {setDataCart , dataCart} = Cart();
   const addToLove = async productId => {
     try {
       // console.log("userData:", userData);
@@ -118,7 +114,7 @@ const Home = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {dataCategory !== null ? (
+      {dataCategory.length > 0  ? (
         <View>
           <View style={styles.header}>
             <View>
@@ -153,15 +149,16 @@ const Home = ({navigation}) => {
           </View>
           <View style={styles.viewSearch}>
             <View style={styles.search}>
-              <View>
-                <TextInput
-                  style={styles.textInputSearch}
-                  placeholder="Search"
-                />
-              </View>
-              <View>
-                <IconI name="search-outline" size={30} color={'gray'} />
-              </View>
+            <View>
+            <TouchableOpacity onPress={() => navigation.navigate('SearchProductScreen')} >
+              <TextInput style={styles.textInputSearch} placeholder="Tìm kiếm sản phẩm ở đây" editable={false}/>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('SearchProductScreen')}>
+              <IconI name="search-outline" size={30} color={'gray'} />
+            </TouchableOpacity>
+          </View>
             </View>
           </View>
           <View style={{paddingLeft: 10, marginTop: 10}}>
@@ -291,7 +288,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#DEDEDE',
   },
-  textInputSearch: {},
+  textInputSearch: {
+    fontSize: 18
+  },
   viewItem: {
     width: 75,
     height: 105,
@@ -331,11 +330,10 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
-  heartIcon: {
-    position: 'absolute',
-    top: 5,
-    right: 5,
-  },
+  heartIcon: { 
+    position: 'absolute', 
+    top: 5, right: 5 
+},
 });
 
 export default Home;
