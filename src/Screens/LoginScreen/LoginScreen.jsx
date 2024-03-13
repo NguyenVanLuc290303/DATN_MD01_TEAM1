@@ -525,10 +525,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   btn: {
-    backgroundColor: COLORS.black,
+    backgroundColor: COLORS.App,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: COLORS.App,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

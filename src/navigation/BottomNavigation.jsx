@@ -10,6 +10,7 @@ import Love from '../Screens/LoveScreen/Love';
 import Notification from '../Screens/NotificationScreen/Notification';
 import Chat from '../Screens/ChatScreen/Chat';
 import Profile from '../Screens/ProfileScreen/Profile';
+import COLORS from '../constants/colors';
 
 const BottomNavigation = ({navigation}) => {
   const Tab = createBottomTabNavigator();
@@ -28,7 +29,7 @@ const BottomNavigation = ({navigation}) => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({focused, color, size}) => (
-            <IconAndesign name="home" color={color} size={focused ? 32 : 26} />
+            <IconAndesign name="home" color={focused ? COLORS.App : color} size={focused ? 32 : 26} />
           ),
         }}
       />
@@ -39,7 +40,7 @@ const BottomNavigation = ({navigation}) => {
         options={{
           tabBarLabel: 'Love',
           tabBarIcon: ({focused, color, size}) => (
-            <IconAndesign name="heart" color={color} size={focused ? 32 : 26} />
+            <IconAndesign name="heart" color={focused ? COLORS.App :color} size={focused ? 32 : 26} />
           ),
         }}
       />
@@ -60,13 +61,13 @@ const BottomNavigation = ({navigation}) => {
                 borderRadius: 25,
                 marginBottom: 20,
                 borderWidth: 1,
-                borderColor: focused ? '#000000' : color,
+                borderColor: focused ? COLORS.App : color,
               }}
               onPress={() => navigation.navigate('Notification')}>
               <View>
                 <MaterialCommunityIcons
                   name="bell"
-                  color={focused ? '#040303' : color}
+                  color={focused ? COLORS.App : color}
                   size={focused ? 32 : 26}
                 />
               </View>
@@ -82,7 +83,7 @@ const BottomNavigation = ({navigation}) => {
           tabBarIcon: ({focused, color, size}) => (
             <IconAndesign
               name="wechat"
-              color={color}
+              color={focused ? COLORS.App : color}
               size={focused ? 34 : 26}
             />
           ),
@@ -94,7 +95,7 @@ const BottomNavigation = ({navigation}) => {
         options={{
           headerShown: '',
           tabBarIcon: ({focused, color, size}) => (
-            <Icon name="person" color={color} size={focused ? 32 : 26} />
+            <Icon name="person" color={focused ? COLORS.App : color} size={focused ? 32 : 26} />
           ),
         }}
       />

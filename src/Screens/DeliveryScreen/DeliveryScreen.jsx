@@ -26,7 +26,7 @@ const DeliveryScreen = ({navigation , route}) => {
   const [itemIndex , setItemIndex] = useState();
 
 
-  useEffect( () => {
+  useEffect(() => {
     axios
       .get(`${API_ADDRESS}/${userData._id}`)
       .then(function (response) {
@@ -46,6 +46,12 @@ const DeliveryScreen = ({navigation , route}) => {
 
   const handleDeteleAddress = () =>{
     console.log(itemDelete._id , '=------>>>>');
+
+    const newArray = [...dataDelivery];
+    // Xóa sản phẩm ở vị trí index khỏi mảng
+    newArray.splice(itemIndex, 1);
+    // Cập nhật lại state productArray với mảng mới đã xóa sản phẩm
+    setdataDelivery(newArray);
     axios({
       method: 'delete',
       url: `${API_ADDRESS}/${userData._id}`,

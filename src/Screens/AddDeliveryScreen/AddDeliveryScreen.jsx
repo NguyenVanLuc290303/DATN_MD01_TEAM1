@@ -7,6 +7,7 @@ import {
   View,
   Image,
   TextInput,
+  ToastAndroid
 } from 'react-native';
 import {User} from '../../hooks/useContext';
 import { API_ADDRESS } from '../../config/api-consts';
@@ -71,12 +72,25 @@ const AddDeliveryScreen = ({navigation}) => {
       axios.post(API_ADDRESS, dataAddress)
       .then(function (response) {
         console.log(response);
+        if(response.data){
+          ToastAndroid.showWithGravity(
+            'Thêm thành công',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM
+          );
+          setTextName('');
+          setTextCity('');
+          setTextPhone('');
+          setTextStreet('');
+        }
       })
       .catch(function (error) {
         console.log(error);
       });
     }
   };
+
+  console.log('render lại' , "AdđeliveryScreen");
 
   return (
     <View style={styles.container}>
