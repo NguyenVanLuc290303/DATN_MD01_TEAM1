@@ -7,17 +7,23 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+
 } from 'react-native';
 import IconI from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios, {isCancel, AxiosError} from 'axios';
-import {API_CATEGORY_PRODUCT} from '../../config/api-consts';
+import {
+  API_CATEGORY_PRODUCT,
+  API_PRODUCT_TO_CART,
+} from '../../config/api-consts';
 import {API_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TOP8} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
-import { API_ADD_TO_LOVE } from "../../config/api-consts";
-
+import {API_ADD_TO_LOVE} from '../../config/api-consts';
+import Loading from '../../components/organisms/Loading/Loading';
+import LottieView from 'lottie-react-native';
 import COLORS from '../../constants/colors';
+import { Cart } from '../../hooks/cartContext';
 
 const Home = ({navigation}) => {
   const {userData} = User();
@@ -25,30 +31,34 @@ const Home = ({navigation}) => {
   const [dataCategory, setDataCategory] = React.useState([]);
   const [dataProduct, setDataProduct] = React.useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
-    
-  const addToLove = async (productId) => {
-      try {
-          // console.log("userData:", userData);
-          // console.log("ID của sản phẩm:", productId); 
-          if (!productId) {
-              console.error('ID của sản phẩm không hợp lệ');
-              return;
-          }
-          
-          const response = await axios.post(`${API_ADD_TO_LOVE}/${userData._id}/${productId}`, null, {
-              headers: {
-                  Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
-              }
-          });
-          console.log("Response từ server:", response.data);
-          setFavoriteProducts([...favoriteProducts, productId]);
-  
-      } catch (error) {
-          console.error("Lỗi khi thêm sản phẩm vào trang Love:", error);
-      }
-  };
-  
+  // const [dataCart, setdataCart] = useState([]);
+  const {setDataCart , dataCart} = Cart();
 
+  const addToLove = async productId => {
+    try {
+      // console.log("userData:", userData);
+      // console.log("ID của sản phẩm:", productId);
+      if (!productId) {
+        console.error('ID của sản phẩm không hợp lệ');
+        return;
+      }
+
+      const response = await axios.post(
+        `${API_ADD_TO_LOVE}/${userData._id}/${productId}`,
+        null,
+        {
+          headers: {
+            Cookie:
+              'connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw',
+          },
+        },
+      );
+      console.log('Response từ server:', response.data);
+      setFavoriteProducts([...favoriteProducts, productId]);
+    } catch (error) {
+      console.error('Lỗi khi thêm sản phẩm vào trang Love:', error);
+    }
+  };
 
   React.useEffect(() => {
     var myHeaders = new Headers();
@@ -69,9 +79,20 @@ const Home = ({navigation}) => {
       .catch(error => console.log('error', error));
   }, []);
 
-  React.useEffect(() =>{
-    
-  },[])
+  React.useEffect(() => {
+    axios
+      .get(`${API_PRODUCT_TO_CART}`)
+      .then(function (response) {
+        const data = Array.isArray(response.data)
+          ? response.data
+          : [response.data];
+          console.log(data);
+        setDataCart(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   React.useEffect(() => {
     var myHeaders = new Headers();
@@ -92,113 +113,135 @@ const Home = ({navigation}) => {
       .catch(error => console.log('error', error));
   }, []);
 
-  // console.log(dataProduct);
-  const handlerItemProducts = item => {
-    console.log(item);
-  };
 
-  // console.log(dataProduct[0].image);
+  console.log('render lại , HomeScreen');
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {dataCategory !== null ? (
         <View>
-          <Image
-            style={styles.imageTitle}
-            source={require('@/images/logoAPP_MD01_png.png')}
+          <View style={styles.header}>
+            <View>
+              <Image
+                style={styles.imageTitle}
+                source={require('@/images/logoAPP_MD01_png.png')}
+              />
+            </View>
+            {/* <Text>Hi {userName}</Text> */}
+            <TouchableOpacity style={{ width : 40 , height : 40 , justifyContent : 'center' , alignItems : 'center'}} onPress={() => navigation.navigate('CartScreen')}>
+              <Image source={require('@/icons/png/local_mall.png')} />
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: COLORS.red,
+                  position: 'absolute',
+                  borderRadius: 10,
+                  top: 0,
+                  right: 0,
+                
+                }}
+                >
+                  <Text style={{ color : COLORS.white , marginLeft : 5}}>
+                    {dataCart.length}
+                  </Text>
+                </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{paddingLeft: 10}}>
+            <Text style={styles.textTitle}>Men Clothes Store</Text>
+          </View>
+          <View style={styles.viewSearch}>
+            <View style={styles.search}>
+              <View>
+                <TextInput
+                  style={styles.textInputSearch}
+                  placeholder="Search"
+                />
+              </View>
+              <View>
+                <IconI name="search-outline" size={30} color={'gray'} />
+              </View>
+            </View>
+          </View>
+          <View style={{paddingLeft: 10, marginTop: 10}}>
+            <Text style={styles.textHead}>Category</Text>
+          </View>
+          <View style={{marginTop: 10}}>
+            <FlatList
+              horizontal
+              data={dataCategory}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(
+                        'ProductCategory',
+                        (item = {name: item.name}),
+                      )
+                    }>
+                    <View style={styles.viewItem}>
+                      <Text>{item.name}</Text>
+                      <Image
+                        style={{width: 52, height: 52}}
+                        source={{uri: item.image}}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+          <View style={{paddingLeft: 10, marginTop: 10}}>
+            <Text style={styles.textHead}>Recommend</Text>
+          </View>
+
+          <FlatList
+            numColumns={2}
+            data={dataProduct}
+            renderItem={({item, index}) => {
+              return (
+                <View style={styles.viewItemProducts}>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      paddingTop: '5%',
+                    }}
+                    onPress={() =>
+                      navigation.navigate(
+                        'DetailProductScreen',
+                        (item = {
+                          _id: item._id,
+                          name: item.name,
+                          image: item.image,
+                          category: item.loai,
+                          price: item.price,
+                          quantitySold: item.quantitySold,
+                        }),
+                      )
+                    }>
+                    <Image
+                      source={{uri: item.image}}
+                      style={{width: 90, height: 131}}
+                    />
+                    <Text>{item.name}</Text>
+                    <Text>{item.price} USD</Text>
+                    {/* Thêm icon trái tim */}
+                    <TouchableOpacity
+                      style={styles.heartIcon}
+                      onPress={() => addToLove(item._id)}>
+                      <Icon name="heart" size={20} color="red" />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
           />
         </View>
-        {/* <Text>Hi {userName}</Text> */}
-        <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
-          <Image source={require('@/icons/png/local_mall.png')} />
-        </TouchableOpacity>
-      </View>
-      <View style={{paddingLeft: 10}}>
-        <Text style={styles.textTitle}>Men Clothes Store</Text>
-      </View>
-      <View style={styles.viewSearch}>
-        <View style={styles.search}>
-          <View>
-            <TextInput style={styles.textInputSearch} placeholder="Search" />
-          </View>
-          <View>
-            <IconI name="search-outline" size={30} color={'gray'} />
-          </View>
-        </View>
-      </View>
-      <View style={{paddingLeft: 10, marginTop: 10}}>
-        <Text style={styles.textHead}>Category</Text>
-      </View>
-      <View style={{marginTop: 10}}>
-        <FlatList
-          horizontal
-          data={dataCategory}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(
-                    'ProductCategory',
-                    (item = {name: item.name}),
-                  )
-                }>
-                <View style={styles.viewItem}>
-                  <Text>{item.name}</Text>
-                  <Image
-                    style={{width: 52, height: 52}}
-                    source={{uri: item.image}}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
-      <View style={{paddingLeft: 10, marginTop: 10}}>
-        <Text style={styles.textHead}>Recommend</Text>
-      </View>
-
-      <FlatList
-        numColumns={2}
-        data={dataProduct}
-        renderItem={({item, index}) => {
-          return (
-            <View style={styles.viewItemProducts}>
-              <TouchableOpacity
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingTop: '5%',
-                }}
-                onPress={() =>
-                  navigation.navigate(
-                    'DetailProductScreen',
-                    (item = {
-                      _id: item._id,
-                      name: item.name,
-                      image: item.image,
-                      category: item.loai,
-                      price: item.price,
-                      quantitySold: item.quantitySold,
-                    }),
-                  )
-                }>
-                <Image
-                  source={{uri: item.image}}
-                  style={{width: 90, height: 131}}
-                />
-                <Text>{item.name}</Text>
-                <Text>{item.price} USD</Text>
-                {/* Thêm icon trái tim */}
-                <TouchableOpacity style={styles.heartIcon} onPress={() => addToLove(item._id)}>
-                                <Icon name="heart" size={20} color="red" />
-                </TouchableOpacity>
-
-                </TouchableOpacity>
-            </View>
-          );
-        }}
-      />
+      ) : (
+        <Loading />
+      )}
     </View>
   );
 };
@@ -259,7 +302,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     borderColor: '#DEDEDE',
     shadowColor: '#000',
-    backgroundColor : COLORS.white,
+    backgroundColor: COLORS.white,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -288,10 +331,11 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
-  heartIcon: { 
-    position: 'absolute', 
-    top: 5, right: 5 
-},
+  heartIcon: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+  },
 });
 
 export default Home;

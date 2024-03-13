@@ -58,6 +58,7 @@ import Home from './src/Screens/HomeScreen/Home';
 import YourOrderScreen from './src/Screens/YourOrderScreen/YourOrderScreen';
 import VoucherScreen from './src/Screens/VoucherScreen/VoucherScreen';
 import YourOrderDetailScreen from './src/Screens/YourOrderDetailScreen/YourOrderDetailScreen';
+import { CartProvider } from './src/hooks/cartContext';
 
 // import {CartScreen} from './src/Screens';
 
@@ -83,9 +84,10 @@ function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
     <UserProvider>
+    <CartProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'LoginScreen'}
+        initialRouteName={'FisrtScreen'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="FisrtScreen"
@@ -235,7 +237,9 @@ function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </CartProvider>
     </UserProvider>
+
     </GestureHandlerRootView>
   );
 }

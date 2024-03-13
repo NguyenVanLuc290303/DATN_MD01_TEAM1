@@ -3,9 +3,10 @@ import { createContext, useContext, useState } from "react";
 
 const CartContext = createContext();
 
-const [dataCart , setDataCart] = useState([]);
 
-const CartProvider = () =>{
+export function CartProvider  ({children}){
+    const [dataCart , setDataCart] = useState([]);
+
     return(
         <CartContext.Provider value={{dataCart,setDataCart}}>
             {children}

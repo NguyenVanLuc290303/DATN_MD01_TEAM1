@@ -21,11 +21,22 @@ import SuccessNotificationModal from '../../components/organisms/SuccessNotifica
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
 
-  const {dataProductOrder , dataAddress} = route.params;
+  const {dataProductOrder, dataAddress} = route.params;
 
-  console.log(dataAddress , "PPPPPPPP");
+  let addressOrder = '';
+  if (dataAddress) {
+    addressOrder =
+      'Số điện thoại : ' +
+      dataAddress.phone +
+      ' ,Tên người nhận : ' +
+      dataAddress.name +
+      ' ,Đường : ' +
+      dataAddress.street +
+      ' ' +
+      dataAddress.city;
+  }
 
-
+  console.log(addressOrder);
 
   // console.log( idProduct  + "Product ID PPPPP");
   // console.log( size  + "size ID PPPPP");
@@ -34,6 +45,16 @@ const OrderDetailsScreen = ({navigation, route}) => {
   // console.log( price  + "price ID PPPPP");
   // console.log( image  + "image URL ID PPPPP");
   // console.log(idPropoties + 'id URL ID PPPPP');
+
+  var costTranformer = 22000;
+
+  const totalPriceProduct = dataProductOrder.reduce(
+    (accumulator, currentItem) =>
+      accumulator + parseFloat(currentItem.Price) * currentItem.Quantity,
+    0,
+  );
+
+  const totalPrice = totalPriceProduct + costTranformer;
 
   const {userData} = User();
 
@@ -50,8 +71,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
   const toggleCheckbox = () => {
     setIsChecked(!isChecked); // Hàm để đảo ngược trạng thái của checkbox
   };
-
-  var costTranformer = 22000;
 
   // const [total, setTotal] = useState(price * quantity + costTranformer);
 
@@ -72,9 +91,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   // const [quantityFinish, setQuantityFinish] = useState(dataProductOrder.Quantity); // Số lượng mặc định là 1
 
-  useEffect(() => {
-
-  },[]);
+  useEffect(() => {}, []);
 
   // Hàm xử lý cộng số lượng
   const incrementQuantity = useCallback(() => {
@@ -147,6 +164,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
         status: status,
         date: formattedDate,
         PTTT: methodPay,
+        address: addressOrder,
       }),
       redirect: 'follow',
     };
@@ -163,25 +181,20 @@ const OrderDetailsScreen = ({navigation, route}) => {
   const pushProductOnOrder = data => {
     console.log(data._id);
 
-
-
     // console.log(numberPhone);
 
     const idOrder = data._id;
 
-    console.log(idOrder ,"IdOrder =>>>>>>>>>>>>");
-
+    console.log(idOrder, 'IdOrder =>>>>>>>>>>>>');
 
     const dataArrayOrder = dataProductOrder;
 
-    dataArrayOrder.forEach(item =>{
-        item.OrderId = idOrder;
-    })
+    dataArrayOrder.forEach(item => {
+      item.OrderId = idOrder;
+    });
 
+    console.log(dataArrayOrder, '00000000000000');
 
-
-    console.log(dataArrayOrder , "00000000000000");
-    
     // const requestOptions = {
     //   method: 'POST',
     //   headers: myHeaders,
@@ -207,7 +220,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
-      body: JSON.stringify({danhSachSanPham : dataArrayOrder}),
+      body: JSON.stringify({danhSachSanPham: dataArrayOrder}),
       redirect: 'follow',
     };
 
@@ -227,11 +240,24 @@ const OrderDetailsScreen = ({navigation, route}) => {
           <View style={styles.address}>
             <Image source={Icons.IconAddress} style={styles.iconAddress} />
             <View style={styles.textAddress}>
-              <Text style={styles.textInfo}>{dataAddress === undefined ? userName : dataAddress.name}</Text>
-              <Text style={styles.textInfo}>{dataAddress === undefined ? numberPhone : dataAddress.phone}</Text>
-              <Text style={styles.textInfo2}>{dataAddress === undefined ?  address : `${dataAddress.street}-${dataAddress.city}`}</Text>
+              <Text style={styles.textInfo}>
+                {dataAddress === undefined ? userName : dataAddress.name}
+              </Text>
+              <Text style={styles.textInfo}>
+                {dataAddress === undefined ? numberPhone : dataAddress.phone}
+              </Text>
+              <Text style={styles.textInfo2}>
+                {dataAddress === undefined
+                  ? address
+                  : `${dataAddress.street}-${dataAddress.city}`}
+              </Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('DeliveryScreen' , {dataProductOrder : dataProductOrder})}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('DeliveryScreen', {
+                  dataProductOrder: dataProductOrder,
+                })
+              }>
               <Image source={Icons.IconNext} style={styles.iconNext} />
             </TouchableOpacity>
           </View>
@@ -328,11 +354,22 @@ const OrderDetailsScreen = ({navigation, route}) => {
               Tin nhắn: Che tên sản phẩm
             </Text>
           </View>
-        </View>
+        </View>  
+        <View style={{marginTop : 10, flexDirection : 'row' , padding : '4%', alignItems : 'center' , justifyContent : 'space-between' , backgroundColor : COLORS.white}}>
+            <View style={{ flexDirection : 'row' , alignItems : 'center'}}>
+            <Image source={Icons.IconVoucher} style={styles.iconVoucher}/>
+            <Text style={{ fontSize : 16 , fontFamily : 'Inter-Medium' , marginLeft : '2%'}}>
+              Voucher của shop
+            </Text>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('VoucherScreen')}>
+              <Image source={Icons.IconNext} style={{ width : 20 , height : 20}}/>
+            </TouchableOpacity>
+          </View>
         <View
           style={{
             backgroundColor: COLORS.white,
-            marginTop: 10,
+            marginTop: 3,
             flexDirection: 'column',
           }}>
           <Text
@@ -355,7 +392,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Sản phẩm
             </Text>
-            {/* <Text style={styles.priceTransport}>{price}</Text> */}
+            <Text style={styles.priceTransport}>{totalPriceProduct}</Text>
           </View>
           <View style={styles.textTransport}>
             <Text
@@ -379,7 +416,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Tổng
             </Text>
-            {/* <Text style={styles.priceTransport2}>{total}</Text> */}
+            <Text style={styles.priceTransport2}>{totalPrice}</Text>
           </View>
         </View>
         <View
@@ -517,7 +554,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
             style={{
               width: '80%',
               height: 40,
-              backgroundColor: COLORS.red,
+              backgroundColor: COLORS.App,
               justifyContent: 'center',
               alignItems: 'center',
               margin: 20,
@@ -582,6 +619,10 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     marginRight: 20,
+  },
+  iconVoucher: {
+    width: 32,
+    height: 32,
   },
   borderStyles: {
     backgroundColor: COLORS.white,
@@ -675,10 +716,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     color: COLORS.black,
     marginRight: 20,
+    fontWeight : 'bold'
   },
   priceTransport2: {
     alignSelf: 'flex-end',
-    color: COLORS.black,
+    color: COLORS.red,
     marginRight: 20,
     fontWeight: 'bold',
   },

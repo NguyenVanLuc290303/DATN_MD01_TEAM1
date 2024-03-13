@@ -1,4 +1,8 @@
 const COLORS = {
+
+  //COLOR APP 
+  App : "#6666FF",
+
   white: '#FFFFFF',
   black: '#000000',
   primary: '#007260',
@@ -31,6 +35,7 @@ const COLORS = {
   //color border OTP
 
   borderColorOTP :"#F49517"
+
 };
 
 export default COLORS;

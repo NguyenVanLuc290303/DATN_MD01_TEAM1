@@ -8,10 +8,13 @@ import {
   Image,
   ImageBackground,
   FlatList,
+  Alert,
+  ToastAndroid,
 } from 'react-native';
 import {API_ADDRESS} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import axios, { Axios } from 'axios';
+import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 
 const DeliveryScreen = ({navigation , route}) => {
 
@@ -19,6 +22,8 @@ const DeliveryScreen = ({navigation , route}) => {
   const {userData} =  User();
   console.log(userData._id);
   const [dataDelivery, setdataDelivery] = useState([]);
+  const [itemDelete ,setItemDelete] = useState();
+  const [itemIndex , setItemIndex] = useState();
 
 
   useEffect( () => {
@@ -39,6 +44,37 @@ const DeliveryScreen = ({navigation , route}) => {
     navigation.navigate('OrderDetailsScreen' , {dataAddress : item , dataProductOrder : dataProductOrder});
   }
 
+  const handleDeteleAddress = () =>{
+    console.log(itemDelete._id , '=------>>>>');
+    axios({
+      method: 'delete',
+      url: `${API_ADDRESS}/${userData._id}`,
+      data: {
+        id : itemDelete._id
+      }
+    }).then(function (response) {
+      if(response){
+        ToastAndroid.showWithGravity(
+          'Xóa thành công',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM
+        );
+        setModalVisible(false);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });;
+  }
+
+  const [isModalVisible, setModalVisible] = useState(false);
+
+ const OnlickDeleteItemAddress = (item , index) =>{
+      setItemDelete(item);
+      setItemIndex(index);
+      setModalVisible(true);
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -54,6 +90,7 @@ const DeliveryScreen = ({navigation , route}) => {
             source={require('@/images/back.png')}
           />
         </TouchableOpacity>
+        
         <View
           style={{
             justifyContent: 'center',
@@ -126,15 +163,23 @@ const DeliveryScreen = ({navigation , route}) => {
                       <Text>{item.city}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                      onPress={() => OnlickDeleteItemAddress(item, index)}
                       style={{alignItems: 'center', justifyContent: 'center'}}>
                       <Text style={{color: '#FF0000'}}>Xóa</Text>
                     </TouchableOpacity>
                   </View>
+                  
                 </View>
               );
             }}
           />
         </View>
+        <ModalConfirm
+        visible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        onConfirm={handleDeteleAddress}
+        content={"Bạn có muốn xóa không"}
+        />
       </View>
     </View>
   );

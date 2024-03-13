@@ -11,8 +11,15 @@ import {Icons} from '../../constants/images';
 import COLORS from '../../constants/colors';
 import {Fragment, useState} from 'react';
 import ModalConfirm from '../../components/dialog/ModalConfirm';
+import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
+import { User } from '../../hooks/useContext';
 
 const Profile = ({navigation}) => {
+
+  const {userData} = User();
+
+
+
   const [showModal, setShowModal] = useState(false);
   const handleConfirmAction = () => {
     console.log('Confirmed action');
@@ -53,6 +60,7 @@ const Profile = ({navigation}) => {
 
   const navigateToPrivacy = () => {
     console.log('Privacy Action');
+    navigation.navigate('PaymentScreen');
   };
   const accountItem = [
     {
@@ -185,7 +193,7 @@ const Profile = ({navigation}) => {
             flexDirection: 'column',
           }}>
           <Image
-            source={Icons.IconApp}
+            source={{ uri : userData.image === "" ? IMAGE_URL_DEFAULT : userData.image}}
             style={{
               width: 200,
               height: 200,

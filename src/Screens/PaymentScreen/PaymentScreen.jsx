@@ -12,8 +12,10 @@ import {
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
+import { User } from '../../hooks/useContext';
 
 const PaymentScreen = ({navigation}) => {
+  const {dataUser} = User();
   return (
     <ScrollView style={styles.container}>
       <Image source={Icons.ImageCard} style={styles.imgCard} />

@@ -42,5 +42,6 @@ export {
   CartScreen,
   ProductCategory,
   DeliveryScreen, 
-  AddDeliveryScreen
+  AddDeliveryScreen,
+  VoucherScreen
 };

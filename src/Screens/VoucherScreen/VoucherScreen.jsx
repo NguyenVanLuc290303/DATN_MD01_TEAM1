@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground, FlatList } from "react-native";
 
-const VoucherScreen = () => {
+const VoucherScreen = ({navigation}) => {
     const [dataVoucher, setDataVoucher] = useState([
         {
             name: 'Giảm giá 10K',
@@ -40,7 +40,7 @@ const VoucherScreen = () => {
                 padding: 10,
                 backgroundColor: '#FFFFFF'
             }}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image style={{ width: 22, height: 22 }} source={require('@/images/back.png')} />
                 </TouchableOpacity>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 20 }}>

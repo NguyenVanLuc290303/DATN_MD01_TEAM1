@@ -32,11 +32,16 @@ import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
+import { Cart } from '../../hooks/cartContext';
 
 const DetailProductScreen = ({navigation, route}) => {
   const {_id, name, price, quantitySold, image, category} = route.params;
 
   const {userData} = User();
+
+  const {dataCart} = Cart();
+
+  console.log(dataCart , "datacartlength");
 
   const idUser = userData._id;
 
@@ -187,6 +192,8 @@ const DetailProductScreen = ({navigation, route}) => {
 
   // console.log(quantity + "=========>")
 
+  console.log('renderlai');
+
   return (
     <BottomSheetModalProvider>
       <SafeAreaView style={[styles.container]}>
@@ -207,9 +214,28 @@ const DetailProductScreen = ({navigation, route}) => {
             <IconF name="search" size={28} color={COLORS.gray} />
             <TextInput placeholder="Tìm kiếm" />
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
           <Image source={require('@/icons/png/local_mall.png')} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <TouchableOpacity style={{ width : 40 , height : 40 , justifyContent : 'center' , alignItems : 'center'}} onPress={() => navigation.navigate('CartScreen')}>
+              <Image source={require('@/icons/png/local_mall.png')} />
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: COLORS.red,
+                  position: 'absolute',
+                  borderRadius: 10,
+                  top: 0,
+                  right: 0,
+                
+                }}
+                >
+                  <Text style={{ color : COLORS.white , marginLeft : 5}}>
+                    {dataCart.length}
+                  </Text>
+                </View>
+            </TouchableOpacity>
         </View>
         <View style={styles.ViewImageProduct}>
           <Image

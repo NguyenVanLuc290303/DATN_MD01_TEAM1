@@ -21,11 +21,11 @@ import IconI from 'react-native-vector-icons/Ionicons';
 import storage from '@react-native-firebase/storage';
 import { API_UPDATE_USER } from '../../config/api-consts';
 import axios, { Axios } from 'axios';
+import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
 
 const EditProfile = ({navigation}) => {
   const {userData} = User();
 
-  console.log(userData);
 
   const [email, setEmail] = useState();
   const [name, setName] = useState();
@@ -56,11 +56,6 @@ const EditProfile = ({navigation}) => {
       console.log(error);
     }
 
-    // console.log(result.assets[0].originalPath);
-
-    // const imagePath = result.assets[0].originalPath;
-
-    // upLoadImageToFirebaseStorage(imagePath);
   };
 
   console.log(dataURI);
@@ -114,7 +109,7 @@ const EditProfile = ({navigation}) => {
             flexDirection: 'column',
           }}>
           <Image
-            source={userData.image === "" ? Icons.IconApp : userData.image}
+            source={{ uri : userData.image === "" ? IMAGE_URL_DEFAULT : userData.image}}
             style={{
               width: 200,
               height: 200,
