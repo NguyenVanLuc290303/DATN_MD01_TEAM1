@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FlatList,
   Image,
@@ -10,6 +10,7 @@ import {
 
 } from 'react-native';
 import IconI from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios, {isCancel, AxiosError} from 'axios';
 import {API_CATEGORY_PRODUCT} from '../../config/api-consts';
@@ -24,16 +25,29 @@ import Loading from '../../components/organisms/Loading/Loading';
 
 const Home = ({ navigation }) => {
   const { userData } = User();
-  // const userName = dataUser.username;
-  const [dataCategory, setDataCategory] = React.useState([]);
-  const [dataProduct, setDataProduct] = React.useState([]);
+  const [dataCategory, setDataCategory] = useState([]);
+  const [dataProduct, setDataProduct] = useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
+  const [likedProducts, setLikedProducts] = useState([]);
+  const { setDataCart, dataCart } = Cart();
 
-  const {setDataCart , dataCart} = Cart();
-  const addToLove = async productId => {
+  useEffect(() => {
+    const loadLikedProducts = async () => {
+      try {
+        const likedProductsString = await AsyncStorage.getItem(`likedProducts_${userData._id}`);
+        if (likedProductsString !== null) {
+          setLikedProducts(JSON.parse(likedProductsString));
+        }
+      } catch (error) {
+        console.error('Lỗi khi tải trạng thái yêu thích:', error);
+      }
+    };
+
+    loadLikedProducts();
+  }, [userData._id]); 
+
+  const addToLove = async (productId) => {
     try {
-      // console.log("userData:", userData);
-      // console.log("ID của sản phẩm:", productId);
       if (!productId) {
         console.error('ID của sản phẩm không hợp lệ');
         return;
@@ -44,17 +58,28 @@ const Home = ({ navigation }) => {
         null,
         {
           headers: {
-            Cookie:
-              'connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw',
+            Cookie: 'connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw',
           },
         },
       );
       console.log('Response từ server:', response.data);
-      setFavoriteProducts([...favoriteProducts, productId]);
+
+      const updatedLikedProducts = [...likedProducts, productId];
+      setLikedProducts(updatedLikedProducts);
+      await AsyncStorage.setItem(`likedProducts_${userData._id}`, JSON.stringify(updatedLikedProducts));
     } catch (error) {
       console.error('Lỗi khi thêm sản phẩm vào trang Love:', error);
     }
   };
+
+  const isProductLiked = productId => {
+    return likedProducts.includes(productId);
+  };
+
+  const renderHeartColor = productId => {
+    return isProductLiked(productId) ? 'red' : 'silver';
+  };
+
 
   React.useEffect(() => {
     var myHeaders = new Headers();
@@ -228,7 +253,7 @@ const Home = ({ navigation }) => {
                     <TouchableOpacity
                       style={styles.heartIcon}
                       onPress={() => addToLove(item._id)}>
-                      <Icon name="heart" size={20} color="red" />
+                      <Icon name="heart" size={20} color={renderHeartColor(item._id)} />
                     </TouchableOpacity>
                   </TouchableOpacity>
                 </View>
@@ -332,7 +357,10 @@ const styles = StyleSheet.create({
   },
   heartIcon: { 
     position: 'absolute', 
-    top: 5, right: 5 
+    top: 5, right: 5,
+    // backgroundColor: 'rgba(255, 0, 0, 0.1)', 
+    // borderRadius: 30, 
+    // padding: 5,
 },
 });
 

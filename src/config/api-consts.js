@@ -1,6 +1,6 @@
 // write api use to app
 
-export const IP_ADDRESS = '192.168.0.100';
+export const IP_ADDRESS = '192.168.1.7';
 
 // api users
 
