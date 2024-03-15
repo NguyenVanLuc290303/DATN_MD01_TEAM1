@@ -20,9 +20,14 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {API_PRODUCT} from '../../config/api-consts';
 import ModalConfirm from '../../components/dialog/ModalConfirm';
+import { Cart } from '../../hooks/cartContext';
+
 
 const CartScreen = ({navigation}) => {
   const {userData} = User();
+
+  const {removeItemFromCart} = Cart();
+
 
   const idUser = userData._id;
 
@@ -47,7 +52,7 @@ const CartScreen = ({navigation}) => {
       redirect: 'follow',
     };
 
-    fetch(`${API_PRODUCT_TO_CART}`, requestOptions)
+    fetch(`${API_PRODUCT_TO_CART}/${idUser}`, requestOptions)
       .then(response => response.json())
       .then(result => setProductArray(result))
       .catch(error => console.error(error));
@@ -153,13 +158,17 @@ const CartScreen = ({navigation}) => {
   // },[indexDelete])
 
   const handleDeleteProductCart = (item, index) => {    
-    console.log(item._id , index );
+    console.log(item._id , "item._id của cartScreen" );
+    console.log(item.CartId , " item.CartId của cartScreen" );
+    console.log(item.ProductId , "item.ProductId của cartScreen" );
     // Tạo một bản sao của mảng sản phẩm
     const newArray = [...productArray];
     // Xóa sản phẩm ở vị trí index khỏi mảng
     newArray.splice(index, 1);
     // Cập nhật lại state productArray với mảng mới đã xóa sản phẩm
     setProductArray(newArray);
+
+    removeItemFromCart(item._id);
 
     const urlencoded = new URLSearchParams();
     const requestOptions = {
@@ -170,7 +179,9 @@ const CartScreen = ({navigation}) => {
 
     fetch(`${API_PRODUCT}/${item._id}`, requestOptions)
       .then(response => response.json())
-      .then(result => console.log(result))
+      .then(
+          result => console.log(result)
+      )
       .catch(error => console.error(error));
  
   };

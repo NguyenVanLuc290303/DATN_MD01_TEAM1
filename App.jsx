@@ -33,7 +33,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import FisrtScreen from './src/Screens/FisrtScreen/FisrtScreen';
 import LoginScreen from './src/Screens/LoginScreen/LoginScreen';
 import RegisterScreen from './src/Screens/RegisterScreen/RegisterScreen';
-import BottomNavigation from './src/navigation/BottomNavigation';
+import BottomNavigation from './src/navigation/BottomNavigation/BottomNavigation';
 import DetailProductScreen from './src/Screens/DetailProductScreen/DetailProductScreen';
 import  OnboardingScreen  from './src/Screens/OnboardingScreen/OnboardingScreen';
 import { EditProfile } from './src/Screens';
@@ -61,7 +61,8 @@ import YourOrderDetailScreen from './src/Screens/YourOrderDetailScreen/YourOrder
 
 import { CartProvider } from './src/hooks/cartContext';
 
-import SearchProductScreen from './src/Screens/SearchProductScreen/SearchProductScreen'
+import SearchProductScreen from './src/Screens/SearchProductScreen/SearchProductScreen';
+import MyTabsOrder from './src/navigation/TopTabNavigation/TopTabNavigation';
 
 
 // import {CartScreen} from './src/Screens';
@@ -96,6 +97,11 @@ function App() {
         <Stack.Screen
           name="FisrtScreen"
           component={FisrtScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="TopTabNavigation"
+          component={MyTabsOrder}
           options={{headerShown: false}}
         />
         <Stack.Screen

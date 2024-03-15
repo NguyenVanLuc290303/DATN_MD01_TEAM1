@@ -3,7 +3,7 @@ import { View , StyleSheet} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 
-export default function Loading() {
+export default function LoadingHome() {
 
 
   return (
@@ -14,10 +14,10 @@ export default function Loading() {
         >
           <LottieView
             style={{
-              height: 50,
-              width: 50,
+              height: 60,
+              width: 60,
             }}
-            source={require('../../../assets/animations/Animation_loading.json')}
+            source={require('../../../assets/animations/LoadingHome.json')}
             autoPlay
             loop
           />

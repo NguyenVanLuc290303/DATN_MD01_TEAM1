@@ -12,14 +12,13 @@ import {
   TouchableOpacityBase,
   TouchableHighlight,
   Alert,
+  PanResponder,
+  Animated,
+  Easing,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
 import IconA from 'react-native-vector-icons/AntDesign';
-
-import AddToCart from '../../components/morecules/AddToCard/AddToCard';
-import ColorItem from '../../components/morecules/ColorItem/ColorItem';
-import SizeItem from '../../components/morecules/SizeItem/SizeItem';
 import {styleCommon} from '../../theme/styles/CommomStyle';
 import COLORS from '../../constants/colors';
 import {
@@ -32,16 +31,16 @@ import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
-import { Cart } from '../../hooks/cartContext';
+import {Cart} from '../../hooks/cartContext';
 
 const DetailProductScreen = ({navigation, route}) => {
   const {_id, name, price, quantitySold, image, category} = route.params;
 
   const {userData} = User();
 
-  const {dataCart} = Cart();
+  const {dataCart, addItemToCart} = Cart();
 
-  console.log(dataCart , "datacartlength");
+  console.log(dataCart, 'datacartlength');
 
   const idUser = userData._id;
 
@@ -89,7 +88,6 @@ const DetailProductScreen = ({navigation, route}) => {
   }, []);
 
   useEffect(() => {
-
     // checkProductCart();
   }, []);
 
@@ -120,8 +118,41 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const [checkProductCarts, setCheckProductCarts] = useState(null);
 
-  const handleToCart =  () => {
+  // animation cart
 
+
+  const animationScale = useRef(new Animated.Value(1)).current;
+
+  console.log(animationScale, "LLLLLLLLLLLL")
+  const animationPosition = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
+
+  const [showImageAnimation , setShowImageAnimation] = useState(false);
+
+  const handleToCart = () => {
+
+  setShowImageAnimation(true);
+ const shrinkAnimation = Animated.timing(animationScale, {
+      toValue: 0,
+      duration: 1500,
+      useNativeDriver: false,
+      
+    });
+
+    const parabolicAnimation = Animated.timing(animationPosition, {
+      toValue: {x: 160, y: -190},
+      easing : Easing.bezier(0.25, 0.1 , 0.25 , 1),
+      duration: 1000,
+      useNativeDriver: false,
+    });
+
+    Animated.parallel([shrinkAnimation, parabolicAnimation]).start(() => {
+      // Sau khi hoàn thành animation, đặt lại giá trị ban đầu
+      animationScale.setValue(1);
+      animationPosition.setValue({ x: 0, y: 0 });
+      setShowImageAnimation(false);
+    });
+    
+   
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -129,8 +160,6 @@ const DetailProductScreen = ({navigation, route}) => {
       'Cookie',
       'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
     );
-
-    // console.log(numberPhone);
 
     const requestOptions = {
       method: 'POST',
@@ -150,16 +179,17 @@ const DetailProductScreen = ({navigation, route}) => {
     };
 
     try {
-      fetch(`${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}`, requestOptions)
+      fetch(
+        `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}`,
+        requestOptions,
+      )
         .then(response => response.json())
-        .then(result => console.log(result));
+        .then(result => addItemToCart(result));
       handleClosePress();
     } catch (error) {
       console.log(error);
     }
   };
-
-
 
   const handleToSale = () => {
     const productSelect = [
@@ -185,12 +215,6 @@ const DetailProductScreen = ({navigation, route}) => {
     setSelectSize(size);
     setIdPropoties(id);
   };
-  // console.log(selectSize);
-  // if(selectedColor){
-  //   console.log(selectedColor.colorId);
-  // }
-
-  // console.log(quantity + "=========>")
 
   console.log('renderlai');
 
@@ -217,25 +241,30 @@ const DetailProductScreen = ({navigation, route}) => {
           {/* <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
           <Image source={require('@/icons/png/local_mall.png')} />
         </TouchableOpacity> */}
-        <TouchableOpacity style={{ width : 40 , height : 40 , justifyContent : 'center' , alignItems : 'center'}} onPress={() => navigation.navigate('CartScreen')}>
-              <Image source={require('@/icons/png/local_mall.png')} />
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  backgroundColor: COLORS.red,
-                  position: 'absolute',
-                  borderRadius: 10,
-                  top: 0,
-                  right: 0,
-                
-                }}
-                >
-                  <Text style={{ color : COLORS.white , marginLeft : 5}}>
-                    {dataCart.length}
-                  </Text>
-                </View>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: 40,
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => navigation.navigate('CartScreen')}>
+            <Image source={require('@/icons/png/local_mall.png')} />
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                backgroundColor: COLORS.red,
+                position: 'absolute',
+                borderRadius: 10,
+                top: 0,
+                right: 0,
+              }}>
+              <Text style={{color: COLORS.white, marginLeft: 5}}>
+                {dataCart.length}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.ViewImageProduct}>
           <Image
@@ -244,6 +273,26 @@ const DetailProductScreen = ({navigation, route}) => {
             }}
             style={styles.imageProduct}
           />
+          <Animated.View
+           style={[
+            
+            { transform: [
+              { translateX: animationPosition.x },
+              { translateY: animationPosition.y },
+              { scale: animationScale }
+            ]
+              ,
+              width: 100,
+              height: 100,
+              position: 'absolute',
+              borderRadius: 50,
+              zIndex : showImageAnimation ? 2 : -2 ,
+              backgroundColor : COLORS.white
+          }
+          ]}
+          >
+            <Image style={{ width : 100 , height : 100 , borderRadius : 50}} source={{uri: image}} />
+          </Animated.View>
         </View>
         <View style={styles.infoProduct}>
           <Text style={[styleCommon.h2, {color: COLORS.black}]}>{price}</Text>
@@ -265,9 +314,9 @@ const DetailProductScreen = ({navigation, route}) => {
         <View style={styles.description}></View>
         <View style={styles.evaluation}></View>
 
-        <View style={styles.footer}>
+        {/* <View style={styles.footer}>
           <TouchableOpacity
-          onPress={() => navigation.navigate('BottomNavigation')}
+            onPress={() => navigation.navigate('BottomNavigation')}
             style={{flexDirection: 'column', alignItems: 'center'}}>
             <Text style={{color: COLORS.black}}>Home</Text>
             <IconF name="home" size={28} color={COLORS.black} />
@@ -307,7 +356,49 @@ const DetailProductScreen = ({navigation, route}) => {
               Mua ngay
             </Text>
           </TouchableOpacity>
+        </View> */}
+
+      <View
+        style={[
+          styles.bottomSheet,
+          {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 100,
+          },
+        ]}>
+        <View style={styles.rowContainer2}>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('BottomNavigation')}
+            style={{flexDirection: 'column', alignItems: 'center'}}>
+            <Text style={{color: COLORS.black}}>Home</Text>
+            <IconF name="home" size={28} color={COLORS.black} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{flexDirection: 'column', alignItems: 'center'}}>
+            <Text style={{color: COLORS.black}}>Trò chuyện</Text>
+            <Icon
+              name="chatbubble-ellipses-outline"
+              size={28}
+              color={COLORS.black}
+            />
+          </TouchableOpacity>
+        <TouchableOpacity
+            style={styles.orderButton}
+            onPress={handlePresentModalPress}>
+            <Text style={styles.orderButtonText}>Cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.orderButton}
+            onPress={handlePresentModalPressSale}>
+            <Text style={styles.orderButtonText}>Order</Text>
+          </TouchableOpacity>
         </View>
+      </View>
+
+
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={1}
@@ -749,11 +840,41 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
+  rowContainer2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  bottomSheet: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    backgroundColor: '#FFF',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    elevation: 10,
+    justifyContent: 'center', // Thêm dòng này để đẩy bottom sheet xuống dưới
+  },
+
+  orderButton: {
+    backgroundColor: '#FF2271',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  orderButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+
   header: {
     height: '6%',
     flexDirection: 'row',
     paddingLeft: '5%',
-    paddingRight : '5%',
+    paddingRight: '5%',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -793,17 +914,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footer: {
-    height: '8%',
+    height: 80,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     borderTopWidth: 0.5,
-    borderColor: COLORS.black,
-    justifyContent: 'space-between',
+    borderColor: "#FFF",
+    justifyContent: 'center',
     position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
+    elevation : 5,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   imageProductChild: {
     width: 100,
@@ -831,6 +955,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   description: {},
+  animatedImage: {
+   
+  },
 });
 
 export default DetailProductScreen;

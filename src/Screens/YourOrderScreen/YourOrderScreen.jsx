@@ -1,47 +1,50 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import { User } from '../../hooks/useContext';
-import { API_ORDER } from '../../config/api-consts';
+import {User} from '../../hooks/useContext';
+import {API_ORDER} from '../../config/api-consts';
 import axios from 'axios';
-import { Image } from 'react-native';
+import {Image} from 'react-native';
+import MyTabsOrder from '../../navigation/TopTabNavigation/TopTabNavigation';
+
+
 
 function YourOrderScreen({navigation}) {
-
   const {userData} = User();
   const [oderArray, setOderArray] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`${API_ORDER}/${userData._id}`);
+  //       const data = Array.isArray(response.data)
+  //         ? response.data
+  //         : [response.data];
+  //       setOderArray(data);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_ORDER}/${userData._id}`);
-        const data = Array.isArray(response.data) ? response.data : [response.data];
-        setOderArray(data);
-        
-        // Gọi lại API hoặc thực hiện bất kỳ hành động nào khác ở đây sau khi response được trả về
-        // Ví dụ: Gọi API khác  
+  //       // Gọi lại API hoặc thực hiện bất kỳ hành động nào khác ở đây sau khi response được trả về
+  //       // Ví dụ: Gọi API khác
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
+  //   fetchData();
+  // }, []);
 
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-    fetchData();
-  }, []); 
+  // console.log(oderArray);
 
-  console.log(oderArray);
-
-  const handleNavigationDetails = (OrderId ,status) =>{
-    console.log(OrderId , "---------")
-      navigation.navigate('YourOrderDetailScreen' ,{ OrderId : OrderId , status : status});
-  }
-
-
+  const handleNavigationDetails = (OrderId, status) => {
+    console.log(OrderId, '---------');
+    navigation.navigate('YourOrderDetailScreen', {
+      OrderId: OrderId,
+      status: status,
+    });
+  };
 
   const renderItem = ({item, index}) => (
-  
-    <TouchableOpacity style={styles.item} onPress={() => handleNavigationDetails(item._id , item.status)}>
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => handleNavigationDetails(item._id, item.status)}>
       <View style={styles.ViewImg}>
         <View style={styles.ImgItem}></View>
 
@@ -50,7 +53,6 @@ function YourOrderScreen({navigation}) {
 
           <View style={styles.viewColorSize}>
             <Text style={styles.textColor}>Màu {item.ColorCode},</Text>
-            
           </View>
           <Text style={styles.textSize}>{item.date}</Text>
           {/* <Text style={styles.textPriceNew}>
@@ -71,7 +73,7 @@ function YourOrderScreen({navigation}) {
     <View style={styles.container}>
       <View style={styles.Header}>
         <TouchableOpacity
-          style={{ paddingLeft : 20}}
+          style={{paddingLeft: 20}}
           onPress={() => navigation.goBack()}>
           <Image
             style={{width: 22, height: 22}}
@@ -80,18 +82,18 @@ function YourOrderScreen({navigation}) {
         </TouchableOpacity>
         <View style={styles.viewText}>
           <Text style={styles.textHead}> ĐƠN HÀNG </Text>
-          <Text style={styles.textHeadAddress}>Địa chỉ người dùng </Text>
         </View>
         <View></View>
       </View>
-
+      {/* 
       <FlatList
         data={oderArray}
         renderItem={renderItem}
         keyExtractor={item => item._id}
         nestedScrollEnabled={true}
         style={{paddingBottom: 100}}
-      />
+      /> */}
+      <MyTabsOrder/>
     </View>
   );
 }
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 60,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     borderBottomColor: 'black',
   },
   ViewImg: {
@@ -135,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     color: '#000000',
+    fontFamily : 'Inter-Bold'
   },
 
   textHeadAddress: {

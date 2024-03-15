@@ -7,9 +7,12 @@ import {
   TouchableHighlight,
   View,
   AsyncStorage,
+  Animated,
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import COLORS from '../../constants/colors';
-import {useEffect, useState} from 'react';
+import {useEffect, useState , useRef} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Notification = () => {
@@ -155,8 +158,7 @@ const Notification = () => {
       />
     </SafeAreaView>
   );
-};
-
+  }
 const styles = StyleSheet.create({
   container: {
     flex: 1,

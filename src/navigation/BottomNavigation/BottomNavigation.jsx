@@ -5,12 +5,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Home from '../Screens/HomeScreen/Home';
-import Love from '../Screens/LoveScreen/Love';
-import Notification from '../Screens/NotificationScreen/Notification';
-import Chat from '../Screens/ChatScreen/Chat';
-import Profile from '../Screens/ProfileScreen/Profile';
-import COLORS from '../constants/colors';
+import Home from '../../Screens/HomeScreen/Home';
+import Love from '../../Screens/LoveScreen/Love';
+import Notification from '../../Screens/NotificationScreen/Notification';
+import Chat from '../../Screens/ChatScreen/Chat';
+import Profile from '../../Screens/ProfileScreen/Profile';
+import COLORS from '../../constants/colors';
 
 const BottomNavigation = ({navigation}) => {
   const Tab = createBottomTabNavigator();
@@ -22,6 +22,7 @@ const BottomNavigation = ({navigation}) => {
         tabBarActiveTintColor: '#0c090a',
         headerShown: false,
         tabBarShowLabel: true,
+        
       }}>
       <Tab.Screen
         name="Home"

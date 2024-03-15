@@ -21,6 +21,7 @@ import { API_PRODUCT_TO_CART } from '../../config/api-consts';
 import COLORS from '../../constants/colors';
 import { Cart } from '../../hooks/cartContext';
 import Loading from '../../components/organisms/Loading/Loading';
+import LoadingHome from '../../components/organisms/LoadingHome/LoadingHome';
 
 const Home = ({ navigation }) => {
   const { userData } = User();
@@ -30,6 +31,8 @@ const Home = ({ navigation }) => {
   const [favoriteProducts, setFavoriteProducts] = useState([]);
 
   const {setDataCart , dataCart} = Cart();
+
+  console.log(dataCart.length, 'dataCart.length');
   const addToLove = async productId => {
     try {
       // console.log("userData:", userData);
@@ -77,7 +80,7 @@ const Home = ({ navigation }) => {
 
   React.useEffect(() => {
     axios
-      .get(`${API_PRODUCT_TO_CART}`)
+      .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
       .then(function (response) {
         const data = Array.isArray(response.data)
           ? response.data
@@ -89,6 +92,8 @@ const Home = ({ navigation }) => {
         console.log(error);
       });
   }, []);
+
+  console.log(dataCart , "sản phẩm trong giỏ của mỗi người");
 
   React.useEffect(() => {
     var myHeaders = new Headers();
@@ -237,7 +242,7 @@ const Home = ({ navigation }) => {
           />
         </View>
       ) : (
-        <Loading />
+        <Loading/>
       )}
     </View>
   );

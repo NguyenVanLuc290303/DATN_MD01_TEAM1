@@ -7,7 +7,7 @@ import Chat from './ChatScreen/Chat';
 import Love from './LoveScreen/Love';
 import Notification from './NotificationScreen/Notification';
 import Profile from './ProfileScreen/Profile';
-import BottomNavigation from '../navigation/BottomNavigation';
+import BottomNavigation from '../navigation/BottomNavigation/BottomNavigation';
 import EditProfile from './EditProfile/EditProfile';
 import MessageScreen from './MessageScreen/MessageScreen';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
