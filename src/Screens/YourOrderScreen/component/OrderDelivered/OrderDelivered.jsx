@@ -3,9 +3,11 @@ import useOrderList from '../../../../services/order-services/use-all-list-order
 
 const OrderDelivered = ({navigation}) => {
 
-    const listOrder = useOrderList();
 
-    console.log(listOrder, "order Deliverd")
+    const listOrderDelivered = useOrderList().filter(item => item.status === "Đã giao");
+
+
+    console.log(listOrderDelivered, "order Deliverd =>>>>>>>>>>.")
 
     const handleNavigationDetails = (OrderId, status) => {
         console.log(OrderId, '---------');
@@ -40,6 +42,7 @@ const OrderDelivered = ({navigation}) => {
               </View>
             </View>
           </View>
+
         </TouchableOpacity>
       );
 
@@ -47,7 +50,7 @@ const OrderDelivered = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={listOrder}
+        data={listOrderDelivered}
         renderItem={renderItem}
         keyExtractor={item => item._id}
         nestedScrollEnabled={true}

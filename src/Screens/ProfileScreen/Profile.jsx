@@ -86,6 +86,7 @@ const Profile = ({navigation}) => {
       text: 'Privacy',
       action: navigateToPrivacy,
     },
+    
   ];
 
   const renderSettingItem = ({icon, text, action}) => (
