@@ -1,9 +1,10 @@
 import { View ,StyleSheet ,Text , FlatList , TouchableOpacity} from "react-native";
 import COLORS from "../../../../constants/colors";
 import useOrderList from '../../../../services/order-services/use-all-list-order';
+import { styles } from "./Confirm";
 
 
-const AllOrderProduct = ({navigation}) =>{
+const Confirm = ({navigation}) =>{
     const listOrderDelivered = useOrderList().filter(item => item.status === "Đã xác nhận");
 
 
@@ -56,18 +57,12 @@ const AllOrderProduct = ({navigation}) =>{
         nestedScrollEnabled={true}
         style={{paddingBottom: 100}}
       />
+      <Text>LLLLLL</Text>
     </View>
   );
    
 }
 
-const styles = StyleSheet.create({
-    container :{
-        flex : 1,
-        justifyContent : 'center',
-        alignItems : 'center',
-        backgroundColor : COLORS.red
-    }
-})
 
-export default AllOrderProduct;
+
+export default Confirm;

@@ -1,8 +1,8 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import OrderDelivered from '../../Screens/YourOrderScreen/component/OrderDelivered/OrderDelivered';
 import OrderDelivering from '../../Screens/YourOrderScreen/component/OrderDelivering/OrderDelivering';
-import AllOrderProduct from '../../Screens/YourOrderScreen/component/AllOrderProduct/AllOrderProduct';
 import WaitForCofirm from '../../Screens/YourOrderScreen/component/WaitForComfirm/WaitForComfirm';
+import Confirm from '../../Screens/YourOrderScreen/component/Confirm/Confirm';
 import {NavigationContainer} from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import IconAndesign from  'react-native-vector-icons/AntDesign';
@@ -37,7 +37,7 @@ export default function MyTabsOrder() {
       />
          <Tab.Screen
         name="Xác nhận"
-        component={AllOrderProduct}
+        component={Confirm}
         options={{
           tabBarLabel: 'Xác nhận',
           tabBarIcon: ({focused, color, size}) => (

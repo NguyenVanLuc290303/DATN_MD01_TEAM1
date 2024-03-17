@@ -1,5 +1,6 @@
 import {View, StyleSheet, Text , FlatList , TouchableOpacity} from 'react-native';
 import useOrderList from '../../../../services/order-services/use-all-list-order';
+import {styles} from './OrderDelivered'
 
 const OrderDelivered = ({navigation}) => {
 
@@ -60,12 +61,5 @@ const OrderDelivered = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default OrderDelivered;

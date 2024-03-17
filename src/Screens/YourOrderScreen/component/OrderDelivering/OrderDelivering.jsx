@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import {View, StyleSheet, Text , FlatList , TouchableOpacity} from 'react-native';
 import useOrderList from '../../../../services/order-services/use-all-list-order';
+import {styles} from './OrderDelivering'
 
 const OrderDelivering = ({navigation}) => {
-
 
 
     const listOrderDelivered = useOrderList().filter(item => item.status === "Đang giao");
@@ -61,12 +61,6 @@ const OrderDelivering = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+
 
 export default OrderDelivering;
