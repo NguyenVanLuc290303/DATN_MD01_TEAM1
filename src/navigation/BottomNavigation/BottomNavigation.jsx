@@ -30,7 +30,11 @@ const BottomNavigation = ({navigation}) => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({focused, color, size}) => (
-            <IconAndesign name="home" color={focused ? COLORS.App : color} size={focused ? 32 : 26} />
+            focused ? (
+              <Icon name="home-sharp" color={COLORS.App} size={32}/>
+            ) : (
+              <IconAndesign name="home" color={color} size={26} />
+            )
           ),
         }}
       />
@@ -41,7 +45,11 @@ const BottomNavigation = ({navigation}) => {
         options={{
           tabBarLabel: 'Love',
           tabBarIcon: ({focused, color, size}) => (
-            <IconAndesign name="heart" color={focused ? COLORS.App :color} size={focused ? 32 : 26} />
+            focused ? (
+              <IconAndesign name="heart" color={COLORS.App} size={32} />
+            ):(
+              <IconAndesign name="hearto" color={color} size={26} />
+            )
           ),
         }}
       />
@@ -82,11 +90,11 @@ const BottomNavigation = ({navigation}) => {
         options={{
           headerShown: '',
           tabBarIcon: ({focused, color, size}) => (
-            <IconAndesign
-              name="wechat"
-              color={focused ? COLORS.App : color}
-              size={focused ? 34 : 26}
-            />
+            focused ? (
+              <Icon name="chatbubble-ellipses-sharp" size={32} color={COLORS.App}/>
+            ):(
+              <Icon name="chatbubble-ellipses-outline" size={26} color={color}/>
+            )
           ),
         }}
       />
@@ -96,7 +104,12 @@ const BottomNavigation = ({navigation}) => {
         options={{
           headerShown: '',
           tabBarIcon: ({focused, color, size}) => (
-            <Icon name="person" color={focused ? COLORS.App : color} size={focused ? 32 : 26} />
+            focused ? (
+              <Icon name="person" color={COLORS.App} size={32} />
+
+            ) :(
+              <Icon name="person-outline" color={color} size={26} />
+            )
           ),
         }}
       />
