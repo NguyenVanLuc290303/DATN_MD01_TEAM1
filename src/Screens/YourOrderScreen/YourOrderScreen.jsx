@@ -5,7 +5,7 @@ import {API_ORDER} from '../../config/api-consts';
 import axios from 'axios';
 import {Image} from 'react-native';
 import MyTabsOrder from '../../navigation/TopTabNavigation/TopTabNavigation';
-import {styles} from './YourOrderScreen'
+import {styles} from './YourOrderScreenStyle'
 
 
 
