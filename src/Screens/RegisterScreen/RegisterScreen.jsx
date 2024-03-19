@@ -56,16 +56,23 @@ const RegisterScreen = ({navigation}) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
+  const validatePhoneNumber = text => {
+    const regex = /^[0-9]{10}$/; // Regex để kiểm tra định dạng số điện thoại (10 chữ số)
+    if (!regex.test(text)) {
+      setErrorMessages({phoneNumber: 'Please enter a valid phone number'});
+    } else {
+      setErrorMessages({phoneNumber: ''});
+    }
+    setPhoneNumber(text);
+  };
 
   const handerOnlickCreateAccount = async () => {
     const errors = {};
-
-    // Kiểm tra trống và định dạng email
     if (phoneNumber === '') {
       errors.phoneNumber = 'Vui lòng nhập số điện thoại';
-    }
-    if (email === '') {
-      errors.email = 'Vui lòng nhập email';
+    } else if (!validatePhoneNumber(phoneNumber)) {
+      errors.phoneNumber =
+        'Số điện thoại không đúng định dạng, mời bạn nhập lại';
     }
     if (!validateEmail(email)) {
       errors.email = 'Vui lòng nhập đúng định dạng email';
@@ -75,6 +82,13 @@ const RegisterScreen = ({navigation}) => {
     }
     if (password === '') {
       errors.password = 'Vui lòng nhập password';
+    } else if (
+      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?!.*\s).{8,}$/.test(
+        password,
+      )
+    ) {
+      errors.password =
+        'Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một ký tự đặc biệt và một số';
     }
     if (address === '') {
       errors.address = 'Vui lòng nhập địa chỉ';
