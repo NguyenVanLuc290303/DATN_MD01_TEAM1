@@ -16,7 +16,7 @@ import {useState, useCallback, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
 import {API_ORDER} from '../../config/api-consts';
 import {API_PRODUCT_ORDER} from '../../config/api-consts';
-import SuccessNotificationModal from '../../components/organisms/SuccessNotificationModal/SuccessNotificationModal';
+import Icon from 'react-native-vector-icons/Fontisto'
 
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
@@ -36,7 +36,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
       dataAddress.city;
   }
 
-  console.log(addressOrder);
+  console.log(addressOrder , "addresss =>>>>>>>>>>)))))((((((");
 
   // console.log( idProduct  + "Product ID PPPPP");
   // console.log( size  + "size ID PPPPP");
@@ -76,9 +76,9 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   const [status, setStatus] = useState('chờ xác nhận');
 
-  const [methodPay, setMethodPay] = useState('thanh toán khi nhận hàng');
+  const [methodPay, setMethodPay] = useState();
 
-  const [visible, setVisible] = useState(false);
+  // const [addressOrder , setAddressOrder] = useState("");
 
   // const callBackPriceProduct = useCallback(
   //   quantityFinish => {
@@ -90,8 +90,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
   // );
 
   // const [quantityFinish, setQuantityFinish] = useState(dataProductOrder.Quantity); // Số lượng mặc định là 1
-
-  useEffect(() => {}, []);
 
   // Hàm xử lý cộng số lượng
   const incrementQuantity = useCallback(() => {
@@ -138,23 +136,24 @@ const OrderDetailsScreen = ({navigation, route}) => {
   const secounds = new Date().getSeconds();
   console.log('mines :' + minutes);
 
-  // const formatDateTimeOrder = year + '-' + month + '-' + date + ' ' + hour + ":" + minutes  + ":" + secounds ;
-
-  // const stringFormatDateTimeOrder = formatDateTimeOrder.toString();
-
   const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
 
   console.log(formattedDate);
 
   const handleOrderProduct = () => {
+
+    if(isChecked){
+      setMethodPay('thanh toán khi nhận hàng')
+    }else{
+      setMethodPay('đã thanh toán')
+    }
+
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append(
       'Cookie',
       'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
     );
-
-    // console.log(numberPhone);
 
     const requestOptions = {
       method: 'POST',
@@ -179,7 +178,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
   };
 
   const pushProductOnOrder = data => {
-    console.log(data._id);
+    console.log(data);
 
     // console.log(numberPhone);
 
@@ -192,23 +191,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
     dataArrayOrder.forEach(item => {
       item.OrderId = idOrder;
     });
-
-    console.log(dataArrayOrder, '00000000000000');
-
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: myHeaders,
-    //   body: JSON.stringify({
-    //     OrderId: data._id,
-    //     ProductId: idProduct,
-    //     ColorCode: color,
-    //     Size: size,
-    //     Quantity: quantityFinish,
-    //     PropertiesId: idPropoties,
-    //     Image: image,
-    //   }),
-    //   redirect: 'follow',
-    // };
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -227,7 +209,9 @@ const OrderDetailsScreen = ({navigation, route}) => {
     try {
       fetch(API_PRODUCT_ORDER, requestOptions)
         .then(response => response.json())
-        .then(result => console.log(result));
+        .then(result =>  {if(result.status ===1){
+          navigation.replace('NotificationOrderSuccess');
+        }});
     } catch (error) {
       console.log(error);
     }
@@ -457,22 +441,18 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Thanh toán khi nhận hàng
             </Text>
-            <TouchableOpacity
-              style={styles.checkboxContainer}
-              onPress={toggleCheckbox}>
+            
               {/* Hình ảnh checkbox tùy chỉnh */}
               {isChecked ? (
-                <Image
-                  source={require('../../assets/images/checkbox_checked.png')}
-                  style={styles.checkbox}
-                />
+                <TouchableOpacity onPress={toggleCheckbox}>
+                <Icon name="radio-btn-active" size={24} color={COLORS.red}/>
+                </TouchableOpacity>
               ) : (
-                <Image
-                  source={require('../../assets/images/checkbox_checked.png')}
-                  style={styles.checkbox}
-                />
+                <TouchableOpacity onPress={toggleCheckbox}>
+                <Icon name="radio-btn-passive" size={24} />
+                </TouchableOpacity>
               )}
-            </TouchableOpacity>
+            
           </View>
           <View style={styles.textTransport3}>
             <Image
@@ -494,29 +474,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
                 marginLeft: 20,
               }}>
               Zalo Pay
-            </Text>
-            <Text style={styles.priceTransport3}>Liên kết</Text>
-          </View>
-          <View style={styles.textTransport3}>
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                marginLeft: 10,
-                marginTop: 10,
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}
-              source={require('../../assets/images/paypal.jpg')}
-            />
-            <Text
-              style={{
-                color: COLORS.black,
-                fontWeight: 'normal',
-                marginTop: 10,
-                marginLeft: 20,
-              }}>
-              PayPal
             </Text>
             <Text style={styles.priceTransport3}>Liên kết</Text>
           </View>
@@ -571,13 +528,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {/* <SuccessNotificationModal
-        visible={visible}
-        textContent={"Đặt đơn thành công"}
-        
-      >
-
-      </SuccessNotificationModal> */}
     </View>
   );
 };

@@ -10,17 +10,8 @@ const defaultConfig = getDefaultConfig(__dirname);
  */
 const config = 
   {
-    transformer: {
-            babelTransformerPath: require.resolve('./transformer.config.js'),
-            getTransformOptions: async () => ({
-              transform: {
-                experimentalImportSupport: false,
-                inlineRequires: true,
-              },
-            }),
-          },
     resolver: {
-        assetExts: [...defaultConfig.resolver.assetExts,"sass" ,"scss" ,"lottie"],
+        assetExts: [...defaultConfig.resolver.assetExts,"lottie"],
       },
     };
 

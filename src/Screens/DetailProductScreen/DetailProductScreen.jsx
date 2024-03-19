@@ -120,27 +120,24 @@ const DetailProductScreen = ({navigation, route}) => {
 
   // animation cart
 
-
   const animationScale = useRef(new Animated.Value(1)).current;
 
-  console.log(animationScale, "LLLLLLLLLLLL")
+  console.log(animationScale, 'LLLLLLLLLLLL');
   const animationPosition = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
 
-  const [showImageAnimation , setShowImageAnimation] = useState(false);
+  const [showImageAnimation, setShowImageAnimation] = useState(false);
 
   const handleToCart = () => {
-
-  setShowImageAnimation(true);
- const shrinkAnimation = Animated.timing(animationScale, {
+    setShowImageAnimation(true);
+    const shrinkAnimation = Animated.timing(animationScale, {
       toValue: 0,
       duration: 1500,
       useNativeDriver: false,
-      
     });
 
     const parabolicAnimation = Animated.timing(animationPosition, {
       toValue: {x: 160, y: -190},
-      easing : Easing.bezier(0.25, 0.1 , 0.25 , 1),
+      easing: Easing.bezier(0.25, 0.1, 0.25, 1),
       duration: 1000,
       useNativeDriver: false,
     });
@@ -148,11 +145,9 @@ const DetailProductScreen = ({navigation, route}) => {
     Animated.parallel([shrinkAnimation, parabolicAnimation]).start(() => {
       // Sau khi hoàn thành animation, đặt lại giá trị ban đầu
       animationScale.setValue(1);
-      animationPosition.setValue({ x: 0, y: 0 });
+      animationPosition.setValue({x: 0, y: 0});
       setShowImageAnimation(false);
     });
-    
-   
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -225,46 +220,33 @@ const DetailProductScreen = ({navigation, route}) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" size={32} color={COLORS.black} />
           </TouchableOpacity>
-          <View
-            style={{
-              width: '70%',
-              height: 40,
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderRadius: 5,
-              borderWidth: 1,
-              borderColor: COLORS.gray,
-            }}>
+          <View style={{flexDirection: 'row' , alignItems : 'center'}}>
             <IconF name="search" size={28} color={COLORS.gray} />
-            <TextInput placeholder="Tìm kiếm" />
-          </View>
-          {/* <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
-          <Image source={require('@/icons/png/local_mall.png')} />
-        </TouchableOpacity> */}
-          <TouchableOpacity
-            style={{
-              width: 40,
-              height: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => navigation.navigate('CartScreen')}>
-            <Image source={require('@/icons/png/local_mall.png')} />
-            <View
+            <TouchableOpacity
               style={{
-                width: 20,
-                height: 20,
-                backgroundColor: COLORS.red,
-                position: 'absolute',
-                borderRadius: 10,
-                top: 0,
-                right: 0,
-              }}>
-              <Text style={{color: COLORS.white, marginLeft: 5}}>
-                {dataCart.length}
-              </Text>
-            </View>
-          </TouchableOpacity>
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => navigation.navigate('CartScreen')}>
+              <Image source={require('@/icons/png/local_mall.png')} />
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: COLORS.red,
+                  position: 'absolute',
+                  borderRadius: 10,
+                  top: 0,
+                  right: 0,
+                }}>
+                <Text style={{color: COLORS.white, marginLeft: 5}}>
+                  {dataCart.length}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.ViewImageProduct}>
           <Image
@@ -274,24 +256,25 @@ const DetailProductScreen = ({navigation, route}) => {
             style={styles.imageProduct}
           />
           <Animated.View
-           style={[
-            
-            { transform: [
-              { translateX: animationPosition.x },
-              { translateY: animationPosition.y },
-              { scale: animationScale }
-            ]
-              ,
-              width: 100,
-              height: 100,
-              position: 'absolute',
-              borderRadius: 50,
-              zIndex : showImageAnimation ? 2 : -2 ,
-              backgroundColor : COLORS.white
-          }
-          ]}
-          >
-            <Image style={{ width : 100 , height : 100 , borderRadius : 50}} source={{uri: image}} />
+            style={[
+              {
+                transform: [
+                  {translateX: animationPosition.x},
+                  {translateY: animationPosition.y},
+                  {scale: animationScale},
+                ],
+                width: 100,
+                height: 100,
+                position: 'absolute',
+                borderRadius: 50,
+                zIndex: showImageAnimation ? 2 : -2,
+                backgroundColor: COLORS.white,
+              },
+            ]}>
+            <Image
+              style={{width: 100, height: 100, borderRadius: 50}}
+              source={{uri: image}}
+            />
           </Animated.View>
         </View>
         <View style={styles.infoProduct}>
@@ -313,91 +296,45 @@ const DetailProductScreen = ({navigation, route}) => {
         </View>
         <View style={styles.description}></View>
         <View style={styles.evaluation}></View>
-
-        {/* <View style={styles.footer}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('BottomNavigation')}
-            style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Text style={{color: COLORS.black}}>Home</Text>
-            <IconF name="home" size={28} color={COLORS.black} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Text style={{color: COLORS.black}}>Trò chuyện</Text>
-            <Icon
-              name="chatbubble-ellipses-outline"
-              size={28}
-              color={COLORS.black}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={handlePresentModalPress}
-            style={styles.btnAddToCard}>
-            <Text
-              style={{
-                width: '90%',
-                color: COLORS.red,
-                fontSize: 18,
-                fontFamily: 'Inter-Bold',
-              }}>
-              Thêm vào giỏ
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btnSaleNow}
-            onPress={handlePresentModalPressSale}>
-            <Text
-              style={{
-                color: COLORS.white,
-                fontSize: 18,
-                fontFamily: 'Inter-Bold',
-              }}>
-              Mua ngay
-            </Text>
-          </TouchableOpacity>
-        </View> */}
-
-      <View
-        style={[
-          styles.bottomSheet,
-          {
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 100,
-          },
-        ]}>
-        <View style={styles.rowContainer2}>
-        <TouchableOpacity
-            onPress={() => navigation.navigate('BottomNavigation')}
-            style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Text style={{color: COLORS.black}}>Home</Text>
-            <IconF name="home" size={28} color={COLORS.black} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Text style={{color: COLORS.black}}>Trò chuyện</Text>
-            <Icon
-              name="chatbubble-ellipses-outline"
-              size={28}
-              color={COLORS.black}
-            />
-          </TouchableOpacity>
-        <TouchableOpacity
-            style={styles.orderButton}
-            onPress={handlePresentModalPress}>
-            <Text style={styles.orderButtonText}>Cart</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.orderButton}
-            onPress={handlePresentModalPressSale}>
-            <Text style={styles.orderButtonText}>Order</Text>
-          </TouchableOpacity>
+        <View
+          style={[
+            styles.bottomSheet,
+            {
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 100,
+            },
+          ]}>
+          <View style={styles.rowContainer2}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('BottomNavigation')}
+              style={{flexDirection: 'column', alignItems: 'center'}}>
+              <Text style={{color: COLORS.black}}>Home</Text>
+              <IconF name="home" size={28} color={COLORS.black} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{flexDirection: 'column', alignItems: 'center'}}>
+              <Text style={{color: COLORS.black}}>Trò chuyện</Text>
+              <Icon
+                name="chatbubble-ellipses-outline"
+                size={28}
+                color={COLORS.black}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.orderButton}
+              onPress={handlePresentModalPress}>
+              <Text style={styles.orderButtonText}>Cart</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.orderButton}
+              onPress={handlePresentModalPressSale}>
+              <Text style={styles.orderButtonText}>Order</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-
 
         <BottomSheetModal
           ref={bottomSheetModalRef}
@@ -919,13 +856,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderTopWidth: 0.5,
-    borderColor: "#FFF",
+    borderColor: '#FFF',
     justifyContent: 'center',
     position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
-    elevation : 5,
+    elevation: 5,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -955,9 +892,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   description: {},
-  animatedImage: {
-   
-  },
+  animatedImage: {},
 });
 
 export default DetailProductScreen;

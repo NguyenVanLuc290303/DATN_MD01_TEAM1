@@ -7,12 +7,11 @@ export const styles = StyleSheet.create({
       backgroundColor: '#FFFFFF',
     },
     ImgItem: {
-      width: '24%',
+      width: 100,
       height: 100,
       marginLeft: 10,
       marginTop: 10,
       borderRadius: 10,
-      backgroundColor: 'red',
     },
   
     Header: {

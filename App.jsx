@@ -63,6 +63,7 @@ import { CartProvider } from './src/hooks/cartContext';
 
 import SearchProductScreen from './src/Screens/SearchProductScreen/SearchProductScreen';
 import MyTabsOrder from './src/navigation/TopTabNavigation/TopTabNavigation';
+import NotificationOrderSuccess from './src/Screens/NotificationOrderSuccess/NotificationOrderSuccess';
 
 
 // import {CartScreen} from './src/Screens';
@@ -248,6 +249,11 @@ function App() {
         <Stack.Screen
           name="SearchProductScreen"
           component={SearchProductScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="NotificationOrderSuccess"
+          component={NotificationOrderSuccess}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

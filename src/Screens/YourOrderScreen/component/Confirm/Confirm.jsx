@@ -1,7 +1,7 @@
-import { View ,StyleSheet ,Text , FlatList , TouchableOpacity} from "react-native";
+import { View ,StyleSheet ,Text , FlatList , TouchableOpacity, Image} from "react-native";
 import COLORS from "../../../../constants/colors";
 import useOrderList from '../../../../services/order-services/use-all-list-order';
-import { styles } from "./Confirm";
+import { styles } from "./Confirm.style";
 
 
 const Confirm = ({navigation}) =>{
@@ -23,7 +23,9 @@ const Confirm = ({navigation}) =>{
           style={styles.item}
           onPress={() => handleNavigationDetails(item._id, item.status)}>
           <View style={styles.ViewImg}>
-            <View style={styles.ImgItem}></View>
+            <View >
+              <Image style={styles.ImgItem} source={require('@/images/logoAPP_MD01_png.png')}/>
+            </View>
     
             <View style={styles.Orders}>
               <Text style={styles.textNamePr}>{item._id}</Text>

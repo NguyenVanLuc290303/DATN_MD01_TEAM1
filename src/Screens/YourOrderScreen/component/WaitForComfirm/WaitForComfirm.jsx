@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View , TouchableOpacity , FlatList } from "react-native";
+import { StyleSheet, Text, View , TouchableOpacity , FlatList, Image } from "react-native";
 import useOrderList from '../../../../services/order-services/use-all-list-order';
-
+import { styles } from "./WaitForComfirm.style";
 
 
 const WaitForCofirm = ({navigation}) =>{
 
-    const listOrderDelivered = useOrderList().filter(item => item.status === "Đang chờ xác nhận");
+    const listOrderDelivered = useOrderList().filter(item => item.status === "chờ xác nhận");
 
     console.log(listOrderDelivered, "order Deliverd =>>>>>>>>>>.")
 
@@ -22,7 +22,9 @@ const WaitForCofirm = ({navigation}) =>{
           style={styles.item}
           onPress={() => handleNavigationDetails(item._id, item.status)}>
           <View style={styles.ViewImg}>
-            <View style={styles.ImgItem}></View>
+            <View >
+              <Image style={styles.ImgItem} source={require('@/images/logoAPP_MD01_png.png')}/>
+            </View>
     
             <View style={styles.Orders}>
               <Text style={styles.textNamePr}>{item._id}</Text>

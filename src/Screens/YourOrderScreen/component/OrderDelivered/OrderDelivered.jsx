@@ -1,6 +1,6 @@
-import {View, StyleSheet, Text , FlatList , TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text , FlatList , TouchableOpacity, Image} from 'react-native';
 import useOrderList from '../../../../services/order-services/use-all-list-order';
-import {styles} from './OrderDelivered'
+import {styles} from './OrderDelivered.style'
 
 const OrderDelivered = ({navigation}) => {
 
@@ -23,7 +23,9 @@ const OrderDelivered = ({navigation}) => {
           style={styles.item}
           onPress={() => handleNavigationDetails(item._id, item.status)}>
           <View style={styles.ViewImg}>
-            <View style={styles.ImgItem}></View>
+            <View >
+            <Image style={styles.ImgItem} source={require('@/images/logoAPP_MD01_png.png')}/>
+            </View>
     
             <View style={styles.Orders}>
               <Text style={styles.textNamePr}>{item._id}</Text>
