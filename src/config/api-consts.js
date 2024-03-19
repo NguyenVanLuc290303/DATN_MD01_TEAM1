@@ -1,6 +1,6 @@
 // write api use to app
 
-export const IP_ADDRESS = '192.168.1.156';
+export const IP_ADDRESS = '192.168.1.5';
 
 // api users
 
@@ -8,10 +8,9 @@ export const API_ADD_USERS = `http://${IP_ADDRESS}:3000/api-taikhoan`;
 
 export const API_LOGIN = `http://${IP_ADDRESS}:3000/api-taikhoan`;
 
-export const API_RESSET_PASSWORD =`http://${IP_ADDRESS}:3000/api-taikhoan/mk`;
+export const API_RESSET_PASSWORD = `http://${IP_ADDRESS}:3000/api-taikhoan/mk`;
 
 export const API_UPDATE_USER = `http://${IP_ADDRESS}:3000/api-taikhoan`;
-
 
 // api categorysr
 
@@ -27,7 +26,6 @@ export const API_COLOR_PRODUCT = `http://${IP_ADDRESS}:3000/api-mausanpham`;
 
 // api product love
 
-
 export const API_GET_TO_LOVE = `http://${IP_ADDRESS}:3000/api-sanpham/SPL`;
 
 export const API_ADD_TO_LOVE = `http://${IP_ADDRESS}:3000/api-sanpham/SPL`;
@@ -39,17 +37,14 @@ export const API_PRODUCT_ORDER = `http://${IP_ADDRESS}:3000/api-sanpham/SPD`;
 
 export const API_PRODUCT_ORDER_ID = `http://${IP_ADDRESS}:3000/api-sanpham/getOD`;
 
-
 // api cart
 
 export const API_PRODUCT_TO_CART = `http://${IP_ADDRESS}:3000/api-sanpham/SPG`;
 
-//api address 
+//api address
 
-export const API_ADDRESS =`http://${IP_ADDRESS}:3000/api-dcgh`;
+export const API_ADDRESS = `http://${IP_ADDRESS}:3000/api-dcgh`;
 
 // api notification
 
 export const API_NOTIFICATION = `http://${IP_ADDRESS}:3000/api-thongbao`;
-
-

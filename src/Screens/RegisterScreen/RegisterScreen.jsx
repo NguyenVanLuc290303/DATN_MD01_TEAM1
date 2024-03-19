@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import {useState, useEffect, useContext} from 'react';
 import {
   Button,
   Image,
@@ -9,19 +9,16 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Alert
+  Alert,
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Icons } from '../../constants/images';
-import { ToggleButton } from 'react-native-paper';
-import axios, { Axios } from 'axios';
+import {Icons} from '../../constants/images';
+import {ToggleButton} from 'react-native-paper';
+import axios, {Axios} from 'axios';
 import auth from '@react-native-firebase/auth';
 
-
-
-
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -36,12 +33,9 @@ const RegisterScreen = ({ navigation }) => {
     address: '',
   });
 
-
   // const [verification,setVerification] = useState(null);
 
-
   const [isPasswordShow, setIsPasswordShow] = useState(false);
-
 
   function onAuthStateChanged(user) {
     if (user) {
@@ -57,14 +51,13 @@ const RegisterScreen = ({ navigation }) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const validateEmail = (email) => {
+  const validateEmail = email => {
     // Kiểm tra định dạng email
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
   const handerOnlickCreateAccount = async () => {
-
     const errors = {};
 
     // Kiểm tra trống và định dạng email
@@ -96,36 +89,39 @@ const RegisterScreen = ({ navigation }) => {
       let formattedPhoneNumber = phoneNumber.trim();
       if (formattedPhoneNumber.startsWith('0')) {
         formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
-        
+
         // chuyển đổi xong thì bắt đầu thực hiện đăng ký
         try {
           console.log(formattedPhoneNumber);
-          const confirmationResult = await auth().signInWithPhoneNumber(formattedPhoneNumber);
-          navigation.navigate('SendOTPRegisterScreen', data = {
-            verification: confirmationResult.verificationId,
-            email: email,
-            name: name,
-            password: password,
-            address: address,
-            numberPhone: phoneNumber,
-          });
+          const confirmationResult = await auth().signInWithPhoneNumber(
+            formattedPhoneNumber,
+          );
+          navigation.navigate(
+            'SendOTPRegisterScreen',
+            (data = {
+              verification: confirmationResult.verificationId,
+              email: email,
+              name: name,
+              password: password,
+              address: address,
+              numberPhone: phoneNumber,
+            }),
+          );
         } catch (error) {
           console.log(error);
           Alert.alert('Error', 'Failed to send OTP');
         }
       }
-
     }
   };
 
-
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-      <ScrollView style={{ flex: 1, marginHorizontal: 22 }}>
-        <View style={{ marginBottom: 80, marginTop: 20, alignItems: 'center' }}>
-          <Image source={Icons.IconApp} style={{ width: 100, height: 100 }} />
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
+      <ScrollView style={{flex: 1, marginHorizontal: 22}}>
+        <View style={{marginBottom: 80, marginTop: 20, alignItems: 'center'}}>
+          <Image source={Icons.IconApp} style={{width: 100, height: 100}} />
         </View>
-        <View style={{ marginVertical: 22 }}>
+        <View style={{marginVertical: 22}}>
           <Text
             style={{
               fontSize: 22,
@@ -137,8 +133,8 @@ const RegisterScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <View style={{ paddingTop: 10, justifyContent: 'center' }}>
-          <View style={{ marginBottom: 22 }}>
+        <View style={{paddingTop: 10, justifyContent: 'center'}}>
+          <View style={{marginBottom: 22}}>
             <View
               style={{
                 width: '100%',
@@ -157,14 +153,14 @@ const RegisterScreen = ({ navigation }) => {
                 style={{
                   width: '100%',
                 }}
-                onChangeText={(Text) => setPhoneNumber(Text)}
+                onChangeText={Text => setPhoneNumber(Text)}
               />
             </View>
             {errorMessages.phoneNumber ? (
-              <Text style={{ color: 'red' }}>{errorMessages.phoneNumber}</Text>
+              <Text style={{color: 'red'}}>{errorMessages.phoneNumber}</Text>
             ) : null}
           </View>
-          <View style={{ marginBottom: 22 }}>
+          <View style={{marginBottom: 22}}>
             <View
               style={{
                 width: '100%',
@@ -183,15 +179,15 @@ const RegisterScreen = ({ navigation }) => {
                 style={{
                   width: '100%',
                 }}
-                onChangeText={(Text) => setEmail(Text)}
+                onChangeText={Text => setEmail(Text)}
               />
             </View>
             {errorMessages.email ? (
-              <Text style={{ color: 'red' }}>{errorMessages.email}</Text>
+              <Text style={{color: 'red'}}>{errorMessages.email}</Text>
             ) : null}
           </View>
 
-          <View style={{ marginBottom: 22 }}>
+          <View style={{marginBottom: 22}}>
             <View
               style={{
                 width: '100%',
@@ -209,16 +205,15 @@ const RegisterScreen = ({ navigation }) => {
                 style={{
                   width: '100%',
                 }}
-                onChangeText={(Text) => setName(Text)}
-
+                onChangeText={Text => setName(Text)}
               />
             </View>
             {errorMessages.name ? (
-              <Text style={{ color: 'red' }}>{errorMessages.name}</Text>
+              <Text style={{color: 'red'}}>{errorMessages.name}</Text>
             ) : null}
           </View>
 
-          <View style={{ marginBottom: 22 }}>
+          <View style={{marginBottom: 22}}>
             <View
               style={{
                 width: '100%',
@@ -233,28 +228,30 @@ const RegisterScreen = ({ navigation }) => {
               <TextInput
                 placeholder="Enter your password"
                 placeholderTextColor={COLORS.black}
-                secureTextEntry
+                secureTextEntry={!isPasswordShow}
                 style={{
                   width: '100%',
                 }}
-                onChangeText={(Text) => setPassword(Text)}
-
+                onChangeText={Text => setPassword(Text)}
               />
 
               <TouchableOpacity
+                onPress={() => setIsPasswordShow(!isPasswordShow)}
                 style={{
                   position: 'absolute',
                   right: 12,
                 }}>
-                <Image source={Icons.IconEye} />
+                <Image
+                  source={isPasswordShow ? Icons.IconEye : Icons.IconEyeHide}
+                />
               </TouchableOpacity>
             </View>
             {errorMessages.password ? (
-              <Text style={{ color: 'red' }}>{errorMessages.password}</Text>
+              <Text style={{color: 'red'}}>{errorMessages.password}</Text>
             ) : null}
           </View>
 
-          <View style={{ marginBottom: 22 }}>
+          <View style={{marginBottom: 22}}>
             <View
               style={{
                 width: '100%',
@@ -269,31 +266,17 @@ const RegisterScreen = ({ navigation }) => {
               <TextInput
                 placeholder="Enter your address"
                 placeholderTextColor={COLORS.black}
-                // secureTextEntry={isPasswordShow}
                 style={{
                   width: '100%',
                 }}
-                onChangeText={(Text) => setAddress(Text)}
+                onChangeText={Text => setAddress(Text)}
               />
-
-              <TouchableOpacity
-                onPress={() => setIsPasswordShow(!isPasswordShow)}
-                style={{
-                  position: 'absolute',
-                  right: 12,
-                }}>
-                {isPasswordShow == true ? (
-                  <Image source={Icons.IconEyeHide} />
-                ) : (
-                  <Image source={Icons.IconEye} />
-                )}
-              </TouchableOpacity>
             </View>
             {errorMessages.address ? (
-              <Text style={{ color: 'red' }}>{errorMessages.address}</Text>
+              <Text style={{color: 'red'}}>{errorMessages.address}</Text>
             ) : null}
           </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
               onPress={handerOnlickCreateAccount}
               style={{
