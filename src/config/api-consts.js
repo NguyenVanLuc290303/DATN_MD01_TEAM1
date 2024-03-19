@@ -32,6 +32,11 @@ export const API_GET_TO_LOVE = `http://${IP_ADDRESS}:3000/api-sanpham/SPL`;
 
 export const API_ADD_TO_LOVE = `http://${IP_ADDRESS}:3000/api-sanpham/SPL`;
 
+export const API_DELETE_TO_LOVE = `http://${IP_ADDRESS}:3000/api-sanpham/SPL`;
+
+
+
+
 // api order
 export const API_ORDER = `http://${IP_ADDRESS}:3000/api-donhang`;
 
