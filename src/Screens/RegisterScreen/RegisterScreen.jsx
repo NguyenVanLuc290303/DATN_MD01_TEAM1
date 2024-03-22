@@ -70,11 +70,8 @@ const RegisterScreen = ({navigation}) => {
     const errors = {};
     if (phoneNumber === '') {
       errors.phoneNumber = 'Vui lòng nhập số điện thoại';
-    } else if (!validatePhoneNumber(phoneNumber)) {
-      errors.phoneNumber =
-        'Số điện thoại không đúng định dạng, mời bạn nhập lại';
     }
-    if (!validateEmail(email)) {
+    else if (!validateEmail(email)) {
       errors.email = 'Vui lòng nhập đúng định dạng email';
     }
     if (name === '') {

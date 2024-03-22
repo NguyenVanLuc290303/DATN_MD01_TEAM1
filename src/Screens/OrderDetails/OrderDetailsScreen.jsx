@@ -7,10 +7,12 @@ import {
   Text,
   TouchableOpacity,
   View,
+  NativeModules,
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {User} from '../../hooks/useContext';
+import CryptoJS from 'crypto-js';
 
 import {useState, useCallback, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
@@ -80,16 +82,16 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   // const [addressOrder , setAddressOrder] = useState("");
 
-  // const callBackPriceProduct = useCallback(
-  //   quantityFinish => {
-  //     var totalPriceProduct = price * quantityFinish + costTranformer;
+  const callBackPriceProduct = useCallback(
+    quantityFinish => {
+      var totalPriceProduct = price * quantityFinish + costTranformer;
 
-  //     setTotal(totalPriceProduct);
-  //   },
-  //   [quantityFinish],
-  // );
+      setTotal(totalPriceProduct);
+    },
+    [quantityFinish],
+  );
 
-  // const [quantityFinish, setQuantityFinish] = useState(dataProductOrder.Quantity); // Số lượng mặc định là 1
+  const [quantityFinish, setQuantityFinish] = useState(dataProductOrder.Quantity); // Số lượng mặc định là 1
 
   // Hàm xử lý cộng số lượng
   const incrementQuantity = useCallback(() => {
@@ -141,7 +143,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
   console.log(formattedDate);
 
   const handleOrderProduct = () => {
-
+    createZaloPayOrder();
+    return;
     if(isChecked){
       setMethodPay('thanh toán khi nhận hàng')
     }else{
@@ -216,6 +219,82 @@ const OrderDetailsScreen = ({navigation, route}) => {
       console.log(error);
     }
   };
+  const  getCurrentDateYYMMDD = () => {
+    var todayDate = new Date().toISOString().slice(2, 10);
+    return todayDate.split('-').join('');
+  }
+
+  const createZaloPayOrder = async () => {
+    let apptransid = getCurrentDateYYMMDD() + '_' + new Date().getTime();
+    let appid = 553;
+    let amount = parseInt(totalPrice);
+    let appuser = 'ZaloPayDemo';
+    let apptime = new Date().getTime();
+    let embeddata = '{}';
+    let item = '[]';
+    let description = 'Thanh toán đơn hàng quần áo';
+    let hmacInput =
+        appid +
+        '|' +
+        apptransid +
+        '|' +
+        appuser +
+        '|' +
+        amount +
+        '|' +
+        apptime +
+        '|' +
+        embeddata +
+        '|' +
+        item;
+    let mac = CryptoJS.HmacSHA256(
+        hmacInput,
+        '9phuAOYhan4urywHTh0ndEXiV3pKHr5Q',
+    );
+    console.log('====================================');
+    console.log('hmacInput: ' + hmacInput);
+    console.log('mac: ' + mac);
+    console.log('====================================');
+    var order = {
+      app_id: appid,
+      app_user: appuser,
+      app_time: apptime,
+      amount: amount,
+      app_trans_id: apptransid,
+      embed_data: embeddata,
+      item: item,
+      description: description,
+      mac: mac,
+    };
+
+    console.log(order);
+
+    let formBody = [];
+    for (let i in order) {
+      var encodedKey = encodeURIComponent(i);
+      var encodedValue = encodeURIComponent(order[i]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    formBody = formBody.join('&');
+    await fetch('https://sb-openapi.zalopay.vn/v2/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+      body: formBody,
+    })
+        .then(response => response.json())
+        .then(resJson => {
+          console.log('createZaloPayOrder ', resJson);
+          if (resJson.return_code === 1) {
+            var payZP = NativeModules.PayZaloBridge;
+            payZP.payOrder(resJson.zp_trans_token);
+          }
+        })
+        .catch(error => {
+          console.log('error ', error);
+        });
+  }
 
   return (
     <View styles={styles.container}>
@@ -338,7 +417,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               Tin nhắn: Che tên sản phẩm
             </Text>
           </View>
-        </View>  
+        </View>
         <View style={{marginTop : 10, flexDirection : 'row' , padding : '4%', alignItems : 'center' , justifyContent : 'space-between' , backgroundColor : COLORS.white}}>
             <View style={{ flexDirection : 'row' , alignItems : 'center'}}>
             <Image source={Icons.IconVoucher} style={styles.iconVoucher}/>
@@ -441,7 +520,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Thanh toán khi nhận hàng
             </Text>
-            
+
               {/* Hình ảnh checkbox tùy chỉnh */}
               {isChecked ? (
                 <TouchableOpacity onPress={toggleCheckbox}>
@@ -452,7 +531,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                 <Icon name="radio-btn-passive" size={24} />
                 </TouchableOpacity>
               )}
-            
+
           </View>
           <View style={styles.textTransport3}>
             <Image

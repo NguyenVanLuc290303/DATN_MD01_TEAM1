@@ -45,6 +45,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
       console.log('đăng ký trên mongodb');
       // Navigate to the main screen upon successful authentication
       setUserData(dataUserRegister);
+      console.log('dataUserRegister', dataUserRegister);
       RegisterUserMongodb();
     } catch (error) {
       console.log(error);
@@ -77,12 +78,12 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
         };
 
         try {
-            
+
         fetch(`${API_ADD_USERS}/${numberPhone}/${email}`, requestOptions)
         .then(response => response.json())
         .then(result => {
           if(result._id !== null){ navigation.navigate('OnboardingScreen')}else{ Alert.alert("Đã tồn tại tài khoản")}
-        }) 
+        })
         } catch (error) {
             console.log(error);
         }
