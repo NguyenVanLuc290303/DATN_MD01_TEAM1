@@ -67,62 +67,63 @@ const RegisterScreen = ({navigation}) => {
   };
 
   const handerOnlickCreateAccount = async () => {
-    const errors = {};
-    if (phoneNumber === '') {
-      errors.phoneNumber = 'Vui lòng nhập số điện thoại';
-    }
-    else if (!validateEmail(email)) {
-      errors.email = 'Vui lòng nhập đúng định dạng email';
-    }
-    if (name === '') {
-      errors.name = 'Vui lòng nhập tên';
-    }
-    if (password === '') {
-      errors.password = 'Vui lòng nhập password';
-    } else if (
-      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?!.*\s).{8,}$/.test(
-        password,
-      )
-    ) {
-      errors.password =
-        'Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một ký tự đặc biệt và một số';
-    }
-    if (address === '') {
-      errors.address = 'Vui lòng nhập địa chỉ';
-    }
+    // const errors = {};
+    // if (phoneNumber === '') {
+    //   errors.phoneNumber = 'Vui lòng nhập số điện thoại';
+    // }
+    // else if (!validateEmail(email)) {
+    //   errors.email = 'Vui lòng nhập đúng định dạng email';
+    // }
+    // if (name === '') {
+    //   errors.name = 'Vui lòng nhập tên';
+    // }
+    // if (password === '') {
+    //   errors.password = 'Vui lòng nhập password';
+    // } else if (
+    //   !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?!.*\s).{8,}$/.test(
+    //     password,
+    //   )
+    // ) {
+    //   errors.password =
+    //     'Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một ký tự đặc biệt và một số';
+    // }
+    // if (address === '') {
+    //   errors.address = 'Vui lòng nhập địa chỉ';
+    // }
 
-    setErrorMessages(errors);
+    // setErrorMessages(errors);
 
-    if (Object.keys(errors).length === 0) {
-      // Nếu không có lỗi, bạn có thể tiến hành đăng ký tài khoản ở đây
+    // if (Object.keys(errors).length === 0) {
+    //   // Nếu không có lỗi, bạn có thể tiến hành đăng ký tài khoản ở đây
 
-      // chuyển số điện thoại 0 -> +84
-      let formattedPhoneNumber = phoneNumber.trim();
-      if (formattedPhoneNumber.startsWith('0')) {
-        formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
+    //   // chuyển số điện thoại 0 -> +84
+    //   let formattedPhoneNumber = phoneNumber.trim();
+    //   if (formattedPhoneNumber.startsWith('0')) {
+    //     formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
 
-        // chuyển đổi xong thì bắt đầu thực hiện đăng ký
-        try {
-          console.log(formattedPhoneNumber);
-          const confirmationResult = await auth().signInWithPhoneNumber(
-            formattedPhoneNumber,
-          );
-          navigation.navigate(
-            'SendOTPRegisterScreen',
-            (data = {
-              verification: confirmationResult.verificationId,
-              email: email,
-              name: name,
-              password: password,
-              address: address,
-              numberPhone: phoneNumber,
-            }),
-          );
-        } catch (error) {
-          console.log(error);
-          Alert.alert('Error', 'Failed to send OTP');
-        }
-      }
+    //     // chuyển đổi xong thì bắt đầu thực hiện đăng ký
+        
+    //   }
+    // }
+    try {
+      // console.log(formattedPhoneNumber);
+      const confirmationResult = await auth().signInWithPhoneNumber(
+        phoneNumber,
+      );
+      navigation.navigate(
+        'SendOTPRegisterScreen',
+        (data = {
+          verification: confirmationResult.verificationId,
+          email: email,
+          name: name,
+          password: password,
+          address: address,
+          numberPhone: phoneNumber,
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Failed to send OTP');
     }
   };
 

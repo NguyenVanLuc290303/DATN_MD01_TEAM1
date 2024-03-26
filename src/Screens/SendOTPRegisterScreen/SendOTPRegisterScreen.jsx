@@ -24,6 +24,8 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
 
   const {verification, name, email,password , address, numberPhone} = route.params;
 
+  console.log(numberPhone, 'phoneNumber Register Now =>>>>>>>>')
+
   const dataUserRegister = {
     name : name,
     email : email,

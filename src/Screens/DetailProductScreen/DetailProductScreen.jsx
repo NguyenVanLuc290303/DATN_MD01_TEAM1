@@ -15,6 +15,7 @@ import {
   PanResponder,
   Animated,
   Easing,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
@@ -40,7 +41,7 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const {dataCart, addItemToCart} = Cart();
 
-  console.log(dataCart, 'datacartlength');
+  // console.log(dataCart, 'datacartlength');
 
   const idUser = userData._id;
 
@@ -56,10 +57,25 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const [quantity, setQuantity] = useState(1); // Số lượng mặc định là 1
 
+  const [quantityRemain , setQuantityRemain] = useState();
+
+
   // Hàm xử lý cộng số lượng
-  const incrementQuantity = useCallback(() => {
-    setQuantity(quantity + 1);
-  });
+
+  //Đang sai logic render của react 
+  const incrementQuantity =() => {
+    console.log(quantityRemain , ")))))))");
+    console.log(quantity, "_____________")
+    if(quantityRemain === quantity){
+      ToastAndroid.showWithGravity(
+        'Số lượng đã trong kho hàng đã hết',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+    }else{
+      setQuantity(quantity + 1);
+    }
+  };
 
   // Hàm xử lý trừ số lượng, không cho giảm dưới 1
   const decrementQuantity = () => {
@@ -87,9 +103,6 @@ const DetailProductScreen = ({navigation, route}) => {
       .catch(error => console.error(error));
   }, []);
 
-  useEffect(() => {
-    // checkProductCart();
-  }, []);
 
   const bottomSheetModalRef = useRef(null);
 
@@ -122,7 +135,7 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const animationScale = useRef(new Animated.Value(1)).current;
 
-  console.log(animationScale, 'LLLLLLLLLLLL');
+  // console.log(animationScale, 'LLLLLLLLLLLL');
   const animationPosition = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
 
   const [showImageAnimation, setShowImageAnimation] = useState(false);
@@ -205,13 +218,14 @@ const DetailProductScreen = ({navigation, route}) => {
     });
   };
 
-  const handleOnpressSize = (size, id) => {
-    // setIsSelectedSize(size);
+  const handleOnpressSize = (size, id , quantity) => {
+    // console.log(quantity ,  "số lượng còn trong size đó ?????");
+    setQuantityRemain(quantity);
     setSelectSize(size);
     setIdPropoties(id);
   };
 
-  console.log('renderlai');
+  // console.log('renderlai');
 
   return (
     <BottomSheetModalProvider>
@@ -418,7 +432,7 @@ const DetailProductScreen = ({navigation, route}) => {
                   data={dataProperties}
                   keyExtractor={item => item._id}
                   renderItem={({item}) => {
-                    console.log(item.colorId + 'pppppppppppppppppp');
+                    // console.log(item.colorId + 'pppppppppppppppppp');
                     return (
                       <TouchableOpacity
                         style={{
@@ -434,14 +448,14 @@ const DetailProductScreen = ({navigation, route}) => {
                               : 35,
                           marginRight: 20,
                           marginTop: 10,
-                          borderRadius: 5,
+                          borderRadius: 10,
                           backgroundColor: `#${item.colorId}`,
-                          borderWidth: 1,
-                          borderColor:
-                            selectedColor &&
-                            selectedColor.colorId === item.colorId
-                              ? COLORS.black
-                              : `#${item.colorId}`,
+                          // borderWidth: 1,
+                          // borderColor:
+                          //   selectedColor &&
+                          //   selectedColor.colorId === item.colorId
+                          //     ? COLORS.black
+                          //     : `#${item.colorId}`,
                         }}
                         onPress={() => setSelectedColor(item)}>
                         {/* <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} /> */}
@@ -450,8 +464,8 @@ const DetailProductScreen = ({navigation, route}) => {
                   }}
                   horizontal
                 />
-
-                {selectedColor && (
+                
+                {selectedColor ? (
                   <View style={{marginTop: 10}}>
                     <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
                       Sizes:
@@ -470,20 +484,19 @@ const DetailProductScreen = ({navigation, route}) => {
                           <TouchableOpacity
                             style={{
                               flexDirection: 'row',
-                              width: '50%',
-                              height: 30,
-                              borderWidth: 1.5,
-                              borderColor:
-                                selectSize === item.size
-                                  ? COLORS.red
-                                  : COLORS.gray,
+                              width: '30%',
+                              height: 35,
                               alignItems: 'center',
-                              borderRadius: 3,
+                              borderRadius: 10,
                               marginTop: 10,
                               marginBottom: 10,
+                              justifyContent : 'center',
+                              backgroundColor : selectSize === item.size
+                                  ? "#000000"
+                                  :  "#D9D9D9"
                             }}
                             onPress={() =>
-                              handleOnpressSize(item.size, item._id)
+                              handleOnpressSize(item.size, item._id , item.quantity)
                             }>
                             <Text
                               style={{
@@ -493,14 +506,74 @@ const DetailProductScreen = ({navigation, route}) => {
                                 fontSize: 16,
                                 fontWeight: '600',
                                 paddingLeft: '5%',
+                                color :  selectSize === item.size
+                                ? "#FFFFFF"
+                                :  "#000000"
                               }}>
                               {item.size}
                             </Text>
-                            <Text>{item.quantity}</Text>
+                            {/* <Text>{item.quantity}</Text> */}
                           </TouchableOpacity>
                         );
                       }}
                     />
+                  </View>
+                ) : dataProperties[0] && dataProperties[0].sizes ? (
+                  <View style={{marginTop: 10}}>
+                  <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
+                    Sizes:
+                  </Text>
+                  <FlatList
+                    data={
+                      dataProperties[0] && dataProperties[0].sizes
+                        ? dataProperties[0].sizes.filter(
+                            size => size.quantity > 0,
+                          )
+                        : []
+                    }
+                    // keyExtractor={(item, index) => index.toString()}
+                    renderItem={({item, index}) => {
+                      return (
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: 'row',
+                            width: '30%',
+                            height: 35,
+                            alignItems: 'center',
+                            borderRadius: 10,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            justifyContent : 'center',
+                            backgroundColor : selectSize === item.size
+                                ? "#000000"
+                                :  "#D9D9D9"
+                          }}
+                          onPress={() =>
+                            handleOnpressSize(item.size, item._id , item.quantity)
+                          }>
+                          <Text
+                            style={{
+                              width: '85%',
+                              // marginRight: 10,
+                              // marginLeft: 10,
+                              fontSize: 16,
+                              fontWeight: '600',
+                              paddingLeft: '5%',
+                              color :  selectSize === item.size
+                              ? "#FFFFFF"
+                              :  "#000000"
+                            }}>
+                            {item.size}
+                          </Text>
+                          {/* <Text>{item.quantity}</Text> */}
+                        </TouchableOpacity>
+                      );
+                    }}
+                  />
+                </View>
+                ) :(
+                  <View>
+                    
                   </View>
                 )}
               </View>
@@ -635,7 +708,7 @@ const DetailProductScreen = ({navigation, route}) => {
                   data={dataProperties}
                   keyExtractor={item => item._id}
                   renderItem={({item}) => {
-                    console.log(item.colorId + 'pppppppppppppppppp');
+                    // console.log(item.colorId + 'pppppppppppppppppp');
                     return (
                       <TouchableOpacity
                         style={{
@@ -651,14 +724,14 @@ const DetailProductScreen = ({navigation, route}) => {
                               : 35,
                           marginRight: 20,
                           marginTop: 10,
-                          borderRadius: 5,
+                          borderRadius: 10,
                           backgroundColor: `#${item.colorId}`,
-                          borderWidth: 1,
-                          borderColor:
-                            selectedColor &&
-                            selectedColor.colorId === item.colorId
-                              ? COLORS.black
-                              : `#${item.colorId}`,
+                          // borderWidth: 1,
+                          // borderColor:
+                          //   selectedColor &&
+                          //   selectedColor.colorId === item.colorId
+                          //     ? COLORS.black
+                          //     : `#${item.colorId}`,
                         }}
                         onPress={() => setSelectedColor(item)}>
                         {/* <Image source={{ uri: item.image }} style={{ width: 100, height: 100 }} /> */}
@@ -667,8 +740,8 @@ const DetailProductScreen = ({navigation, route}) => {
                   }}
                   horizontal
                 />
-
-                {selectedColor && (
+                
+                {selectedColor ? (
                   <View style={{marginTop: 10}}>
                     <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
                       Sizes:
@@ -687,20 +760,19 @@ const DetailProductScreen = ({navigation, route}) => {
                           <TouchableOpacity
                             style={{
                               flexDirection: 'row',
-                              width: '50%',
-                              height: 30,
-                              borderWidth: 1.5,
-                              borderColor:
-                                selectSize === item.size
-                                  ? COLORS.red
-                                  : COLORS.gray,
+                              width: '30%',
+                              height: 35,
                               alignItems: 'center',
-                              borderRadius: 3,
+                              borderRadius: 10,
                               marginTop: 10,
                               marginBottom: 10,
+                              justifyContent : 'center',
+                              backgroundColor : selectSize === item.size
+                                  ? "#000000"
+                                  :  "#D9D9D9"
                             }}
                             onPress={() =>
-                              handleOnpressSize(item.size, item._id)
+                              handleOnpressSize(item.size, item._id , item.quantity)
                             }>
                             <Text
                               style={{
@@ -710,14 +782,74 @@ const DetailProductScreen = ({navigation, route}) => {
                                 fontSize: 16,
                                 fontWeight: '600',
                                 paddingLeft: '5%',
+                                color :  selectSize === item.size
+                                ? "#FFFFFF"
+                                :  "#000000"
                               }}>
                               {item.size}
                             </Text>
-                            <Text>{item.quantity}</Text>
+                            {/* <Text>{item.quantity}</Text> */}
                           </TouchableOpacity>
                         );
                       }}
                     />
+                  </View>
+                ) : dataProperties[0] && dataProperties[0].sizes ? (
+                  <View style={{marginTop: 10}}>
+                  <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
+                    Sizes:
+                  </Text>
+                  <FlatList
+                    data={
+                      dataProperties[0] && dataProperties[0].sizes
+                        ? dataProperties[0].sizes.filter(
+                            size => size.quantity > 0,
+                          )
+                        : []
+                    }
+                    // keyExtractor={(item, index) => index.toString()}
+                    renderItem={({item, index}) => {
+                      return (
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: 'row',
+                            width: '30%',
+                            height: 35,
+                            alignItems: 'center',
+                            borderRadius: 10,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            justifyContent : 'center',
+                            backgroundColor : selectSize === item.size
+                                ? "#000000"
+                                :  "#D9D9D9"
+                          }}
+                          onPress={() =>
+                            handleOnpressSize(item.size, item._id , item.quantity)
+                          }>
+                          <Text
+                            style={{
+                              width: '85%',
+                              // marginRight: 10,
+                              // marginLeft: 10,
+                              fontSize: 16,
+                              fontWeight: '600',
+                              paddingLeft: '5%',
+                              color :  selectSize === item.size
+                              ? "#FFFFFF"
+                              :  "#000000"
+                            }}>
+                            {item.size}
+                          </Text>
+                          {/* <Text>{item.quantity}</Text> */}
+                        </TouchableOpacity>
+                      );
+                    }}
+                  />
+                </View>
+                ) :(
+                  <View>
+                    
                   </View>
                 )}
               </View>
@@ -767,6 +899,7 @@ const DetailProductScreen = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
         </BottomSheetModal>
+
       </SafeAreaView>
     </BottomSheetModalProvider>
   );

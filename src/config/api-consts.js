@@ -1,6 +1,6 @@
 // // write api use to app
 
-// export const IP_ADDRESS = '192.168.1.156';
+// export const IP_ADDRESS = '192.168.0.102';
 
 // // api users
 
@@ -92,6 +92,8 @@ export const API_GET_TO_LOVE = `http://${IP_ADDRESS}/api-sanpham/SPL`;
 
 export const API_ADD_TO_LOVE = `http://${IP_ADDRESS}/api-sanpham/SPL`;
 
+export const API_DELETE_TO_LOVE = `http://${IP_ADDRESS}/api-sanpham/SPL`;
+
 // api order
 export const API_ORDER = `http://${IP_ADDRESS}/api-donhang`;
 
@@ -102,6 +104,8 @@ export const API_PRODUCT_ORDER_ID = `http://${IP_ADDRESS}/api-sanpham/getOD`;
 // api cart
 
 export const API_PRODUCT_TO_CART = `http://${IP_ADDRESS}/api-sanpham/SPG`;
+
+
 
 //api address
 

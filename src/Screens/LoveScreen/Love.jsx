@@ -11,13 +11,13 @@ const Love = ({ navigation }) => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${API_GET_TO_LOVE}/${userData._id}`, {
+            const response = await axios.get(`${API_GET_TO_LOVE}/${userData?._id}`, {
                 headers: {
                     Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
                 }
             });
             setDataLove(response.data);
-            // console.log("Dữ liệu trả về từ API:", response.data);
+            console.log("Dữ liệu trả về từ API:", response.data);
         } catch (error) {
             console.error("Lỗi khi lấy danh sách sản phẩm yêu thích:", error);
         }
@@ -31,7 +31,7 @@ const Love = ({ navigation }) => {
         return unsubscribe;
     }, [navigation, userData]);
 
-    console.log("Mảng dataLove:", dataLove);
+    // console.log("Mảng dataLove:", dataLove);
 
     return (
         <View style={styles.container}>
@@ -55,7 +55,7 @@ const Love = ({ navigation }) => {
                             <Image source={{ uri: item.image }} style={styles.image} />
                             <View style={styles.textContainer}>
                                 <Text style={styles.nameText}>{item.name}</Text>
-                                <Text style={styles.priceText}>{item.price} VND</Text>
+                                <Text style={styles.priceText}>{item.price} USD</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -80,17 +80,16 @@ const styles = StyleSheet.create({
     textHeadTitle: {
         fontSize: 23,
         fontFamily: "Inter-ExtraBold"
-    },
-    viewListLove: {
+    },viewListLove: {
         paddingLeft: "5%",
         paddingRight: "5%"
     },
     viewItemLove: {
         height: 125,
         width: "100%",
-        backgroundColor: '#F1F4FB',
+        backgroundColor: '#f5f2f2',
         marginTop: 20,
-        borderRadius: 7,
+        borderRadius: 15,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -109,9 +108,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: '4%'
     },
-    priceText: {
-        color: 'red', 
-    }
+    // priceText: {
+    //     color: 'red', 
+    // }
 });
 
 export default Love;

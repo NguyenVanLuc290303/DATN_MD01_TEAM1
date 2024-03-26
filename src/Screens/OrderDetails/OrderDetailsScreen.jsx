@@ -38,7 +38,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
       dataAddress.city;
   }
 
-  console.log(addressOrder , "addresss =>>>>>>>>>>)))))((((((");
+  console.log(dataProductOrder , " dataProductOrder =>>>>>>>>>>)))))((((((");
 
   // console.log( idProduct  + "Product ID PPPPP");
   // console.log( size  + "size ID PPPPP");
@@ -143,8 +143,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
   console.log(formattedDate);
 
   const handleOrderProduct = () => {
-    createZaloPayOrder();
-    return;
+    // createZaloPayOrder();
+    // return;
     if(isChecked){
       setMethodPay('thanh toán khi nhận hàng')
     }else{
@@ -353,14 +353,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                             borderColor: '#272727',
                           },
                         ]}>
-                        <TouchableOpacity
-                          style={styles.borderCount}
-                          onPress={decrementQuantity}>
-                          <Text
-                            style={{textAlign: 'center', color: COLORS.black}}>
-                            -
-                          </Text>
-                        </TouchableOpacity>
+                        
                         <Text
                           style={{
                             flex: 3,
@@ -374,14 +367,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
                           }}>
                           {item.Quantity}
                         </Text>
-                        <TouchableOpacity
-                          style={styles.borderCount}
-                          onPress={incrementQuantity}>
-                          <Text
-                            style={{textAlign: 'center', color: COLORS.black}}>
-                            +
-                          </Text>
-                        </TouchableOpacity>
+                      
                       </View>
                     </View>
                   </View>

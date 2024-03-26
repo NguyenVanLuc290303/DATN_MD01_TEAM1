@@ -1,53 +1,82 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import COLORS from '../../constants/colors';
 import axios from 'axios';
 import { User } from "../../hooks/useContext"; 
-import { API_NOTIFICATION } from '../../config/api-consts';
+import { API_NOTIFICATION, API_PRODUCT } from '../../config/api-consts';
+import { firebase } from '@react-native-firebase/database';
 
 
-const Notification = () => {
+
+const Notification = ({navigation}) => {
 
   const [notificationData, setNotificationData] = useState([]);
   const { userData } = User();
-
-
-
+  const refConversation = firebase.app().database('https://vidu2-96b2f-default-rtdb.asia-southeast1.firebasedatabase.app/',).ref('/thongbao');
+  const [sp, setSp] = useState([]);
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
-        if (!userData) {
-          console.error("User data is not provided.");
-          return;
+        const dataArray = [];
+        const snapshot = await refConversation.once('value');
+        const messages = snapshot.val();
+        if (messages) {
+           dataArray = Object.values(messages);
+           setNotificationData(dataArray);
+           console.log(dataArray, "======>>>>>>>")
         }
-
-        // console.log("User data:", userData);
-
-        // Gửi request lấy thông báo dựa trên userId
-        const response = await axios.get(`${API_NOTIFICATION}/${userData._id}`, {
-          params: { id: userData._id },
-          headers: {
-            Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
-          }
-        });
-        
-        console.log("Dữ liệu trả về từ API thông báo:", response.data); 
-        setNotificationData(response.data);
       } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu từ API thông báo:", error); 
+        console.error('Error fetching messages: ', error);
       }
     };
 
     fetchData();
 
+    const onChildAdded = refConversation.on('child_added', snapshot => {
+      const newMessage = snapshot.val();
+      setNotificationData(prevMessages => [...prevMessages, newMessage]);
+    });
+
+    return () => refConversation.off('child_added', onChildAdded);
+
   }, [userData]); // Đảm bảo useEffect chạy lại khi userData thay đổi
 
-  console.log(notificationData);
+  const DetailTB = async (content,name) =>{
+
+      if(content === "Trạng Thái Đơn Hàng"){
+          console.log("TT");
+      }else if(content === "Sản Phẩm Mới"){
+        console.log("SPM");
+    
+          try {
+              const response = await axios.get(`http://192.168.1.10:3000/api-sanpham/name/${name}`, {
+                  headers: {
+                      Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
+                  }
+              });
+              setSp(response.data);
+              console.log(sp);
+              // console.log("Dữ liệu trả về từ API:", response.data);
+          } catch (error) {
+              console.error("Lỗi khi lấy danh sách sản phẩm yêu thích:", error);
+          }
+  
+        navigation.navigate('DetailProductScreen', {
+          _id: sp._id,
+          name: sp.name,
+          image: sp.image,
+          category: sp.loai,
+          price: sp.price,
+          quantitySold: sp.quantitySold
+      })
+      }
+
+
+  }
 
   const renderItem = ({ item }) => (
-    <View style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={()=>{DetailTB(item.content,item.name)}} >
     <View style={styles.imageContainer}>
       <Image source={{ uri: item.image }} style={styles.image} />
     </View>
@@ -55,13 +84,12 @@ const Notification = () => {
       <Text style={styles.title}>{item.status}</Text>
       <Text style={styles.time}>{item.date}</Text>
     </View>
-  </View>
+  </TouchableOpacity>
   
   );
   
 
   // console.log("User data:", userData); // Kiểm tra giá trị của userData
-
 
 
   return (
@@ -114,7 +142,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   image: {
-width: "100%", // Đảm bảo ảnh đầy đủ chiều rộng trong container của nó
+    width: "100%", // Đảm bảo ảnh đầy đủ chiều rộng trong container của nó
     height: 85,
   },
   

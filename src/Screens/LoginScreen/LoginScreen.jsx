@@ -53,11 +53,14 @@ const LoginScreen = ({navigation}) => {
   // });
 
   const handerOnlickLogin = () => {
+
+    console.log(phone,"lllll")
     axios
       .get(`${API_ADD_USERS}/${phone}`)
       .then(function (response) {
         // const data = Array.isArray(response.data) ? response.data : [response.data];
         loginUser(response.data);
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
