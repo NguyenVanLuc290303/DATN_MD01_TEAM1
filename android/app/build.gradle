@@ -117,6 +117,8 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    implementation fileTree(dir: "libs", include: ["*.jar","*.arr"])
+    implementation files('../app/libs/zpdk-release.aar')
 }
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 

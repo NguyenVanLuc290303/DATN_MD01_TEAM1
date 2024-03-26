@@ -60,16 +60,18 @@
 
 export const IP_ADDRESS = 'server-datn-md01-team1.onrender.com';
 
+
 // api users
 
 export const API_ADD_USERS = `http://${IP_ADDRESS}/api-taikhoan`;
 
 export const API_LOGIN = `http://${IP_ADDRESS}/api-taikhoan`;
 
+
 export const API_RESSET_PASSWORD =`http://${IP_ADDRESS}/api-taikhoan/mk`;
 
-export const API_UPDATE_USER = `http://${IP_ADDRESS}/api-taikhoan`;
 
+export const API_UPDATE_USER = `http://${IP_ADDRESS}/api-taikhoan`;
 
 // api categorysr
 
@@ -97,17 +99,15 @@ export const API_PRODUCT_ORDER = `http://${IP_ADDRESS}/api-sanpham/SPD`;
 
 export const API_PRODUCT_ORDER_ID = `http://${IP_ADDRESS}/api-sanpham/getOD`;
 
-
 // api cart
 
 export const API_PRODUCT_TO_CART = `http://${IP_ADDRESS}/api-sanpham/SPG`;
 
-//api address 
+//api address
 
 export const API_ADDRESS =`http://${IP_ADDRESS}/api-dcgh`;
 
 // api notification
 
 export const API_NOTIFICATION = `http://${IP_ADDRESS}/api-thongbao`;
-
 
