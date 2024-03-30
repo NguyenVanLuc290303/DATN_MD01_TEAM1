@@ -58,6 +58,10 @@ import Home from './src/Screens/HomeScreen/Home';
 import YourOrderScreen from './src/Screens/YourOrderScreen/YourOrderScreen';
 import VoucherScreen from './src/Screens/VoucherScreen/VoucherScreen';
 import YourOrderDetailScreen from './src/Screens/YourOrderDetailScreen/YourOrderDetailScreen';
+import ChangeUserNameScreen from './src/Screens/ChangeUserName/ChangeUserNameScreen';
+import ChangeEmailScreen from './src/Screens/ChangeEmail/ChangeEmailScreen'
+import ChangePhoneScreen from './src/Screens/ChangePhone/ChangePhoneScreen'
+import ChangeAddressScreen from './src/Screens/ChangeAddress/ChangeAddressScreen'
 
 import { CartProvider } from './src/hooks/cartContext';
 
@@ -248,6 +252,26 @@ function App() {
         <Stack.Screen
           name="SearchProductScreen"
           component={SearchProductScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangeUserNameScreen"
+          component={ChangeUserNameScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangeEmailScreen"
+          component={ChangeEmailScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangePhoneScreen"
+          component={ChangePhoneScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangeAddressScreen"
+          component={ChangeAddressScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

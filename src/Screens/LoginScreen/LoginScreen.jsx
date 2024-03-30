@@ -72,7 +72,7 @@ const LoginScreen = ({navigation}) => {
         Alert.alert('thông tin null');
       }
       if (phone === dataUser.numberPhone && password === dataUser.passwd) {
-        // console.log(dataUser)
+        console.log(dataUser)
         setUserData(dataUser);
         navigation.navigate('BottomNavigation');
       } else {

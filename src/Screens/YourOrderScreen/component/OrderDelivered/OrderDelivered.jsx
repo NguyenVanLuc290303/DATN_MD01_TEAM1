@@ -1,6 +1,6 @@
 import {View, StyleSheet, Text , FlatList , TouchableOpacity} from 'react-native';
 import useOrderList from '../../../../services/order-services/use-all-list-order';
-import {styles} from './OrderDelivered'
+import {styles} from './OrderDelivered.style'
 
 const OrderDelivered = ({navigation}) => {
 

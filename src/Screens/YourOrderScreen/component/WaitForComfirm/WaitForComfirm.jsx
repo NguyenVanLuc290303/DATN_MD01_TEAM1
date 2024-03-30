@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View , TouchableOpacity , FlatList } from "react-native";
 import useOrderList from '../../../../services/order-services/use-all-list-order';
+import {styles} from './WaitForComfirm.style'
 
 
 

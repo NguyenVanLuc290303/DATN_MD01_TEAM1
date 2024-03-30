@@ -218,6 +218,8 @@ const DetailProductScreen = ({navigation, route}) => {
 
   console.log('renderlai');
 
+  console.log(sele)
+
   return (
     <BottomSheetModalProvider>
       <SafeAreaView style={[styles.container]}>

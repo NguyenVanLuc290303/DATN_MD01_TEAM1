@@ -1,7 +1,7 @@
 import { View ,StyleSheet ,Text , FlatList , TouchableOpacity} from "react-native";
 import COLORS from "../../../../constants/colors";
 import useOrderList from '../../../../services/order-services/use-all-list-order';
-import { styles } from "./Confirm";
+import { styles } from "./Confirm.style";
 
 
 const Confirm = ({navigation}) =>{

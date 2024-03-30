@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {User} from '../../hooks/useContext';
 import ImagePicker, {
   launchCamera,
@@ -24,8 +24,11 @@ import axios, { Axios } from 'axios';
 import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
 
 const EditProfile = ({navigation}) => {
-  const {userData} = User();
 
+  useEffect(()=>{
+    
+  },[])
+  const {userData} = User();
 
   const [email, setEmail] = useState();
   const [name, setName] = useState();
@@ -137,103 +140,44 @@ const EditProfile = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{paddingTop: 10, justifyContent: 'center'}}>
-          <View style={{marginBottom: 22}}>
-            <Text>Name</Text>
-            <View
-              style={{
-                width: '100%',
-                height: 48,
-                borderColor: COLORS.black,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingLeft: 15,
-              }}>
-              <TextInput
-                placeholder=""
-                value={userData.username}
-                placeholderTextColor={COLORS.black}
-                keyboardType="default"
-                style={{
-                  width: '100%',
-                }}
-              />
+        <Text style={{ fontSize: 18, color: 'gray', fontWeight: '300' }}>Giới thiệu về bạn</Text>
+        <View style={{ paddingTop: 10, justifyContent: 'center' }}>
+          <TouchableOpacity onPress={()=>navigation.navigate('ChangeUserNameScreen')}>
+            <View style={{ marginBottom: 22, flexDirection: 'row' }}>
+              <Text style={{ flex: 1 }}>Name</Text>
+              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.username}</Text>
+                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+              </View>
             </View>
-          </View>
-
-          <View style={{marginBottom: 22}}>
-            <Text>Email</Text>
-            <View
-              style={{
-                width: '100%',
-                height: 48,
-                borderColor: COLORS.black,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingLeft: 15,
-              }}>
-              <TextInput
-                placeholder=""
-                value={userData.email}
-                placeholderTextColor={COLORS.black}
-                style={{
-                  width: '100%',
-                }}
-              />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('ChangeEmailScreen')}>
+            <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{ flex: 1, }}>Email</Text>              
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.email}</Text>
+                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+              </View>
             </View>
-          </View>
-
-          <View style={{marginBottom: 22}}>
-            <Text>Phone Number</Text>
-            <View
-              style={{
-                width: '100%',
-                height: 48,
-                borderColor: COLORS.black,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingLeft: 15,
-              }}>
-              <TextInput
-                placeholder=""
-                value={userData.numberPhone}
-                placeholderTextColor={COLORS.black}
-                keyboardType="phone-pad"
-                style={{
-                  width: '100%',
-                }}
-              />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('ChangePhoneScreen')}>
+            <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{ flex: 1, }}>Phone Number</Text>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.numberPhone}</Text>
+                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+              </View>
             </View>
-          </View>
-
-          <View style={{marginBottom: 22}}>
-            <Text>Address</Text>
-            <View
-              style={{
-                width: '100%',
-                height: 48,
-                borderColor: COLORS.black,
-                borderWidth: 1,
-                borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingLeft: 15,
-              }}>
-              <TextInput
-                placeholder=""
-                value={userData.address}
-                style={{
-                  width: '100%',
-                }}
-              />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('ChangeAddressScreen')}>
+            <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{ flex: 1, }}>Address</Text>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.address}</Text>
+                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
               onPress={upLoadImageToFirebaseStorage}

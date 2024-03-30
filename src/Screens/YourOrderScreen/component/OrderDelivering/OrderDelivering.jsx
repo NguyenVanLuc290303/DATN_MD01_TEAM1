@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import {View, StyleSheet, Text , FlatList , TouchableOpacity} from 'react-native';
 import useOrderList from '../../../../services/order-services/use-all-list-order';
-import {styles} from './OrderDelivering'
+import {styles} from './OrderDelivering.style'
 
 const OrderDelivering = ({navigation}) => {
 

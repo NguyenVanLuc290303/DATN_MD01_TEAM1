@@ -49,7 +49,7 @@ const SearchProductScreen = ({navigation}) => {
                 padding: 10,
                 backgroundColor: '#FFFFFF'
             }}>
-                <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('BottomNavigation')}>
                     <Image style={{ width: 22, height: 22 }} source={require('@/images/back.png')} />
                 </TouchableOpacity>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 20 }}>
