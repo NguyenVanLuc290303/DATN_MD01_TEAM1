@@ -381,15 +381,15 @@ const OrderDetailsScreen = ({navigation, route}) => {
             <Text style={styles.priceTransport}>{costTranformer}</Text>
           </View>
           <View style={styles.addressTransport}>
-            <Image
+            {/* <Image
               source={require('../../assets/images/send.png')}
               style={{width: 13, height: 12, marginTop: 5, marginRight: 5}}
             />
             <Text style={{marginBottom: 3, color: COLORS.black}}>
               Từ Cầu Giấy
-            </Text>
+            </Text> */}
           </View>
-          <View style={styles.timeTransport}>
+          {/* <View style={styles.timeTransport}>
             <Image
               source={require('../../assets/images/clock.png')}
               style={{width: 13, height: 12, marginTop: 5, marginRight: 5}}
@@ -402,11 +402,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
             <Text style={{marginBottom: 3, color: COLORS.black}}>
               Tin nhắn: Che tên sản phẩm
             </Text>
-          </View>
+          </View> */}
         </View>
         <View style={{marginTop : 10, flexDirection : 'row' , padding : '4%', alignItems : 'center' , justifyContent : 'space-between' , backgroundColor : COLORS.white}}>
             <View style={{ flexDirection : 'row' , alignItems : 'center'}}>
-            <Image source={Icons.IconVoucher} style={styles.iconVoucher}/>
+              <Icon name="shopping-sale" size={32} />
             <Text style={{ fontSize : 16 , fontFamily : 'Inter-Medium' , marginLeft : '2%'}}>
               Voucher của shop
             </Text>

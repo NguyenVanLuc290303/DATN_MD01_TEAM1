@@ -7,16 +7,6 @@ import { API_CATEGORY_PRODUCT } from "../../config/api-consts";
 import { API_PRODUCT } from "../../config/api-consts";
 
 
-    // const renderItem = React.useCallback(({item}) =>(
-    //     <View style={styles.itemProduct}>
-    //         <Image source={{ uri : item.image}} style={{ width : 80 , height : 60}}/>
-    //         <HeaderTitle name={item.name}/>
-    //         <Text>{item.price}</Text>
-    //     </View>
-    // ),[])
-
-    
-
 
 
 const ProductCategory =  ({navigation, route}) => {
@@ -54,11 +44,16 @@ const ProductCategory =  ({navigation, route}) => {
     return(
         <View style ={styles.container}>
             <View style={{ flexDirection : 'row', 
-                           alignItems : 'center'}}>
+                           alignItems : 'center', 
+                           justifyContent : 'space-between',
+                           padding : 10}}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Icon name='arrow-back' size={24}/>  
+                    <Icon name='arrow-back' size={32}/>  
                 </TouchableOpacity>
                 <Text style={styles.textTitle}>{name}</Text>
+                <View>
+
+                </View>
             </View>
             <View>
             <FlatList
@@ -106,7 +101,7 @@ const styles = StyleSheet.create({
         marginLeft : "2.5%"
     },
     textTitle :{
-        fontSize : 20,
+        fontSize : 25,
         fontFamily :"Inter-Bold"
     }
 })

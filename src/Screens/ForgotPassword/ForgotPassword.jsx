@@ -5,12 +5,14 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
 import COLORS from '../../constants/colors';
 import auth from '@react-native-firebase/auth';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 const ForgotPassword = ({navigation}) => {
   const [phoneNumber, setPhoneNumber] = useState();
@@ -31,9 +33,16 @@ const ForgotPassword = ({navigation}) => {
 
   const handerForgotPassword = async () => {
     try {
-      const confirmationResult = await auth().signInWithPhoneNumber(phoneNumber);
+      const internationalPhoneNumber = await convertToInternationalPhoneNumber(
+        phoneNumber,
+      );
+      console.log(internationalPhoneNumber); // Kết quả: +84123456789
+
+      const confirmationResult = await auth().signInWithPhoneNumber(
+        internationalPhoneNumber,
+      );
       navigation.navigate(
-        'SendOTPRegisterScreen',
+        'SendOtpScreen',
         (data = {
           verification: confirmationResult.verificationId,
           numberPhone: phoneNumber,
@@ -45,38 +54,63 @@ const ForgotPassword = ({navigation}) => {
     }
   };
 
+  function convertToInternationalPhoneNumber(phoneNumber) {
+    // Kiểm tra nếu số điện thoại không hợp lệ hoặc rỗng
+    if (!phoneNumber || typeof phoneNumber !== 'string') {
+      return null;
+    }
+
+    // Xóa các ký tự không phải số
+    phoneNumber = phoneNumber.replace(/\D/g, '');
+
+    // Nếu số điện thoại không có 10 chữ số (không tính mã quốc gia), trả về null
+    if (phoneNumber.length !== 10) {
+      return null;
+    }
+
+    // Thêm mã quốc gia +84 vào đầu số điện thoại
+    return '+84' + phoneNumber.slice(1);
+  }
+
   return (
-    <View style={styles.container}>
+    <>
+
+    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView behavior='padding'  >
       <Image style={styles.imageStyle} source={Icons.ImageForogtPassword} />
-      <View style={styles.borderText}>
-        <Text style={styles.textStyle}>Forgot</Text>
-        <Text style={styles.textStyle}>Password?</Text>
-      </View>
-      <Text style={styles.textStyle2}>
-        Don't worry! It happens. Please enter the phone number we will send the
-        OTP in this phone number
-      </Text>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Enter the phone"
-        placeholderTextColor={COLORS.color_7E7D7D}
-        onChangeText={Text => setPhoneNumber(Text)}
-      />
-      <View style={styles.formAction}>
-        <TouchableOpacity
-          onPress={handerForgotPassword}>
-          <View style={styles.btn}>
-            <Text style={styles.btnText}>Continue</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <View style={styles.borderText}>
+          <Text style={styles.textStyle}>Forgot</Text>
+          <Text style={styles.textStyle}>Password?</Text>
+        </View>
+        <Text style={styles.textStyle2}>
+          Don't worry! It happens. Please enter the phone number we will send
+          the OTP in this phone number
+        </Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter the phone"
+          placeholderTextColor={COLORS.color_7E7D7D}
+          onChangeText={Text => setPhoneNumber(Text)}
+        />
+
+        <View style={styles.formAction}>
+          <TouchableOpacity onPress={handerForgotPassword}>
+            <View style={styles.btn}>
+              <Text style={styles.btnText}>Continue</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        </KeyboardAvoidingView>
+
+    </SafeAreaView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width : '100%',
+    height : '100%',
     backgroundColor: '#FFFFFF',
     padding: 24,
   },
@@ -84,7 +118,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: 100,
     width: 300,
     height: 300,
   },
@@ -100,6 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   textInput: {
+    height: 60,
     backgroundColor: COLORS.color_f6f6f6,
     borderRadius: 8,
     elevation: 4,
@@ -113,6 +147,7 @@ const styles = StyleSheet.create({
   },
   formAction: {},
   btn: {
+    height: 50,
     backgroundColor: COLORS.black,
     borderRadius: 8,
     borderWidth: 1,

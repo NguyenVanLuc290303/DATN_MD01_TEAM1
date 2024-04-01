@@ -64,6 +64,10 @@ import { CartProvider } from './src/hooks/cartContext';
 import SearchProductScreen from './src/Screens/SearchProductScreen/SearchProductScreen';
 import MyTabsOrder from './src/navigation/TopTabNavigation/TopTabNavigation';
 import NotificationOrderSuccess from './src/Screens/NotificationOrderSuccess/NotificationOrderSuccess';
+import ChangeUserNameScreen from './src/Screens/EditProfile/components/ChangeUserNameScreen/ChangeUserNameScreen';
+import ChangeEmailScreen from './src/Screens/EditProfile/components/ChangeEmailScreen/ChangeEmailScreen';
+import ChangePhoneScreen from './src/Screens/EditProfile/components/ChangePhoneScreen/ChangePhoneScreen';
+import ChangeAddressScreen from './src/Screens/EditProfile/components/ChangeAddressScreen/ChangeAddressScreen';
 
 
 // import {CartScreen} from './src/Screens';
@@ -254,6 +258,26 @@ function App() {
         <Stack.Screen
           name="NotificationOrderSuccess"
           component={NotificationOrderSuccess}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangeUserNameScreen"
+          component={ChangeUserNameScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangeEmailScreen"
+          component={ChangeEmailScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangePhoneScreen"
+          component={ChangePhoneScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangeAddressScreen"
+          component={ChangeAddressScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

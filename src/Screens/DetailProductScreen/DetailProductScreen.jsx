@@ -35,7 +35,7 @@ import {User} from '../../hooks/useContext';
 import {Cart} from '../../hooks/cartContext';
 
 const DetailProductScreen = ({navigation, route}) => {
-  const {_id, name, price, quantitySold, image, category} = route.params;
+  const {_id, name, price, quantitySold, image, category ,describe} = route.params;
 
   const {userData} = User();
 
@@ -140,7 +140,7 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const [showImageAnimation, setShowImageAnimation] = useState(false);
 
-  const handleToCart = () => {
+  const animationCart = () =>{
     setShowImageAnimation(true);
     const shrinkAnimation = Animated.timing(animationScale, {
       toValue: 0,
@@ -161,6 +161,10 @@ const DetailProductScreen = ({navigation, route}) => {
       animationPosition.setValue({x: 0, y: 0});
       setShowImageAnimation(false);
     });
+  }
+
+  const handleToCart = () => {
+   
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -192,10 +196,21 @@ const DetailProductScreen = ({navigation, route}) => {
         requestOptions,
       )
         .then(response => response.json())
-        .then(result => addItemToCart(result));
-      handleClosePress();
+        .then(result => {
+          if(result.status !== 0){
+            addItemToCart(result);
+            animationCart();
+            handleClosePress();
+          }else{
+        ToastAndroid.showWithGravity(
+          'Sản phẩm đã có trong giỏ',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        )
+          }
+        });
     } catch (error) {
-      console.log(error);
+     
     }
   };
 
@@ -298,7 +313,7 @@ const DetailProductScreen = ({navigation, route}) => {
           </View>
           <View>
             <Text style={{color: COLORS.black, fontSize: 16}}>
-              Quần jeans ống đẹp , chất liệu mềm mại , thích hợp mặc cả năm
+              {describe}
             </Text>
           </View>
           {/* <AddToCart navigation={navigation}/> */}
@@ -375,6 +390,8 @@ const DetailProductScreen = ({navigation, route}) => {
                       uri: selectedColor.image,
                     }}
                   />
+
+    
                 </View>
               ) : dataProperties[0] && dataProperties[0].image ? (
                 <View
@@ -585,7 +602,7 @@ const DetailProductScreen = ({navigation, route}) => {
                 justifyContent: 'space-between',
               }}>
               <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
-                Số lượng
+                Số lượng còn : {quantityRemain}
               </Text>
               <View
                 style={{
@@ -861,7 +878,7 @@ const DetailProductScreen = ({navigation, route}) => {
                 justifyContent: 'space-between',
               }}>
               <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
-                Số lượng
+                Số lượng còn : {quantityRemain}
               </Text>
               <View
                 style={{

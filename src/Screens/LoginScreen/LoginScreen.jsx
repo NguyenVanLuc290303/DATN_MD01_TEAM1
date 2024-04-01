@@ -27,6 +27,8 @@ const LoginScreen = ({navigation}) => {
 
   const [luu, setluu] = useState('0');
 
+  let internationalPhoneNumber;
+
   const [imageUri, setImageUri] = useState(
     'https://tse4.mm.bing.net/th?id=OIP.xmVxNq0K9FT8Tr_8IoaV7QHaHX&pid=Api&P=0&h=180',
   );
@@ -47,16 +49,36 @@ const LoginScreen = ({navigation}) => {
   };
 
   const {setUserData} = User();
-  // const [form, setForm] = useState({
-  //   email: '',
-  //   password: '',
-  // });
 
-  const handerOnlickLogin = () => {
+  function convertToInternationalPhoneNumber(phoneNumber) {
+    // Kiểm tra nếu số điện thoại không hợp lệ hoặc rỗng
+    if (!phoneNumber || typeof phoneNumber !== 'string') {
+      return null;
+    }
 
-    console.log(phone,"lllll")
+    // Xóa các ký tự không phải số
+    phoneNumber = phoneNumber.replace(/\D/g, '');
+
+    // Nếu số điện thoại không có 10 chữ số (không tính mã quốc gia), trả về null
+    if (phoneNumber.length !== 10) {
+      return null;
+    }
+
+    // Thêm mã quốc gia +84 vào đầu số điện thoại
+    return '+84' + phoneNumber.slice(1);
+  }
+ 
+
+  const handerOnlickLogin = async () => {
+
+    internationalPhoneNumber = await convertToInternationalPhoneNumber(
+      phone,
+    );
+
+    console.log(internationalPhoneNumber,"lllll")
+    // setPhoneNumber(internationalPhoneNumber)
     axios
-      .get(`${API_ADD_USERS}/${phone}`)
+      .get(`${API_ADD_USERS}/${internationalPhoneNumber}`)
       .then(function (response) {
         // const data = Array.isArray(response.data) ? response.data : [response.data];
         loginUser(response.data);
@@ -74,7 +96,7 @@ const LoginScreen = ({navigation}) => {
       if (dataUser === null) {
         Alert.alert('thông tin null');
       }
-      if (phone === dataUser.numberPhone && password === dataUser.passwd) {
+      if (internationalPhoneNumber === dataUser.numberPhone && password === dataUser.passwd) {
         // console.log(dataUser)
         setUserData(dataUser);
         navigation.navigate('BottomNavigation');
@@ -166,13 +188,9 @@ const LoginScreen = ({navigation}) => {
               // value={form.email}
               placeholder="Enter your phone"
               placeholderTextColor="#6b7280"
-              onChangeText={text => {
-                let formattedText = text.trim();
-                if (formattedText.startsWith('0')) {
-                  formattedText = '+84' + formattedText.slice(1);
-                }
-                setPhoneNumber(formattedText);
-              }}
+              onChangeText={text => 
+                setPhoneNumber(text)
+              }
             />
           </View>
 

@@ -13,6 +13,7 @@ import {Fragment, useState} from 'react';
 import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
 import { User } from '../../hooks/useContext';
 import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const Profile = ({navigation}) => {
@@ -55,7 +56,7 @@ const Profile = ({navigation}) => {
     },
 
     {
-      icon: Icons.IconSecurity,
+      icon: Icons.IconListOrder,
       text: 'Your Order',
       action: navigateToSecurity,
     },
@@ -147,16 +148,16 @@ const Profile = ({navigation}) => {
   ];
 
   const actionsItems = [
-    {
-      icon: Icons.IconReport,
-      text: 'Report a problem',
-      action: navigateToReportProblem,
-    },
-    {
-      icon: Icons.IconPeople,
-      text: 'Add Account',
-      action: addAccount,
-    },
+    // {
+    //   icon: Icons.IconReport,
+    //   text: 'Report a problem',
+    //   action: navigateToReportProblem,
+    // },
+    // {
+    //   icon: Icons.IconPeople,
+    //   text: 'Add Account',
+    //   action: addAccount,
+    // },
     {
       icon: Icons.IconLogOut,
       text: 'Log out',
@@ -222,7 +223,7 @@ const Profile = ({navigation}) => {
           </View>
 
           {/*Cache & Cellular*/}
-          <View style={{marginBottom: 12}}>
+          {/* <View style={{marginBottom: 12}}>
             <Text style={{marginVertical: 10, color: COLORS.black}}>
               Cache & Cellular
             </Text>
@@ -231,7 +232,7 @@ const Profile = ({navigation}) => {
                 <Fragment key={index}>{renderSettingItem(item)}</Fragment>
               ))}
             </View>
-          </View>
+          </View> */}
 
           {/*Actions Settings*/}
           <View style={{marginBottom: 12}}>

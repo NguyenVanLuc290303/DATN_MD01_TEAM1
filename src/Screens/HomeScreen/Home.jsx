@@ -144,7 +144,7 @@ setDataCart(data);
       });
   }, []);
 
-  console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
+  // console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
 
   React.useEffect(() => {
     var myHeaders = new Headers();
@@ -166,6 +166,10 @@ setDataCart(data);
   }, []);
 
   console.log('render lại , HomeScreen');
+
+  console.log(dataProduct)
+
+
 
   return (
     <View style={styles.container}>
@@ -262,6 +266,7 @@ setDataCart(data);
                           name: item.name,
                           image: item.image,
                           category: item.loai,
+                          describe : item.describe,
                           price: item.price,
                           quantitySold: item.quantitySold,
                         })

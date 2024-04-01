@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity, Image, Animated, StyleSheet } from 'react-native';
 import { firebase } from '@react-native-firebase/database';
-import moment from 'moment';
 import COLORS from '../../constants/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';

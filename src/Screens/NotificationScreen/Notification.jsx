@@ -18,7 +18,7 @@ const Notification = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const dataArray = [];
+        let dataArray = [];
         const snapshot = await refConversation.once('value');
         const messages = snapshot.val();
         if (messages) {

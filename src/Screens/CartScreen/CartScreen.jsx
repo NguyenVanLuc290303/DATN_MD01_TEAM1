@@ -87,16 +87,18 @@ const CartScreen = ({navigation}) => {
 
   const handleDecreaseQuantity = index => {
     const newArray = [...productArray];
-    if (newArray[index].quantity > 1) {
-      newArray[index].quantity -= 1;
+    if (newArray[index].Quantity > 1) {
+      newArray[index].Quantity -= 1;
       setProductArray(newArray);
     }
   };
 
   const handleIncreaseQuantity = index => {
+
     const newArray = [...productArray];
-    if (newArray[index].quantity < 99) {
-      newArray[index].quantity += 1;
+
+    if (newArray[index].Quantity < 99) {
+      newArray[index].Quantity += 1;
       setProductArray(newArray);
     }
   };

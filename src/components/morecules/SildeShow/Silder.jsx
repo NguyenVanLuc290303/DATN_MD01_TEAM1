@@ -53,7 +53,11 @@ const Slider = () => {
 
   const handleOnViewableItemsChanged = useRef(({viewableItems}) => {
     // console.log('viewableItems', viewableItems);
-    setIndex(viewableItems[0].index || 0);
+
+    if(viewableItems && viewableItems.length > 0){
+      setIndex(viewableItems[0].index || 0);
+
+    }
   }).current;
 
   const viewabilityConfig = useRef({
@@ -64,21 +68,20 @@ const Slider = () => {
 
   //chạy auto sildeShow
   
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     // Move to the next slide
-  //     const newIndex = (index + 1) % data.length;
-  //     setIndex(newIndex);
-  //     // Scroll to the next slide
-  //     scrollX.setValue(newIndex * width);
-  //     flatlistReft.current.scrollToIndex({ animated: true, index: newIndex });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Move to the next slide
+      const newIndex = (index + 1) % data.length;
+      setIndex(newIndex);
+      // Scroll to the next slide
+      scrollX.setValue(newIndex * width);
+      flatlistReft.current.scrollToIndex({ animated: true, index: newIndex });
 
-  //   }, 5000); // Change slide every 4 seconds
+    }, 5000); // Change slide every 4 seconds
 
-  //   return () => clearInterval(interval);
-  // }, [index]);
+    return () => clearInterval(interval);
+  }, [index]);
 
-  console.log("render lại ,,,,,,")
   return (
     <View style={styles.container}>
       <FlatList
