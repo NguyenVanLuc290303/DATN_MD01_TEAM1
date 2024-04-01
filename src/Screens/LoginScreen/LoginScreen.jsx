@@ -62,7 +62,7 @@ const LoginScreen = ({navigation}) => {
 
 
 
-    fetch(`${API_ADD_USERS}/${phone}`, requestOptions)
+    fetch(`https://server-datn-md01-team1.onrender.com/api-taikhoan/${phone}`, requestOptions)
 
 
 

@@ -22,23 +22,28 @@ const Chat = ({ navigation }) => {
         const snapshot = await refConversation.once('value');
         const messages = snapshot.val();
         if (messages) {
-           dataArray = Object.values(messages);
-          setDataMessage(dataArray);
+          // Lọc dữ liệu chỉ có UserId bằng userData._id
+          const filteredData = Object.values(messages).filter(message => message.UserId === userData._id);
+          setDataMessage(filteredData);
         }
       } catch (error) {
         console.error('Error fetching messages: ', error);
       }
     };
-
+  
     fetchData();
-
+  
     const onChildAdded = refConversation.on('child_added', snapshot => {
       const newMessage = snapshot.val();
-      setDataMessage(prevMessages => [...prevMessages, newMessage]);
+      // Kiểm tra nếu message có UserId trùng với userData._id thì mới thêm vào state
+      if (newMessage.UserId === userData._id) {
+        setDataMessage(prevMessages => [...prevMessages, newMessage]);
+      }
     });
-
+  
     return () => refConversation.off('child_added', onChildAdded);
   }, []);
+  
 
   const handleOnclickSend = async () => {
     const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
