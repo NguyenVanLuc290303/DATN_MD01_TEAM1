@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
     viewItemLove: {
         height: 125,
         width: "100%",
-        backgroundColor: '#F1F4FB',
+        backgroundColor: '#f5f2f2',
         marginTop: 20,
-        borderRadius: 7,
+        borderRadius: 15,
         flexDirection: 'row',
         alignItems: 'center',
     },
