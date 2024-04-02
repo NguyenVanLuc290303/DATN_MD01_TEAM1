@@ -31,6 +31,8 @@ const DeliveryScreen = ({navigation , route}) => {
       .get(`${API_ADDRESS}/${userData._id}`)
       .then(function (response) {
         const data = Array.isArray(response.data) ? response.data : [response.data];
+
+        console.log(response.data ,"datadel");
         setdataDelivery(data);
       })
       .catch(function (error) {

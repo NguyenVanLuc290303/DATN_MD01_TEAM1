@@ -16,6 +16,8 @@ import {User} from '../../hooks/useContext';
 import {API_ADD_USERS} from '../../config/api-consts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {Axios} from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import IconI from "react-native-vector-icons/Ionicons";
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -179,12 +181,13 @@ const LoginScreen = ({navigation}) => {
         </View>
         <View style={styles.form}>
           <View style={styles.input}>
+            <Icon name="phone" size={24}/>
             <TextInput
               defaultValue={phone}
               autoCapitalize="none"
               autoCorrect={false}
               // keyboardType="phone-pad"
-              style={styles.inputControl}
+              style={{ paddingLeft : 10}}
               // value={form.email}
               placeholder="Enter your phone"
               placeholderTextColor="#6b7280"
@@ -195,10 +198,11 @@ const LoginScreen = ({navigation}) => {
           </View>
 
           <View style={styles.input}>
+            <IconI name="eye-off" size={24}/>
             <TextInput
               defaultValue={password}
               secureTextEntry
-              style={styles.inputControl}
+              style={{ paddingLeft :  10}}
               // value={form.password}
               placeholder="Enter your password"
               placeholderTextColor="#6b7280"
@@ -294,7 +298,18 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
   input: {
+    flexDirection : 'row',
     marginBottom: 16,
+    height: 44,
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    fontSize: 15,
+    fontWeight: '500',
+    color: COLORS.black,
+    borderColor: '#817C7C',
+    borderWidth: 1,
+    alignItems : 'center'
   },
   inputLabel: {
     fontSize: 17,
@@ -331,9 +346,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   form: {
-    marginRight: 24,
-    marginLeft: 24,
-    marginBottom: 24,
+    padding : 20,
     flex: 1,
   },
   formAction: {

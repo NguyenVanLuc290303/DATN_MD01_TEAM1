@@ -16,14 +16,18 @@ import CryptoJS from 'crypto-js';
 
 import {useState, useCallback, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import {API_ORDER} from '../../config/api-consts';
+import {API_DELETE_IN_CART, API_ORDER} from '../../config/api-consts';
 import {API_PRODUCT_ORDER} from '../../config/api-consts';
 import Icon from 'react-native-vector-icons/Fontisto'
+import axios, { Axios } from 'axios';
+import { Cart } from '../../hooks/cartContext';
 
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
 
   const {dataProductOrder, dataAddress} = route.params;
+
+  const {removeFromCart} = Cart();
 
   let addressOrder = '';
   if (dataAddress) {
@@ -39,6 +43,12 @@ const OrderDetailsScreen = ({navigation, route}) => {
   }
 
   console.log(dataProductOrder , " dataProductOrder =>>>>>>>>>>)))))((((((");
+
+  const deleteProductInCart = dataProductOrder.map(item => item._id);
+  
+  
+  console.log(deleteProductInCart, "deeeeeeeeeeee");
+  
 
   // console.log( idProduct  + "Product ID PPPPP");
   // console.log( size  + "size ID PPPPP");
@@ -145,6 +155,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
   const handleOrderProduct = () => {
     // createZaloPayOrder();
     // return;
+
     if(isChecked){
       setMethodPay('thanh toán khi nhận hàng')
     }else{
@@ -213,7 +224,12 @@ const OrderDetailsScreen = ({navigation, route}) => {
       fetch(API_PRODUCT_ORDER, requestOptions)
         .then(response => response.json())
         .then(result =>  {if(result.status ===1){
+
+          deleteProductCart();
+          removeFromCart(deleteProductInCart);
           navigation.replace('NotificationOrderSuccess');
+
+
         }});
     } catch (error) {
       console.log(error);
@@ -222,6 +238,18 @@ const OrderDetailsScreen = ({navigation, route}) => {
   const  getCurrentDateYYMMDD = () => {
     var todayDate = new Date().toISOString().slice(2, 10);
     return todayDate.split('-').join('');
+  }
+
+  const deleteProductCart = () =>{
+    axios.delete(`${API_DELETE_IN_CART}`, {
+  data: { productIds : deleteProductInCart } // Truyền mảng productIds vào body của request
+})
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
   }
 
   const createZaloPayOrder = async () => {

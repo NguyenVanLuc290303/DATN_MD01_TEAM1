@@ -25,17 +25,7 @@ import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
 
 const EditProfile = ({navigation}) => {
 
-  useEffect(()=>{
-    
-  },[])
   const {userData} = User();
-
-  const [email, setEmail] = useState();
-  const [name, setName] = useState();
-  const [password, setPassword] = useState();
-  const [address, setAddress] = useState();
-  const [isPasswordShow, setIsPasswordShow] = useState(false);
-  const [imageURI , setImageURI] = useState();
 
   const dataURI =[];
 

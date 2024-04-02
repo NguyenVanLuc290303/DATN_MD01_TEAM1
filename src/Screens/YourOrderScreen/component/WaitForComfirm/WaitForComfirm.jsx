@@ -7,20 +7,21 @@ const WaitForCofirm = ({navigation}) =>{
 
     const listOrderDelivered = useOrderList().filter(item => item.status === "chờ xác nhận");
 
-    console.log(listOrderDelivered, "order Deliverd =>>>>>>>>>>.")
 
-    const handleNavigationDetails = (OrderId, status) => {
-        console.log(OrderId, '---------');
+    const handleNavigationDetails = (OrderId, status , address) => {
+
+        console.log(address, '---------');
         navigation.navigate('YourOrderDetailScreen', {
           OrderId: OrderId,
           status: status,
+          address : address
         });
       };
 
     const renderItem = ({item, index}) => (
         <TouchableOpacity
           style={styles.item}
-          onPress={() => handleNavigationDetails(item._id, item.status)}>
+          onPress={() => handleNavigationDetails(item._id, item.status , item.address)}>
           <View style={styles.ViewImg}>
             <View >
               <Image style={styles.ImgItem} source={require('@/images/logoAPP_MD01_png.png')}/>

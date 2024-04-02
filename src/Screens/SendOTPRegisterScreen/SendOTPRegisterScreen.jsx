@@ -16,13 +16,15 @@ import React, {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import { API_ADD_USERS } from '../../config/api-consts';
 import { User } from '../../hooks/useContext';
+import { API_ADDRESS } from '../../config/api-consts';
+import axios,{ Axios } from 'axios';
 
 
 const SendOTPRegisterScreen = ({navigation, route}) => {
 
   const [code, setCode] = React.useState('');
 
-  const {verification, name, email,password , address, numberPhone} = route.params;
+  const {verification, name, email,password , address, numberPhone , street , city} = route.params;
 
   console.log(numberPhone, 'phoneNumber Register Now =>>>>>>>>')
 
@@ -34,7 +36,6 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
     numberPhone : numberPhone,
     image :'',
   }
-
 
   const {setUserData} = User();
 
@@ -56,6 +57,9 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
   };
 
     const RegisterUserMongodb = () => {
+
+
+
         const myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
         myHeaders.append(
@@ -83,9 +87,22 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
 
         fetch(`${API_ADD_USERS}/${numberPhone}/${email}`, requestOptions)
         .then(response => response.json())
-        .then(result => {
-          if(result._id !== null){ navigation.navigate('OnboardingScreen')}else{ Alert.alert("Đã tồn tại tài khoản")}
-        })
+        .then(result => addAddress(result.data._id)
+          
+          // {
+          // if(result._id !== null){
+
+          //   console.log(result._id , "id User lấy về");
+
+            
+          
+          // }else{ 
+            
+          //   Alert.alert("Đã tồn tại tài khoản")
+          
+          // }}
+          
+          )
         } catch (error) {
             console.log(error);
         }
@@ -95,6 +112,32 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
     const handleChangeOtp = React.useCallback((otp) => {
       setCode(otp);
     }, []);
+
+    const addAddress = (id) =>{
+      const dataAddress = {
+        UserId: id,
+        name: name,
+        city: city,
+        street: street,
+        phone: numberPhone,
+      }
+
+      axios.post(API_ADDRESS, dataAddress)
+        .then(function (response) {
+          console.log(response);
+          if (response.data._id !== null) {
+            // ToastAndroid.showWithGravity(
+            //   'Thêm thành công',
+            //   ToastAndroid.SHORT,
+            //   ToastAndroid.BOTTOM
+            // );
+            navigation.navigate('OnboardingScreen');
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
 
   return (
     <View style={styles.container}>

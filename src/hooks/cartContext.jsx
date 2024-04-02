@@ -19,9 +19,18 @@ export function CartProvider({children}) {
     setDataCart(updatedCartItems);
   };
 
+  const removeFromCart = (itemIds) => {
+    const updatedCartItems = dataCart.filter(
+      item =>
+        !itemIds.includes(item._id) // Lọc ra các mục không có trong danh sách ID cần xóa
+    );
+
+    setDataCart(updatedCartItems);
+  };
+
   return (
     <CartContext.Provider
-      value={{dataCart, setDataCart, addItemToCart, removeItemFromCart}}>
+      value={{dataCart, setDataCart, addItemToCart, removeItemFromCart , removeFromCart}}>
       {children}
     </CartContext.Provider>
   );

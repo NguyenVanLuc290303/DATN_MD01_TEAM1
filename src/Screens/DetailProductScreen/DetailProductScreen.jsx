@@ -163,7 +163,12 @@ const DetailProductScreen = ({navigation, route}) => {
     });
   }
 
+  // console.log(selectedColor.name , "oooooooooooo");
+
   const handleToCart = () => {
+
+
+
    
 
     const myHeaders = new Headers();
@@ -184,6 +189,7 @@ const DetailProductScreen = ({navigation, route}) => {
         ColorCode: selectedColor.colorId,
         Size: selectSize,
         Quantity: quantity,
+        RemainQuantity : quantityRemain,
         PropertiesId: idPropotiesS,
         Image: selectedColor.image,
       }),

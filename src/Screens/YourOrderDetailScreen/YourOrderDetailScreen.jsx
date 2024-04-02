@@ -14,7 +14,7 @@ import COLORS from '../../constants/colors';
 import {User} from '../../hooks/useContext';
 
 const YourOrderDetailScreen = ({navigation, route}) => {
-  const {OrderId, status} = route.params;
+  const {OrderId, status , address} = route.params;
 
   console.log(OrderId, 'OrderId 000000');
 
@@ -53,18 +53,21 @@ const YourOrderDetailScreen = ({navigation, route}) => {
           <Text style={{fontSize: 24, fontFamily: 'Inter-SemiBold'}}>
             {status}
           </Text>
-          <Text>Ngày giao dự kiến : Jan 21 - Jan 23</Text>
+          {/* <Text>Ngày giao dự kiến : Jan 21 - Jan 23</Text> */}
         </View>
         <View></View>
       </View>
       <View style={styles.address}>
-        <Image source={Icons.IconAddress} style={styles.iconAddress} />
+        {/* <Image source={Icons.IconAddress} style={styles.iconAddress} /> */}
         <View style={styles.textAddress}>
-          <Text style={styles.textInfo}>{userData.username}</Text>
-          <Text style={styles.textInfo}>{userData.numberPhone}</Text>
-          <Text style={styles.textInfo2}>{userData.address}</Text>
+          {/* <Text style={styles.textInfo}>{userData.username}</Text>
+          <Text style={styles.textInfo}>{userData.numberPhone}</Text> */}
+          <Text style={styles.textInfo2}>{address}</Text>
         </View>
 
+        {/* <Text>
+          {address}
+        </Text> */}
       </View>
 
       <View>
@@ -207,8 +210,10 @@ const styles = StyleSheet.create({
   },
   textInfo2: {
     color: COLORS.black,
-    fontSize: 13,
+    fontSize: 14,
     marginBottom: 5,
+    fontStyle : 'italic',
+    fontWeight : '600'
   },
   iconNext: {
     width: 24,

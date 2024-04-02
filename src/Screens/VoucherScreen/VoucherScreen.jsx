@@ -1,33 +1,23 @@
 import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground, FlatList } from "react-native";
+import axios, { Axios } from 'axios';
+import { API_VOUCHER } from "../../config/api-consts";
+
 
 const VoucherScreen = ({navigation}) => {
-    const [dataVoucher, setDataVoucher] = useState([
-        {
-            name: 'Giảm giá 10K',
-            content: 'Shop tặng voucher giảm 10K cho tất cả các đơn hàng',
-            image: '@/images/logoAPP_MD01_png.png',
-            price: 10000,
-            fromDate: '01/03/2024',
-            toDate: '08/03/2024'
-        },
-        {
-            name: 'Giảm giá 10K',
-            content: 'Shop tặng voucher giảm 10K cho tất cả các đơn hàng',
-            image: '@/images/logoAPP_MD01_png.png',
-            price: 10000,
-            fromDate: '01/03/2024',
-            toDate: '08/03/2024'
-        },
-        {
-            name: 'Giảm giá 10K',
-            content: 'Shop tặng voucher giảm 10K cho tất cả các đơn hàng',
-            image: '@/images/logoAPP_MD01_png.png',
-            price: 10000,
-            fromDate: '01/03/2024',
-            toDate: '08/03/2024'
-        }
-    ])
+    const [dataVoucher, setDataVoucher] = useState([]);
+
+    useEffect(() =>{
+        axios
+        .get(`${API_VOUCHER}`)
+        .then(function (response) {
+          const data = Array.isArray(response.data) ? response.data : [response.data];
+          setDataVoucher(data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },[])
 
     const HandleVoucher = () => {
         console.log(' click HandleVoucher !!!!')
@@ -71,6 +61,7 @@ const VoucherScreen = ({navigation}) => {
                                     <Text style={{ fontSize: 22, color: 'black' }}>{item.name}</Text>
                                     <Text style={{ color: 'grey' }}>{item.content}</Text>
                                     <Text style={{ color: 'black' }}>BĐ: {item.fromDate}</Text>
+                                    <Text>Giảm ngay : {item.price}</Text>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <Text style={{ color: 'black' }}>HSD: {item.toDate}</Text>
                                         <TouchableOpacity style={{ justifyContent: 'flex-end' }} onPress={HandleVoucher}>

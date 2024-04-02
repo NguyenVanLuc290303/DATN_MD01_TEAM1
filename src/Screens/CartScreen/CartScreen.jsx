@@ -207,7 +207,9 @@ const CartScreen = ({navigation}) => {
                 {item.Name}
               </Text>
               <View style={styles.productDetailsWrapper}>
-                <Text style={styles.productDetails}>{item.ColorCode}</Text>
+                {/* <Text style={styles.productDetails}>{item.ColorCode}</Text> */}
+                <View style={{ backgroundColor : `#${item.ColorCode}` , height : 25 , width : 25 , borderRadius : 5}}>
+                </View>
                 <Text style={styles.productDetails}>{item.Size}</Text>
 
               </View>

@@ -24,6 +24,8 @@ const RegisterScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [street ,setStreet] = useState('');
+  const [city , setCity] = useState('');
 
   const [errorMessages, setErrorMessages] = useState({
     phoneNumber: '',
@@ -67,60 +69,72 @@ const RegisterScreen = ({navigation}) => {
   };
 
   const handerOnlickCreateAccount = async () => {
-    // const errors = {};
-    // if (phoneNumber === '') {
-    //   errors.phoneNumber = 'Vui lòng nhập số điện thoại';
-    // }
-    // else if (!validateEmail(email)) {
-    //   errors.email = 'Vui lòng nhập đúng định dạng email';
-    // }
-    // if (name === '') {
-    //   errors.name = 'Vui lòng nhập tên';
-    // }
-    // if (password === '') {
-    //   errors.password = 'Vui lòng nhập password';
-    // } else if (
-    //   !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?!.*\s).{8,}$/.test(
-    //     password,
-    //   )
-    // ) {
-    //   errors.password =
-    //     'Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một ký tự đặc biệt và một số';
-    // }
-    // if (address === '') {
-    //   errors.address = 'Vui lòng nhập địa chỉ';
-    // }
 
-    // setErrorMessages(errors);
-
-    // if (Object.keys(errors).length === 0) {
-    //   // Nếu không có lỗi, bạn có thể tiến hành đăng ký tài khoản ở đây
-
-    //   // chuyển số điện thoại 0 -> +84
-    //   let formattedPhoneNumber = phoneNumber.trim();
-    //   if (formattedPhoneNumber.startsWith('0')) {
-    //     formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
-
-    //     // chuyển đổi xong thì bắt đầu thực hiện đăng ký
-        
-    //   }
-    // }
+    console.log("ở đây" , "lll")
+    
     try {
-      // console.log(formattedPhoneNumber);
-      const confirmationResult = await auth().signInWithPhoneNumber(
-        phoneNumber,
-      );
-      navigation.navigate(
-        'SendOTPRegisterScreen',
-        (data = {
-          verification: confirmationResult.verificationId,
-          email: email,
-          name: name,
-          password: password,
-          address: address,
-          numberPhone: phoneNumber,
-        }),
-      );
+
+      const errors = {};
+    if (phoneNumber === '') {
+      errors.phoneNumber = 'Vui lòng nhập số điện thoại';
+    }
+    else if (!validateEmail(email)) {
+      errors.email = 'Vui lòng nhập đúng định dạng email';
+    }
+    if (name === '') {
+      errors.name = 'Vui lòng nhập tên';
+    }
+    if (password === '') {
+      errors.password = 'Vui lòng nhập password';
+    } else if (
+      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?!.*\s).{8,}$/.test(
+        password,
+      )
+    ) {
+      errors.password =
+        'Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một ký tự đặc biệt và một số';
+    }
+    if (address === '') {
+      errors.address = 'Vui lòng nhập địa chỉ';
+    }
+
+    setErrorMessages(errors);
+
+    console.log(Object.keys(errors).length ,"OOOOO");
+
+    if (Object.keys(errors).length === 1) {
+      // Nếu không có lỗi, bạn có thể tiến hành đăng ký tài khoản ở đây
+
+      console.log('ở đây')
+
+      // chuyển số điện thoại 0 -> +84
+      let formattedPhoneNumber = phoneNumber.trim();
+      if (formattedPhoneNumber.startsWith('0')) {
+        formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
+
+        // chuyển đổi xong thì bắt đầu thực hiện đăng ký
+
+        console.log(formattedPhoneNumber);
+        const confirmationResult = await auth().signInWithPhoneNumber(
+          formattedPhoneNumber,
+        );
+        navigation.navigate(
+          'SendOTPRegisterScreen',
+          (data = {
+            verification: confirmationResult.verificationId,
+            email: email,
+            name: name,
+            password: password,
+            address: street + city,
+            street : street,
+            city : city,
+            numberPhone: formattedPhoneNumber,
+          }),
+        );
+        
+      }
+    }
+
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'Failed to send OTP');
@@ -159,7 +173,7 @@ const RegisterScreen = ({navigation}) => {
                 paddingLeft: 22,
               }}>
               <TextInput
-                placeholder="Enter your number phone"
+                placeholder="Số điện thoại"
                 placeholderTextColor={COLORS.black}
                 keyboardType="phone-pad"
                 style={{
@@ -185,7 +199,7 @@ const RegisterScreen = ({navigation}) => {
                 paddingLeft: 22,
               }}>
               <TextInput
-                placeholder="Enter your email address"
+                placeholder="Email"
                 placeholderTextColor={COLORS.black}
                 keyboardType="email-address"
                 style={{
@@ -198,6 +212,7 @@ const RegisterScreen = ({navigation}) => {
               <Text style={{color: 'red'}}>{errorMessages.email}</Text>
             ) : null}
           </View>
+          
 
           <View style={{marginBottom: 22}}>
             <View
@@ -212,7 +227,7 @@ const RegisterScreen = ({navigation}) => {
                 paddingLeft: 22,
               }}>
               <TextInput
-                placeholder="Enter your name"
+                placeholder="Tên của bạn"
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
@@ -238,7 +253,7 @@ const RegisterScreen = ({navigation}) => {
                 paddingLeft: 22,
               }}>
               <TextInput
-                placeholder="Enter your password"
+                placeholder="Mật khẩu"
                 placeholderTextColor={COLORS.black}
                 secureTextEntry={!isPasswordShow}
                 style={{
@@ -276,17 +291,37 @@ const RegisterScreen = ({navigation}) => {
                 paddingLeft: 22,
               }}>
               <TextInput
-                placeholder="Enter your address"
+                placeholder="Đường"
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
                 }}
-                onChangeText={Text => setAddress(Text)}
+                onChangeText={Text => setStreet(Text)}
               />
             </View>
-            {errorMessages.address ? (
-              <Text style={{color: 'red'}}>{errorMessages.address}</Text>
-            ) : null}
+          </View>
+
+          <View style={{marginBottom: 22}}>
+            <View
+              style={{
+                width: '100%',
+                height: 48,
+                borderColor: COLORS.black,
+                borderWidth: 1,
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingLeft: 22,
+              }}>
+              <TextInput
+                placeholder="Thành Phố"
+                placeholderTextColor={COLORS.black}
+                style={{
+                  width: '100%',
+                }}
+                onChangeText={Text => setCity(Text)}
+              />
+            </View>
           </View>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity

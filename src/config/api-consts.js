@@ -105,7 +105,7 @@ export const API_PRODUCT_ORDER_ID = `http://${IP_ADDRESS}/api-sanpham/getOD`;
 
 export const API_PRODUCT_TO_CART = `http://${IP_ADDRESS}/api-sanpham/SPG`;
 
-
+export const API_DELETE_IN_CART = `https://${IP_ADDRESS}/api-sanpham`;
 
 //api address
 
@@ -114,4 +114,8 @@ export const API_ADDRESS =`http://${IP_ADDRESS}/api-dcgh`;
 // api notification
 
 export const API_NOTIFICATION = `http://${IP_ADDRESS}/api-thongbao`;
+
+//api voucher 
+
+export const API_VOUCHER = `http://${IP_ADDRESS}/api-voucher`
 
