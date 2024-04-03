@@ -57,6 +57,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   let deleteProductInCart = dataProductOrder.map(item => ({_id : item._id}));
 
+
   console.log(deleteProductInCart, 'deeeeeeeeeeee');
 
   // console.log( idProduct  + "Product ID PPPPP");
@@ -161,10 +162,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   console.log(formattedDate);
 
-  const handleOpenZaloPay = () => {
-    createZaloPayOrder();
-    return;
-  };
 
   const handleOrderProduct = () => {
     if (isChecked) {
@@ -540,6 +537,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               addressReceive : addressOrder,
               deleteProductInCart : deleteProductInCart
             })} style={styles.priceTransport3}>
+
               Liên kết
             </Text>
           </View>

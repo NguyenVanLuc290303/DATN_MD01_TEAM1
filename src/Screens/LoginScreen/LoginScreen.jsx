@@ -17,18 +17,22 @@ import {API_ADD_USERS} from '../../config/api-consts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {Axios} from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IconI from "react-native-vector-icons/Ionicons";
+import IconI from 'react-native-vector-icons/Ionicons';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
   const [phone, setPhoneNumber] = useState();
 
-  const [password, setPassWord] = useState();
+  const [password, setPassWord] = useState('');
 
   const [dataUser, setDataUser] = useState({});
 
   const [luu, setluu] = useState('0');
+  const [showPassword, setShowPassword] = useState(false);
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   let internationalPhoneNumber;
 
   const [imageUri, setImageUri] = useState(
@@ -69,15 +73,11 @@ const LoginScreen = ({navigation}) => {
     // Thêm mã quốc gia +84 vào đầu số điện thoại
     return '+84' + phoneNumber.slice(1);
   }
- 
 
   const handerOnlickLogin = async () => {
+    internationalPhoneNumber = await convertToInternationalPhoneNumber(phone);
 
-    internationalPhoneNumber = await convertToInternationalPhoneNumber(
-      phone,
-    );
-
-    console.log(internationalPhoneNumber,"lllll")
+    console.log(internationalPhoneNumber, 'lllll');
     // setPhoneNumber(internationalPhoneNumber)
     axios
       .get(`${API_ADD_USERS}/${internationalPhoneNumber}`)
@@ -98,7 +98,10 @@ const LoginScreen = ({navigation}) => {
       if (dataUser === null) {
         Alert.alert('thông tin null');
       }
-      if (internationalPhoneNumber === dataUser.numberPhone && password === dataUser.passwd) {
+      if (
+        internationalPhoneNumber === dataUser.numberPhone &&
+        password === dataUser.passwd
+      ) {
         // console.log(dataUser)
         setUserData(dataUser);
         navigation.navigate('BottomNavigation');
@@ -181,34 +184,36 @@ const LoginScreen = ({navigation}) => {
         </View>
         <View style={styles.form}>
           <View style={styles.input}>
-            <Icon name="phone" size={24}/>
+            <Icon name="phone" size={24} />
             <TextInput
               defaultValue={phone}
               autoCapitalize="none"
               autoCorrect={false}
               // keyboardType="phone-pad"
-              style={{ paddingLeft : 10}}
+              style={{paddingLeft: 10}}
               // value={form.email}
               placeholder="Enter your phone"
               placeholderTextColor="#6b7280"
-              onChangeText={text => 
-                setPhoneNumber(text)
-              }
+              onChangeText={text => setPhoneNumber(text)}
             />
           </View>
 
           <View style={styles.input}>
-            <IconI name="eye-off" size={24}/>
+            <IconI name="lock-closed" size={24} />
             <TextInput
               defaultValue={password}
-              secureTextEntry
-              style={{ paddingLeft :  10}}
+              secureTextEntry={!showPassword}
+              style={{flex: 1, paddingLeft: 10}}
               // value={form.password}
               placeholder="Enter your password"
               placeholderTextColor="#6b7280"
               onChangeText={Text => setPassWord(Text)}
             />
+            <TouchableOpacity onPress={toggleShowPassword}>
+              <IconI name={showPassword ? 'eye' : 'eye-off'} size={24} />
+            </TouchableOpacity>
           </View>
+
           <Text
             style={styles.title2}
             onPress={() => navigation.navigate('ForgotPassword')}>
@@ -298,9 +303,9 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
   input: {
-    flexDirection : 'row',
+    flexDirection: 'row',
     marginBottom: 16,
-    height: 44,
+    height: 56,
     backgroundColor: '#fff',
     paddingHorizontal: 16,
     borderRadius: 12,
@@ -309,7 +314,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     borderColor: '#817C7C',
     borderWidth: 1,
-    alignItems : 'center'
+    alignItems: 'center',
   },
   inputLabel: {
     fontSize: 17,
@@ -346,7 +351,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   form: {
-    padding : 20,
+    padding: 20,
     flex: 1,
   },
   formAction: {
