@@ -169,8 +169,7 @@ const DetailProductScreen = ({navigation, route}) => {
 
 
 
-   
-
+   if(selectedColor !== null){
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append(
@@ -216,11 +215,19 @@ const DetailProductScreen = ({navigation, route}) => {
           }
         });
     } catch (error) {
-     
+     console.log(error , " lỗi thêm vào giỏ hàng");
     }
+   }else{
+    ToastAndroid.showWithGravity(
+      'Bạn chưa chọn màu',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    )
+   }
   };
 
   const handleToSale = () => {
+   if(selectedColor !== null){
     const productSelect = [
       {
         ProductId: _id,
@@ -237,6 +244,13 @@ const DetailProductScreen = ({navigation, route}) => {
     navigation.navigate('OrderDetailsScreen', {
       dataProductOrder: productSelect,
     });
+   }else{
+    ToastAndroid.showWithGravity(
+      'Bạn chưa chọn màu',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    )
+   }
   };
 
   const handleOnpressSize = (size, id , quantity) => {

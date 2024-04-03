@@ -136,7 +136,7 @@ const Home = ({navigation}) => {
         const data = Array.isArray(response.data)
           ? response.data
           : [response.data];
-        console.log(data);
+        // console.log(data);
 setDataCart(data);
       })
       .catch(function (error) {

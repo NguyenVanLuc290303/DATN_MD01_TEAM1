@@ -1,3 +1,4 @@
+
 import {
   FlatList,
   Image,
@@ -18,9 +19,9 @@ import {useState, useCallback, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
 import {API_DELETE_IN_CART, API_ORDER} from '../../config/api-consts';
 import {API_PRODUCT_ORDER} from '../../config/api-consts';
-import Icon from 'react-native-vector-icons/Fontisto'
-import axios, { Axios } from 'axios';
-import { Cart } from '../../hooks/cartContext';
+import Icon from 'react-native-vector-icons/Fontisto';
+import axios, {Axios} from 'axios';
+import {Cart} from '../../hooks/cartContext';
 
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
@@ -28,6 +29,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
   const {dataProductOrder, dataAddress} = route.params;
 
   const {removeFromCart} = Cart();
+
+  const {userData} = User();
 
   let addressOrder = '';
   if (dataAddress) {
@@ -40,15 +43,21 @@ const OrderDetailsScreen = ({navigation, route}) => {
       dataAddress.street +
       ' ' +
       dataAddress.city;
-  }
+  }else{
+        addressOrder =
+        'Số điện thoại : ' +
+        userData.numberPhone +
+        ' ,Tên người nhận : ' +
+        userData.username +
+        ' ,Đường : ' +
+        userData.address
+      }
 
-  console.log(dataProductOrder , " dataProductOrder =>>>>>>>>>>)))))((((((");
+  console.log(dataProductOrder, ' dataProductOrder =>>>>>>>>>>)))))((((((');
 
-  const deleteProductInCart = dataProductOrder.map(item => item._id);
-  
-  
-  console.log(deleteProductInCart, "deeeeeeeeeeee");
-  
+  let deleteProductInCart = dataProductOrder.map(item => ({_id : item._id}));
+
+  console.log(deleteProductInCart, 'deeeeeeeeeeee');
 
   // console.log( idProduct  + "Product ID PPPPP");
   // console.log( size  + "size ID PPPPP");
@@ -67,8 +76,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
   );
 
   const totalPrice = totalPriceProduct + costTranformer;
-
-  const {userData} = User();
 
   const idUser = userData._id;
   const userName = userData.username;
@@ -101,7 +108,9 @@ const OrderDetailsScreen = ({navigation, route}) => {
     [quantityFinish],
   );
 
-  const [quantityFinish, setQuantityFinish] = useState(dataProductOrder.Quantity); // Số lượng mặc định là 1
+  const [quantityFinish, setQuantityFinish] = useState(
+    dataProductOrder.Quantity,
+  ); // Số lượng mặc định là 1
 
   // Hàm xử lý cộng số lượng
   const incrementQuantity = useCallback(() => {
@@ -152,14 +161,16 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   console.log(formattedDate);
 
-  const handleOrderProduct = () => {
-    // createZaloPayOrder();
-    // return;
+  const handleOpenZaloPay = () => {
+    createZaloPayOrder();
+    return;
+  };
 
-    if(isChecked){
-      setMethodPay('thanh toán khi nhận hàng')
-    }else{
-      setMethodPay('đã thanh toán')
+  const handleOrderProduct = () => {
+    if (isChecked) {
+      setMethodPay('thanh toán khi nhận hàng');
+    } else {
+      setMethodPay('đã thanh toán');
     }
 
     const myHeaders = new Headers();
@@ -198,13 +209,20 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
     const idOrder = data._id;
 
-    console.log(idOrder, 'IdOrder =>>>>>>>>>>>>');
+    // console.log(idOrder, 'IdOrder =>>>>>>>>>>>>');
 
     const dataArrayOrder = dataProductOrder;
 
     dataArrayOrder.forEach(item => {
       item.OrderId = idOrder;
     });
+
+    const deleteQuantityProduct = dataArrayOrder.map(item => ({
+      sizeId : item.PropertiesId,
+      quantity : item.Quantity
+    }));
+
+    console.log(deleteQuantityProduct , 'JJJJJJJJJ');
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -223,106 +241,43 @@ const OrderDetailsScreen = ({navigation, route}) => {
     try {
       fetch(API_PRODUCT_ORDER, requestOptions)
         .then(response => response.json())
-        .then(result =>  {if(result.status ===1){
-
-          deleteProductCart();
-          removeFromCart(deleteProductInCart);
-          navigation.replace('NotificationOrderSuccess');
-
-
-        }});
+        .then(result => {
+          if (result.status === 1) {
+            deleteProductCart();
+            downQuantityServer(deleteQuantityProduct);
+            removeFromCart(deleteProductInCart);
+            navigation.replace('NotificationOrderSuccess');
+          }
+        });
     } catch (error) {
       console.log(error);
     }
   };
-  const  getCurrentDateYYMMDD = () => {
-    var todayDate = new Date().toISOString().slice(2, 10);
-    return todayDate.split('-').join('');
-  }
 
-  const deleteProductCart = () =>{
-    axios.delete(`${API_DELETE_IN_CART}`, {
-  data: { productIds : deleteProductInCart } // Truyền mảng productIds vào body của request
-})
-  .then(response => {
-    console.log(response.data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-  }
-
-  const createZaloPayOrder = async () => {
-    let apptransid = getCurrentDateYYMMDD() + '_' + new Date().getTime();
-    let appid = 553;
-    let amount = parseInt(totalPrice);
-    let appuser = 'ZaloPayDemo';
-    let apptime = new Date().getTime();
-    let embeddata = '{}';
-    let item = '[]';
-    let description = 'Thanh toán đơn hàng quần áo';
-    let hmacInput =
-        appid +
-        '|' +
-        apptransid +
-        '|' +
-        appuser +
-        '|' +
-        amount +
-        '|' +
-        apptime +
-        '|' +
-        embeddata +
-        '|' +
-        item;
-    let mac = CryptoJS.HmacSHA256(
-        hmacInput,
-        '9phuAOYhan4urywHTh0ndEXiV3pKHr5Q',
-    );
-    console.log('====================================');
-    console.log('hmacInput: ' + hmacInput);
-    console.log('mac: ' + mac);
-    console.log('====================================');
-    var order = {
-      app_id: appid,
-      app_user: appuser,
-      app_time: apptime,
-      amount: amount,
-      app_trans_id: apptransid,
-      embed_data: embeddata,
-      item: item,
-      description: description,
-      mac: mac,
-    };
-
-    console.log(order);
-
-    let formBody = [];
-    for (let i in order) {
-      var encodedKey = encodeURIComponent(i);
-      var encodedValue = encodeURIComponent(order[i]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-    await fetch('https://sb-openapi.zalopay.vn/v2/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: formBody,
-    })
-        .then(response => response.json())
-        .then(resJson => {
-          console.log('createZaloPayOrder ', resJson);
-          if (resJson.return_code === 1) {
-            var payZP = NativeModules.PayZaloBridge;
-            payZP.payOrder(resJson.zp_trans_token);
-          }
-        })
-        .catch(error => {
-          console.log('error ', error);
-        });
-  }
+  const deleteProductCart = () => {
+    axios
+      .delete(`${API_DELETE_IN_CART}`, {
+        data: {productIds: deleteProductInCart}, // Truyền mảng productIds vào body của request
+      })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+  const downQuantityServer = (deleteQuantityProduct) => {
+    axios
+      .post(`${API_DELETE_IN_CART}`, {
+        orderItems: deleteQuantityProduct, // Truyền mảng productIds vào body của request
+      })
+      .then(response => {
+        
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
 
   return (
     <View styles={styles.container}>
@@ -381,7 +336,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
                             borderColor: '#272727',
                           },
                         ]}>
-                        
                         <Text
                           style={{
                             flex: 3,
@@ -395,7 +349,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
                           }}>
                           {item.Quantity}
                         </Text>
-                      
                       </View>
                     </View>
                   </View>
@@ -432,17 +385,31 @@ const OrderDetailsScreen = ({navigation, route}) => {
             </Text>
           </View> */}
         </View>
-        <View style={{marginTop : 10, flexDirection : 'row' , padding : '4%', alignItems : 'center' , justifyContent : 'space-between' , backgroundColor : COLORS.white}}>
-            <View style={{ flexDirection : 'row' , alignItems : 'center'}}>
-              <Icon name="shopping-sale" size={32} />
-            <Text style={{ fontSize : 16 , fontFamily : 'Inter-Medium' , marginLeft : '2%'}}>
+        <View
+          style={{
+            marginTop: 10,
+            flexDirection: 'row',
+            padding: '4%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: COLORS.white,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Icon name="shopping-sale" size={32} />
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Inter-Medium',
+                marginLeft: '2%',
+              }}>
               Voucher của shop
             </Text>
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate('VoucherScreen')}>
-              <Image source={Icons.IconNext} style={{ width : 20 , height : 20}}/>
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('VoucherScreen')}>
+            <Image source={Icons.IconNext} style={{width: 20, height: 20}} />
+          </TouchableOpacity>
+        </View>
         <View
           style={{
             backgroundColor: COLORS.white,
@@ -535,17 +502,16 @@ const OrderDetailsScreen = ({navigation, route}) => {
               Thanh toán khi nhận hàng
             </Text>
 
-              {/* Hình ảnh checkbox tùy chỉnh */}
-              {isChecked ? (
-                <TouchableOpacity onPress={toggleCheckbox}>
-                <Icon name="radio-btn-active" size={24} color={COLORS.red}/>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={toggleCheckbox}>
+            {/* Hình ảnh checkbox tùy chỉnh */}
+            {isChecked ? (
+              <TouchableOpacity onPress={toggleCheckbox}>
+                <Icon name="radio-btn-active" size={24} color={COLORS.red} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={toggleCheckbox}>
                 <Icon name="radio-btn-passive" size={24} />
-                </TouchableOpacity>
-              )}
-
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styles.textTransport3}>
             <Image
@@ -568,7 +534,14 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Zalo Pay
             </Text>
-            <Text style={styles.priceTransport3}>Liên kết</Text>
+            <Text onPress={() => navigation.navigate('ZaloPaymentScreen', {
+              dataProductOrder : dataProductOrder,
+              pricePayment : totalPrice,
+              addressReceive : addressOrder,
+              deleteProductInCart : deleteProductInCart
+            })} style={styles.priceTransport3}>
+              Liên kết
+            </Text>
           </View>
           <View style={styles.textTransport4}>
             <Image
@@ -759,7 +732,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     color: COLORS.black,
     marginRight: 20,
-    fontWeight : 'bold'
+    fontWeight: 'bold',
   },
   priceTransport2: {
     alignSelf: 'flex-end',

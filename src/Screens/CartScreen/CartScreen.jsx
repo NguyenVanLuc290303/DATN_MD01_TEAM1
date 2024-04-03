@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
   Animated,
+  ToastAndroid
   
 } from 'react-native';
 import COLORS from '../../constants/colors';
@@ -21,6 +22,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {API_PRODUCT} from '../../config/api-consts';
 import ModalConfirm from '../../components/dialog/ModalConfirm';
 import { Cart } from '../../hooks/cartContext';
+import Loading from '../../components/organisms/Loading/Loading';
 
 
 const CartScreen = ({navigation}) => {
@@ -58,7 +60,7 @@ const CartScreen = ({navigation}) => {
       .catch(error => console.error(error));
   }, []);
 
-  // console.log(productArray +" =====================>");
+  console.log(productArray +" =====================>");
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -87,7 +89,9 @@ const CartScreen = ({navigation}) => {
 
   const handleDecreaseQuantity = index => {
     const newArray = [...productArray];
-    if (newArray[index].Quantity > 1) {
+
+    console.log(newArray[index].RemainQuantity ,"++++++++++++");
+    if (newArray[index].Quantity > 1 ) {
       newArray[index].Quantity -= 1;
       setProductArray(newArray);
     }
@@ -96,10 +100,17 @@ const CartScreen = ({navigation}) => {
   const handleIncreaseQuantity = index => {
 
     const newArray = [...productArray];
+    console.log(newArray[index].RemainQuantity ,"++++++++++++");
 
-    if (newArray[index].Quantity < 99) {
+    if (newArray[index].Quantity < 99  &&  newArray[index].Quantity < newArray[index].RemainQuantity) {
       newArray[index].Quantity += 1;
       setProductArray(newArray);
+    }else{
+      ToastAndroid.showWithGravity(
+        ' Sản phẩm này số lượng  trong kho đã hết',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
     }
   };
 
@@ -123,7 +134,7 @@ const CartScreen = ({navigation}) => {
   const handleOrderProduct = () => {
     console.log(checkedItems);
     // console.log(productArray + "product order =========)00000000000");
-    navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems});
+  
   };
 
   const renderRightActions = (item, index, progress , dragX) => {
@@ -266,23 +277,20 @@ const CartScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
+
+      {productArray.length >  0 ? (
+        <>
+        <FlatList
         data={productArray}
         renderItem={renderItem}
         keyExtractor={item => item._id.toString()}
         nestedScrollEnabled={true}
         style={{paddingBottom: 100, marginBottom: 100}}
-      />
-      {/* <ModalConfirm
-        title={"Xóa"}
-        message={"Bạn có muốn xóa không"}
-        cancelText={"hủy"}
-        confirmText={"Xác nhận"}
-        visible={visible}
-        cancelCallback={setVisible(false)}
-        confirmCallBack={() => handleDeleteProductCart(itemDelete , indexDelete)}
-      /> */}
-      {/* Phần nội dung dưới màn hình */}
+        />
+        </>
+      ):(
+        <Loading/>
+      )} 
       <View
         style={[
           styles.bottomSheet,
@@ -312,7 +320,7 @@ const CartScreen = ({navigation}) => {
           {/* Order Button */}
           <TouchableOpacity
             style={styles.orderButton}
-            onPress={handleOrderProduct}>
+            onPress={() =>   navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})}>
             <Text style={styles.orderButtonText}>Order</Text>
           </TouchableOpacity>
         </View>

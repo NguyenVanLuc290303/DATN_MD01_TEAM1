@@ -31,7 +31,8 @@ import Avatar2 from '../assets/images/avatar2.jpg';
 import Ellipse from '../assets/images/Ellipse.png';
 import fi_check from '../assets/images/fi_check.png';
 import IconVoucher from '../assets/images/icon_voucher.png';
-import IconListOrder from'../assets/images/list-check-order.png'
+import IconListOrder from'../assets/images/list-check-order.png';
+import IconZaloPay from '../assets/images/icons8-zalo-240.png';
 
 export const Icons = {
   IconEye,
@@ -67,5 +68,6 @@ export const Icons = {
   Ellipse,
   fi_check,
   IconVoucher,
-  IconListOrder
+  IconListOrder,
+  IconZaloPay
 };
