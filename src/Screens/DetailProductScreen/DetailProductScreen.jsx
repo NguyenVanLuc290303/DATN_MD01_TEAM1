@@ -163,11 +163,7 @@ const DetailProductScreen = ({navigation, route}) => {
     });
   }
 
-  // console.log(selectedColor.name , "oooooooooooo");
-
   const handleToCart = () => {
-
-
 
    if(selectedColor !== null){
     const myHeaders = new Headers();

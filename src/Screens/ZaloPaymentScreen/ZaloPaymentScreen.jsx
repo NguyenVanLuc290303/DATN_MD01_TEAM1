@@ -21,6 +21,7 @@ const ZaloPaymentScreen = ({navigation , route}) =>{
 
     const handlePaymentZalo = () => {
       createZaloPayOrder();
+      return;
     }
 
 

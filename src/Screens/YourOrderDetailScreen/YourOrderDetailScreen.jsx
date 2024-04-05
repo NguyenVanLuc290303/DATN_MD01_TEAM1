@@ -17,6 +17,7 @@ import COLORS from '../../constants/colors';
 import {User} from '../../hooks/useContext';
 import { API_ORDER } from '../../config/api-consts';
 import { API_DELETE_IN_CART } from '../../config/api-consts';
+import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 
 const YourOrderDetailScreen = ({navigation, route}) => {
   const {OrderId, status , address} = route.params;
@@ -233,19 +234,14 @@ const YourOrderDetailScreen = ({navigation, route}) => {
           </Text>
         </TouchableOpacity>
         )}
-  <Modal visible={isModalVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Bạn có muốn hủy đơn hàng này?</Text>
-            <View style={styles.modalButtonsContainer}>
-              <Button title="No" onPress={handleNo} color={COLORS.primary} />
-              <Button  title="Yes" onPress={handleYes} color={COLORS.primary} />
-            </View>
-          </View>
-        </View>
-      </Modal>
-
       </View>
+    <ModalConfirm
+      visible={isModalVisible}
+      content={"Bạn muốn Hủy đơn hàng không ?"}
+      onClose={handleNo}
+      onConfirm={handleYes}
+    />
+
     </View>
   );
 };
