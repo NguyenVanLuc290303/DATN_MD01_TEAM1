@@ -137,7 +137,7 @@ const Home = ({navigation}) => {
           ? response.data
           : [response.data];
         // console.log(data);
-setDataCart(data);
+      setDataCart(data);
       })
       .catch(function (error) {
         console.log(error);
@@ -165,9 +165,9 @@ setDataCart(data);
       .catch(error => console.log('error', error));
   }, []);
 
-  console.log('render lại , HomeScreen');
+  // console.log('render lại , HomeScreen');
 
-  console.log(dataProduct)
+  // console.log(dataProduct)
 
 
 

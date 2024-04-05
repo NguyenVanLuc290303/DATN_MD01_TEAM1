@@ -134,6 +134,15 @@ const CartScreen = ({navigation}) => {
   const handleOrderProduct = () => {
     console.log(checkedItems);
     // console.log(productArray + "product order =========)00000000000");
+    if(checkedItems === null){
+      ToastAndroid.showWithGravity(
+        'Chưa chọn sản phẩm ',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }else{
+      navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})
+    }
   
   };
 
@@ -320,7 +329,7 @@ const CartScreen = ({navigation}) => {
           {/* Order Button */}
           <TouchableOpacity
             style={styles.orderButton}
-            onPress={() =>   navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})}>
+            onPress={handleOrderProduct}>
             <Text style={styles.orderButtonText}>Order</Text>
           </TouchableOpacity>
         </View>

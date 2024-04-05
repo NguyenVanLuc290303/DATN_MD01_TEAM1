@@ -55,18 +55,10 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   console.log(dataProductOrder, ' dataProductOrder =>>>>>>>>>>)))))((((((');
 
-  let deleteProductInCart = dataProductOrder.map(item => ({_id : item._id}));
+  const deleteProductInCart = dataProductOrder.map(item =>  item._id);
 
 
   console.log(deleteProductInCart, 'deeeeeeeeeeee');
-
-  // console.log( idProduct  + "Product ID PPPPP");
-  // console.log( size  + "size ID PPPPP");
-  // console.log( quantity  + "quantity ID PPPPP");
-  // console.log( color  + "color ID PPPPP");
-  // console.log( price  + "price ID PPPPP");
-  // console.log( image  + "image URL ID PPPPP");
-  // console.log(idPropoties + 'id URL ID PPPPP');
 
   var costTranformer = 22000;
 
@@ -132,14 +124,14 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   const year = new Date().getFullYear();
 
-  console.log('year :' + year);
+  // console.log('year :' + year);
 
   let month = new Date().getMonth() + 1;
   if (month < 10) {
     month = '0' + month;
   }
 
-  console.log('month :' + month);
+  // console.log('month :' + month);
 
   let date = new Date().getDate();
 
@@ -147,16 +139,16 @@ const OrderDetailsScreen = ({navigation, route}) => {
     date = '0' + date;
   }
 
-  console.log('date :' + date);
+  // console.log('date :' + date);
 
   const hour = new Date().getHours();
 
-  console.log('hour :' + hour);
+  // console.log('hour :' + hour);
 
   const minutes = new Date().getMinutes();
 
   const secounds = new Date().getSeconds();
-  console.log('mines :' + minutes);
+  // console.log('mines :' + minutes);
 
   const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
 
@@ -200,7 +192,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
   };
 
   const pushProductOnOrder = data => {
-    console.log(data);
+    // console.log(data);
 
     // console.log(numberPhone);
 
@@ -219,7 +211,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
       quantity : item.Quantity
     }));
 
-    console.log(deleteQuantityProduct , 'JJJJJJJJJ');
+    // console.log(deleteQuantityProduct , 'JJJJJJJJJ');
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -239,12 +231,12 @@ const OrderDetailsScreen = ({navigation, route}) => {
       fetch(API_PRODUCT_ORDER, requestOptions)
         .then(response => response.json())
         .then(result => {
-          if (result.status === 1) {
+          // if (result.status === 1) {
+            removeFromCart(deleteProductInCart);
             deleteProductCart();
             downQuantityServer(deleteQuantityProduct);
-            removeFromCart(deleteProductInCart);
             navigation.replace('NotificationOrderSuccess');
-          }
+          // }
         });
     } catch (error) {
       console.log(error);
@@ -257,7 +249,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
         data: {productIds: deleteProductInCart}, // Truyền mảng productIds vào body của request
       })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -269,7 +261,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
         orderItems: deleteQuantityProduct, // Truyền mảng productIds vào body của request
       })
       .then(response => {
-        
+        console.log(response.data , "llllllll");
       })
       .catch(error => {
         console.error('Error:', error);
