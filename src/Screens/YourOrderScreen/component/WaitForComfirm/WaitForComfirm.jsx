@@ -5,7 +5,7 @@ import { styles } from "./WaitForComfirm.style";
 
 const WaitForCofirm = ({navigation}) =>{
 
-    const listOrderDelivered = useOrderList().filter(item => item.status === "chờ xác nhận");
+    const listOrderDelivered = useOrderList().filter(item => item.status === "Chờ xác nhận");
 
 
     const handleNavigationDetails = (OrderId, status , address) => {

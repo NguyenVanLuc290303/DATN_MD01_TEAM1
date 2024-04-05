@@ -15,23 +15,7 @@ const Chat = ({ navigation }) => {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dataArray = [];
-        const snapshot = await refConversation.once('value');
-        const messages = snapshot.val();
-        if (messages) {
-          // Lọc dữ liệu chỉ có UserId bằng userData._id
-          const filteredData = Object.values(messages).filter(message => message.UserId === userData._id);
-          setDataMessage(filteredData);
-        }
-      } catch (error) {
-        console.error('Error fetching messages: ', error);
-      }
-    };
-  
-    fetchData();
-  
+    // Lắng nghe sự kiện child_added để nhận tin nhắn mới
     const onChildAdded = refConversation.on('child_added', snapshot => {
       const newMessage = snapshot.val();
       // Kiểm tra nếu message có UserId trùng với userData._id thì mới thêm vào state
@@ -42,41 +26,20 @@ const Chat = ({ navigation }) => {
   
     return () => refConversation.off('child_added', onChildAdded);
   }, []);
-  
 
   const handleOnclickSend = async () => {
-    
-
-    // const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
-
     const year = new Date().getFullYear();
-
-    console.log('year :' + year);
-  
     let month = new Date().getMonth() + 1;
     if (month < 10) {
       month = '0' + month;
     }
-  
-    console.log('month :' + month);
-  
     let date = new Date().getDate();
-  
     if (date < 10) {
       date = '0' + date;
     }
-  
-    console.log('date :' + date);
-  
     const hour = new Date().getHours();
-  
-    console.log('hour :' + hour);
-  
     const minutes = new Date().getMinutes();
-  
     const secounds = new Date().getSeconds();
-    console.log('mines :' + minutes);
-  
     const currentTime = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
     try {
       await refConversation.push({
@@ -112,7 +75,7 @@ const Chat = ({ navigation }) => {
         data={dataMessage}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-{ useNativeDriver: false }
+          { useNativeDriver: false }
         )}
         renderItem={({ item }) => {
           const isYour = userData._id === item.UserId && item.sender !== "admin";
@@ -124,27 +87,14 @@ const Chat = ({ navigation }) => {
                 margin: 8,
                 justifyContent: 'center',
               }}>
-              {isYour ? (
-                <View style={{
-                  height: 45,
-                  borderWidth: userData._id === item.UserId && item.sender !== "admin" ? 1 : 1,
-                  borderRadius: userData._id === item.UserId && item.sender !== "admin" ? 20 : 20,
-                  backgroundColor: userData._id === item.UserId && item.sender !== "admin" ? COLORS.gray : COLORS.white,
-                }}>
-                  <Text style={{ color: userData._id === item.UserId && item.sender !== "admin" ? COLORS.white : COLORS.black, fontSize: 20, padding: 10 }}>{item.content}</Text>
-                </View>
-              ) : (
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{
-                    height: 45,
-                    borderWidth: userData._id === item.UserId && item.sender !== "admin" ? 1 : 1,
-                    borderRadius: userData._id === item.UserId && item.sender !== "admin" ? 20 : 20,
-                    backgroundColor: userData._id === item.UserId && item.sender !== "admin" ? COLORS.gray : COLORS.white,
-                  }}>
-                    <Text style={{ color: userData._id === item.UserId && item.sender !== "admin" ? COLORS.white : COLORS.black, fontSize: 20, padding: 10 }}>{item.content}</Text>
-                  </View>
-                </View>
-              )}
+              <View style={{
+                height: 45,
+                borderWidth: 1,
+                borderRadius: 20,
+                backgroundColor: userData._id === item.UserId && item.sender !== "admin" ? COLORS.gray : COLORS.white,
+              }}>
+                <Text style={{ color: userData._id === item.UserId && item.sender !== "admin" ? COLORS.white : COLORS.black, fontSize: 20, padding: 10 }}>{item.content}</Text>
+              </View>
             </View>
           );
         }}
@@ -198,7 +148,7 @@ const styles = StyleSheet.create({
     right: 0,
     position: 'absolute',
   },
-inputChat: {
+  inputChat: {
     width: '100%',
     height: 70,
     flexDirection: 'row',
@@ -212,7 +162,3 @@ inputChat: {
 });
 
 export default Chat;
-
-
-
-  

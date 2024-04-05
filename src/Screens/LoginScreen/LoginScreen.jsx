@@ -103,10 +103,11 @@ const LoginScreen = ({navigation}) => {
         internationalPhoneNumber === dataUser.numberPhone &&
         password === dataUser.passwd
       ) {
-        // console.log(dataUser)
+        console.log(dataUser)
         setUserData(dataUser);
         navigation.navigate('BottomNavigation');
       } else {
+        console.log(dataUser + "data")
         Alert.alert('thông tin sai');
       }
     } catch (error) {
