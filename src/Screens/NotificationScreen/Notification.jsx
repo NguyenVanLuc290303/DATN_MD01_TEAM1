@@ -16,41 +16,41 @@ const Notification = ({navigation}) => {
   const [sp, setSp] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let dataArray = [];
-        const snapshot = await refConversation.once('value');
-        const messages = snapshot.val();
-        if (messages) {
-           dataArray = Object.values(messages);
-           setNotificationData(dataArray);
-           console.log(dataArray, "======>>>>>>>")
+    // Lọc dữ liệu với điều kiện UserId là "1" hoặc userData._id
+    const query1 = refConversation.orderByChild('UserId').equalTo("1").on('child_added', snapshot => {
+        const newMessage = snapshot.val();
+        // Kiểm tra điều kiện UserId trước khi thêm vào state
+        if (newMessage.UserId === "1" || newMessage.UserId === userData._id) {
+            setNotificationData(prevMessages => [...prevMessages, newMessage]);
         }
-      } catch (error) {
-        console.error('Error fetching messages: ', error);
-      }
-    };
-
-    fetchData();
-
-    const onChildAdded = refConversation.on('child_added', snapshot => {
-      const newMessage = snapshot.val();
-      setNotificationData(prevMessages => [...prevMessages, newMessage]);
     });
 
-    return () => refConversation.off('child_added', onChildAdded);
+    const query2 = refConversation.orderByChild('UserId').equalTo(userData._id).on('child_added', snapshot => {
+        const newMessage = snapshot.val();
+        // Kiểm tra điều kiện UserId trước khi thêm vào state
+        setNotificationData(prevMessages => [...prevMessages, newMessage]);
+    });
 
-  }, [userData]); // Đảm bảo useEffect chạy lại khi userData thay đổi
+    // Hủy đăng ký sự kiện khi component bị unmount
+    return () => {
+        query1.off('child_added');
+        query2.off('child_added');
+    };
+}, []);
+
+
 
   const DetailTB = async (content,name) =>{
 
       if(content === "Trạng Thái Đơn Hàng"){
+
+        
           console.log("TT");
       }else if(content === "Sản Phẩm Mới"){
         console.log("SPM");
     
           try {
-              const response = await axios.get(`http://192.168.1.10:3000/api-sanpham/name/${name}`, {
+              const response = await axios.get(`https://server-datn-md01-team1.onrender.com/api-sanpham/name/${name}`, {
                   headers: {
                       Cookie: "connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw"
                   }

@@ -91,6 +91,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             setTextCity('');
             setTextPhone('');
             setTextStreet('');
+
+            // navigation.navigate('DeliveryScreen');
+
           }
         })
         .catch(function (error) {
