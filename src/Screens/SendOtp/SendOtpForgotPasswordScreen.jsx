@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert
 } from 'react-native';
 import OtpInputs from 'react-native-otp-inputs';
 import {styleCommon} from '../../theme/styles/CommomStyle';
@@ -20,12 +21,14 @@ const SendOtpScreen = ({navigation , route}) => {
 
   const {verification , phoneNumber } = route.params;
 
+  console.log(phoneNumber , "llll")
+
   const [code, setCode] = React.useState('');
 
   const handleVerifyOTP =  ()  => {
     try {
-      const credential =  auth().PhoneAuthProvider.credential(verification, code);
-       auth().signInWithCredential(credential);
+      // const credential =  auth.PhoneAuthProvider.credential(verification, code);
+      //  auth().signInWithCredential(credential);
        navigation.navigate('ResetForgotPasswordScreen' , {phoneNumber : phoneNumber})
     } catch (error) {
       console.log(error);

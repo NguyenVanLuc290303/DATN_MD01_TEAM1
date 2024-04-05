@@ -55,7 +55,7 @@ const YourOrderDetailScreen = ({navigation, route}) => {
   };
   
   const cancelOrder = async () => {
-    if (status == "chờ xác nhận") {
+    if (status == "Chờ xác nhận") {
 
       axios.get(`${API_ORDER}/SPDDC/${OrderId}`)
       .then(function (response) {

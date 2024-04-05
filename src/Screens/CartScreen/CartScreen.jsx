@@ -132,9 +132,9 @@ const CartScreen = ({navigation}) => {
   };
 
   const handleOrderProduct = () => {
-    console.log(checkedItems);
+    console.log(checkedItems , "oooooooo");
     // console.log(productArray + "product order =========)00000000000");
-    if(checkedItems === null){
+    if(checkedItems.length === 0 ){
       ToastAndroid.showWithGravity(
         'Chưa chọn sản phẩm ',
         ToastAndroid.SHORT,

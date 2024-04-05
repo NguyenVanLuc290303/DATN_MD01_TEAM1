@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   KeyboardAvoidingView,
+  Alert
 } from 'react-native';
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
@@ -32,26 +33,30 @@ const ForgotPassword = ({navigation}) => {
   }, []);
 
   const handerForgotPassword = async () => {
-    try {
-      const internationalPhoneNumber = await convertToInternationalPhoneNumber(
-        phoneNumber,
-      );
-      console.log(internationalPhoneNumber); // Kết quả: +84123456789
 
-      const confirmationResult = await auth().signInWithPhoneNumber(
-        internationalPhoneNumber,
-      );
-      navigation.navigate(
-        'SendOtpScreen',
-        (data = {
-          verification: confirmationResult.verificationId,
-          numberPhone: phoneNumber,
-        }),
-      );
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Error', 'Failed to send OTP');
-    }
+    navigation.navigate(
+      'SendOtpScreen',
+      (data = {
+        // verification: confirmationResult.verificationId,
+        phoneNumber : phoneNumber,
+      }),
+    );
+    // try {
+    //   const internationalPhoneNumber = await convertToInternationalPhoneNumber(
+    //     phoneNumber,
+    //   );
+    //   console.log(internationalPhoneNumber); // Kết quả: +84123456789
+
+    //   const confirmationResult = await auth().signInWithPhoneNumber(
+    //     internationalPhoneNumber,
+    //   );
+
+
+     
+    // } catch (error) {
+    //   console.log(error);
+    //   Alert.alert('Error', 'Failed to send OTP');
+    // }
   };
 
   function convertToInternationalPhoneNumber(phoneNumber) {

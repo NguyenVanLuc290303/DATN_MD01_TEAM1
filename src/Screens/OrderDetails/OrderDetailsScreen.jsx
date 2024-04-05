@@ -1,4 +1,3 @@
-
 import {
   FlatList,
   Image,
@@ -43,20 +42,19 @@ const OrderDetailsScreen = ({navigation, route}) => {
       dataAddress.street +
       ' ' +
       dataAddress.city;
-  }else{
-        addressOrder =
-        'Số điện thoại : ' +
-        userData.numberPhone +
-        ' ,Tên người nhận : ' +
-        userData.username +
-        ' ,Đường : ' +
-        userData.address
-      }
+  } else {
+    addressOrder =
+      'Số điện thoại : ' +
+      userData.numberPhone +
+      ' ,Tên người nhận : ' +
+      userData.username +
+      ' ,Đường : ' +
+      userData.address;
+  }
 
   console.log(dataProductOrder, ' dataProductOrder =>>>>>>>>>>)))))((((((');
 
-  const deleteProductInCart = dataProductOrder.map(item =>  item._id);
-
+  const deleteProductInCart = dataProductOrder.map(item => item._id);
 
   console.log(deleteProductInCart, 'deeeeeeeeeeee');
 
@@ -152,16 +150,12 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
 
-  console.log(formattedDate);
+  // console.log(formattedDate);
 
 
   const handleOrderProduct = () => {
-    if (isChecked) {
-      setMethodPay('thanh toán khi nhận hàng');
-    } else {
-      setMethodPay('đã thanh toán');
-    }
-
+    
+  if (isChecked) {
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append(
@@ -174,9 +168,10 @@ const OrderDetailsScreen = ({navigation, route}) => {
       headers: myHeaders,
       body: JSON.stringify({
         UserId: idUser,
+        username : userName,
         status: status,
         date: formattedDate,
-        PTTT: methodPay,
+        PTTT: "Thanh toán khi nhận hàng",
         address: addressOrder,
       }),
       redirect: 'follow',
@@ -189,6 +184,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
     } catch (error) {
       console.log(error);
     }
+  }
+   
   };
 
   const pushProductOnOrder = data => {
@@ -207,8 +204,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
     });
 
     const deleteQuantityProduct = dataArrayOrder.map(item => ({
-      sizeId : item.PropertiesId,
-      quantity : item.Quantity
+      sizeId: item.PropertiesId,
+      quantity: item.Quantity,
     }));
 
     // console.log(deleteQuantityProduct , 'JJJJJJJJJ');
@@ -232,10 +229,10 @@ const OrderDetailsScreen = ({navigation, route}) => {
         .then(response => response.json())
         .then(result => {
           // if (result.status === 1) {
-            removeFromCart(deleteProductInCart);
-            deleteProductCart();
-            downQuantityServer(deleteQuantityProduct);
-            navigation.replace('NotificationOrderSuccess');
+          removeFromCart(deleteProductInCart);
+          deleteProductCart();
+          downQuantityServer(deleteQuantityProduct);
+          navigation.replace('NotificationOrderSuccess');
           // }
         });
     } catch (error) {
@@ -255,13 +252,13 @@ const OrderDetailsScreen = ({navigation, route}) => {
         console.error('Error:', error);
       });
   };
-  const downQuantityServer = (deleteQuantityProduct) => {
+  const downQuantityServer = deleteQuantityProduct => {
     axios
       .post(`${API_DELETE_IN_CART}`, {
         orderItems: deleteQuantityProduct, // Truyền mảng productIds vào body của request
       })
       .then(response => {
-        console.log(response.data , "llllllll");
+        console.log(response.data, 'llllllll');
       })
       .catch(error => {
         console.error('Error:', error);
@@ -490,18 +487,20 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Thanh toán khi nhận hàng
             </Text>
-
-            {/* Hình ảnh checkbox tùy chỉnh */}
-            {isChecked ? (
-              <TouchableOpacity onPress={toggleCheckbox}>
-                <Icon name="radio-btn-active" size={24} color={COLORS.red} />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={toggleCheckbox}>
-                <Icon name="radio-btn-passive" size={24} />
-              </TouchableOpacity>
-            )}
+            <View style={{ paddingRight : '5%'}}>
+              {/* Hình ảnh checkbox tùy chỉnh */}
+              {isChecked ? (
+                <TouchableOpacity onPress={toggleCheckbox}>
+                  <Icon name="radio-btn-active" size={24} color={COLORS.red} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={toggleCheckbox}>
+                  <Icon name="radio-btn-passive" size={24} />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
+
           <View style={styles.textTransport3}>
             <Image
               style={{
@@ -523,13 +522,16 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Zalo Pay
             </Text>
-            <Text onPress={() => navigation.navigate('ZaloPaymentScreen', {
-              dataProductOrder : dataProductOrder,
-              pricePayment : totalPrice,
-              addressReceive : addressOrder,
-              deleteProductInCart : deleteProductInCart
-            })} style={styles.priceTransport3}>
-
+            <Text
+              onPress={() =>
+                navigation.navigate('ZaloPaymentScreen', {
+                  dataProductOrder: dataProductOrder,
+                  pricePayment: totalPrice,
+                  addressReceive: addressOrder,
+                  deleteProductInCart: deleteProductInCart,
+                })
+              }
+              style={styles.priceTransport3}>
               Liên kết
             </Text>
           </View>
