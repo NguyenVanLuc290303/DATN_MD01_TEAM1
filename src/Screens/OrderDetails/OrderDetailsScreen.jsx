@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   NativeModules,
+  NativeEventEmitter,
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
@@ -65,7 +66,23 @@ const OrderDetailsScreen = ({navigation, route}) => {
   );
 
   const totalPrice = totalPriceProduct + costTranformer;
+  const payZaloBridgeEmitter = new NativeEventEmitter(
+    NativeModules.PayZaloBridge,
+  );
 
+  useEffect(() => {
+    const subscription = payZaloBridgeEmitter.addListener(
+      'EventPayZalo',
+      data => {
+        if (data.returnCode === 1) {
+          alert('Pay success!');
+        } else {
+          alert('Pay errror! ' + data.returnCode);
+        }
+      },
+    );
+    // return () => subscription.remove();
+  }, []);
   const {userData} = User();
 
   const idUser = userData._id;
@@ -154,6 +171,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   const handleOpenZaloPay = () => {
     createZaloPayOrder();
+    setStatus('đã thanh toán');
     return;
   };
 
@@ -296,6 +314,13 @@ const OrderDetailsScreen = ({navigation, route}) => {
       description: description,
       mac: mac,
     };
+    // Dựa vào dữ liệu trả về từ hàm createZaloPayOrder, có vẻ như bạn đã tạo thành công một đơn hàng ZaloPay và nhận được các thông tin liên quan đến đơn hàng như mã đơn hàng, URL để mở ứng dụng ZaloPay, mã QR code và các thông báo liên quan đến trạng thái giao dịch.
+    //
+    //   Để trở về ứng dụng của bạn sau khi người dùng đã hoàn thành thanh toán trên ứng dụng ZaloPay, bạn cần thiết lập một cơ chế callback hoặc redirect URL trong yêu cầu tạo đơn hàng của mình. Khi giao dịch hoàn thành, ZaloPay sẽ gửi kết quả về callback URL hoặc redirect URL đã được thiết lập trước đó.
+    //
+    //   Sau đó, bạn cần xử lý kết quả này trong ứng dụng của mình để cập nhật trạng thái đơn hàng và hiển thị thông báo cho người dùng. Bạn có thể sử dụng các thư viện và công nghệ như React Navigation để điều hướng người dùng đến màn hình thích hợp sau khi hoàn thành thanh toán.
+    //
+    //   Đảm bảo rằng bạn đã cập nhật giao diện người dùng và các trạng thái đơn hàng tương ứng để phản ánh trạng thái của đơn hàng sau khi người dùng hoàn thành thanh toán.
 
     console.log(order);
 
