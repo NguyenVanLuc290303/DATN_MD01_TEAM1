@@ -94,7 +94,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   // const [total, setTotal] = useState(price * quantity + costTranformer);
 
-  const [status, setStatus] = useState('chờ xác nhận');
+  const [status, setStatus] = useState('Chờ xác nhận');
 
   const [methodPay, setMethodPay] = useState();
 
