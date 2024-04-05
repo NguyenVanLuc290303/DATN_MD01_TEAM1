@@ -19,10 +19,13 @@ import {User} from '../../hooks/useContext';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {API_PRODUCT} from '../../config/api-consts';
+import {API_PRODUCT , API_COLOR_PRODUCT} from '../../config/api-consts';
 import ModalConfirm from '../../components/dialog/ModalConfirm';
 import { Cart } from '../../hooks/cartContext';
 import Loading from '../../components/organisms/Loading/Loading';
+import useListOrderQuantity from '../../services/check-order-quantity-services/use-list-order-quantity';
+import axios from "axios";
+
 
 
 const CartScreen = ({navigation}) => {
@@ -59,8 +62,6 @@ const CartScreen = ({navigation}) => {
       .then(result => setProductArray(result))
       .catch(error => console.error(error));
   }, []);
-
-  console.log(productArray +" =====================>");
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -131,20 +132,71 @@ const CartScreen = ({navigation}) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
   };
 
-  const handleOrderProduct = () => {
-    console.log(checkedItems , "oooooooo");
-    // console.log(productArray + "product order =========)00000000000");
+  console.log('chay toi day r')
+  const orderItems = checkedItems.map(item => ({
+    sizeId: item.PropertiesId,
+    quantity: item.Quantity,
+  }));
+
+  console.log(orderItems);
+
+
+  const handleOrderProduct = async () => {
+
+   
     if(checkedItems.length === 0 ){
       ToastAndroid.showWithGravity(
         'Chưa chọn sản phẩm ',
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM
       );
+      return;
+
     }else{
-      navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})
+    postData();
     }
   
   };
+
+  const postData = async () => {
+
+  await  axios.post(`${API_COLOR_PRODUCT}`, { orderItems })
+    .then(function (response) {
+      if(response.data !== null){
+        const data = Array.isArray(response.data)
+        ? response.data
+        : [response.data];
+        console.log(data , "kkkkkkk");
+        checkOrder(data);
+      }else{
+        ToastAndroid.showWithGravity(
+          'Sản phẩm đã hết',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM
+        );
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+const checkOrder = (data) =>{
+  
+  const isAnyNotSatisfied = orderItems.some(logObject => {
+    // Tìm đối tượng trong mảng trả về dựa trên sizeId
+    const returnedObject = data.find(returnedObj => returnedObj.PropertiesId === logObject.sizeId);
+    // Nếu không tìm thấy đối tượng trong mảng trả về hoặc quantity của LOG lớn hơn quantity của returnedArray
+    return !returnedObject || logObject.quantity < returnedObject.quantity;
+  });
+
+  console.log(isAnyNotSatisfied);
+
+  if(isAnyNotSatisfied){
+    navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})
+  }
+}
+
 
   const renderRightActions = (item, index, progress , dragX) => {
     // Define the content of the swipeable view (e.g., delete button)
