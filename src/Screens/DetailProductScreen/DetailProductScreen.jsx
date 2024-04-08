@@ -385,8 +385,6 @@ const DetailProductScreen = ({navigation, route}) => {
             {/* <AddToCart navigation={navigation}/> */}
           </View>
           <View style={styles.star}>
-            {/* <Icon name="star" size={24} color={'yellow'} />
-          <Text>4.8/5</Text> */}
             <Text> Đã bán : {quantitySold}</Text>
           </View>
           <View style={styles.description}></View>

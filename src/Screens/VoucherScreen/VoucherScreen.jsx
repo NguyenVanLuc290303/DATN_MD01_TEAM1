@@ -4,7 +4,7 @@ import axios, { Axios } from 'axios';
 import { API_VOUCHER } from "../../config/api-consts";
 
 
-const VoucherScreen = ({navigation}) => {
+const VoucherScreen = ({navigation , route}) => {
     const [dataVoucher, setDataVoucher] = useState([]);
 
     useEffect(() =>{
