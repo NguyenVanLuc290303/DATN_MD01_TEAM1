@@ -20,6 +20,8 @@ import ButtonCustom from '../../components/atoms/ButtonCustom/ButtonCustom';
 import axios,{Axios} from 'axios';
 import { API_EVALUATE } from '../../config/api-consts';
 import useDateCurrent from '../../services/date-services/use-get-date-current';
+import storage from '@react-native-firebase/storage';
+
 
 
 const EvualuateScreen = ({navigation, route}) => {
@@ -90,7 +92,7 @@ const reference = storage().ref(`evaluate/${userData._id}`);
         imageuser : userData.image,
         datetime : datetime,
         content : context,
-        imagecontent : imageURL,
+        imageContent : imageURL,
         star : rating
       })
       .then(function (response) {
@@ -140,8 +142,9 @@ const reference = storage().ref(`evaluate/${userData._id}`);
         Đánh giá
       </Text>
       <View style={{flexDirection: 'row', marginLeft: 20}}>
-        {[1,2,3,4,5].map((star) =>(
-            <TouchableOpacity onPress={() => handleRating(star)}>
+        {[1,2,3,4,5].map((star , index) =>(
+          
+            <TouchableOpacity key={index} onPress={() => handleRating(star)}>
                 <IconI name="star" size={30} color={ star <= rating ? 'yellow' : 'gray'} />
             </TouchableOpacity>
         ))}

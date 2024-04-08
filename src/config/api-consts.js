@@ -117,9 +117,10 @@ export const API_NOTIFICATION = `http://${IP_ADDRESS}/api-thongbao`;
 
 //api voucher 
 
-export const API_VOUCHER = `http://${IP_ADDRESS}/api-voucher`
+export const API_VOUCHER = `http://${IP_ADDRESS}/api-voucher`;
 
 //api evaluate
 
-export const API_EVALUATE = `http://${IP_ADDRESS}/api-danhgia`
+export const API_EVALUATE = `http://${IP_ADDRESS}/api-danhgia`;
 
+export const API_CHECK_PRODUCT_EVALUATE = `http://${IP_ADDRESS}/api-danhgia`;

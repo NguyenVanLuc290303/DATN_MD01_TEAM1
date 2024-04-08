@@ -9,9 +9,10 @@ import {
   Alert,
   Modal,
   Button,
+  ToastAndroid
 } from 'react-native';
 import axios, {Axios} from 'axios';
-import {API_PRODUCT_ORDER, API_PRODUCT_ORDER_ID} from '../../config/api-consts';
+import {API_CHECK_PRODUCT_EVALUATE, API_PRODUCT_ORDER, API_PRODUCT_ORDER_ID} from '../../config/api-consts';
 import {Icons} from '../../constants/images';
 import COLORS from '../../constants/colors';
 import {User} from '../../hooks/useContext';
@@ -111,10 +112,31 @@ const YourOrderDetailScreen = ({navigation, route}) => {
   };
 
   const handleEvaluate = (productId) =>{
-    navigation.navigate('EvualuateScreen' , {productId : productId })
+    callCheckEvaluate(productId);
   }
 
+  const callCheckEvaluate = async (productId) =>{
+    axios
+    .get(`${API_CHECK_PRODUCT_EVALUATE}/${productId}/${userData._id}`)
+    .then(function (response) {
+      console.log(response.data , "gggggg");
+      if(response.data.status === 0){
+        navigation.navigate('EvualuateScreen' , {productId : productId })
+      }else{
+        ToastAndroid.showWithGravity(
+          'Bạn đã đánh giá sản phẩm này rồi ',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM
+        );
+      }
 
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+console.log(dataOrderDetail , "ppppppppppp");
   
 
   return (
@@ -170,7 +192,7 @@ const YourOrderDetailScreen = ({navigation, route}) => {
                 {
                   status === 'Đã giao' ? 
                   (
-                    <TouchableOpacity onPress={() => handleEvaluate(item._id)} style={{ height : '100%' , 
+                    <TouchableOpacity onPress={() => handleEvaluate(item.ProductId)} style={{ height : '100%' , 
                                     justifyContent : 'center' , 
                                     right : 10 , 
                                     position : 'absolute'}}>
@@ -211,11 +233,11 @@ const YourOrderDetailScreen = ({navigation, route}) => {
           <TouchableOpacity
             style={{
               width: 350,
-              height: 55,
-              borderRadius: 56,
+              height: 50,
+              borderRadius: 15,
               borderWidth: 1,
-              borderColor: COLORS.black,
-              backgroundColor: COLORS.white,
+              borderColor: COLORS.App,
+              backgroundColor: COLORS.App,
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: 20,
@@ -224,7 +246,7 @@ const YourOrderDetailScreen = ({navigation, route}) => {
               style={{
                 fontFamily: 'Lato-Black',
                 fontSize: 20,
-                color: COLORS.black,
+                color: COLORS.white,
               }}>
               Mua lại
             </Text>

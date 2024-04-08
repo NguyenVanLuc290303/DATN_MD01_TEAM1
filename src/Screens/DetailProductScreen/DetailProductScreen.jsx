@@ -391,19 +391,19 @@ const DetailProductScreen = ({navigation, route}) => {
           </View>
           <View style={styles.description}></View>
           <View style={styles.evaluation}>
-            {[1, 2, 3, 4, 5].map(() => (
+            {listEvaluate.map((item, index) => (
               <View style={{marginTop: 20}}>
                 <View style={{flexDirection: 'row'}}>
                   <Image
                     style={{width: 40, height: 40, borderRadius: 20}}
-                    source={{uri: userData.image === "" ? IMAGE_URL_DEFAULT : userData.image }}
+                    source={{uri: item.imageuser }}
                   />
 
                   <View style={{marginLeft: 10}}>
-                    <Text>{userData.username}</Text>
+                    <Text>{item.username}</Text>
                     <View style={{flexDirection: 'row', marginTop: 5}}>
-                      {[1, 2, 3, 4, 5].map(star => (
-                        <TouchableOpacity>
+                    {Array.from({ length: item.star }).map((_, starIndex) => (
+                        <TouchableOpacity key={starIndex}>
                           <Icon name="star" size={20} color={'yellow'} />
                         </TouchableOpacity>
                       ))}
@@ -412,10 +412,10 @@ const DetailProductScreen = ({navigation, route}) => {
                 </View>
 
                 <View style={{marginTop: 5, marginLeft: 20}}>
-                  <Text>Quần áo ổn , nên mua</Text>
+                  <Text>{item.content}</Text>
                   <Image
                     style={{width: 80, height: 80}}
-                    source={{uri: image}}
+                    source={{uri: item.imageContent}}
                   />
                 </View>
                 <View
