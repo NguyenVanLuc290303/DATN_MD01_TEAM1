@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   NativeModules,
+  ToastAndroid,
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
@@ -16,12 +17,15 @@ import CryptoJS from 'crypto-js';
 
 import {useState, useCallback, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import {API_DELETE_IN_CART, API_ORDER} from '../../config/api-consts';
+import {
+  API_DELETE_IN_CART,
+  API_ORDER,
+  API_COLOR_PRODUCT,
+} from '../../config/api-consts';
 import {API_PRODUCT_ORDER} from '../../config/api-consts';
 import Icon from 'react-native-vector-icons/Fontisto';
 import axios, {Axios} from 'axios';
 import {Cart} from '../../hooks/cartContext';
-
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
 
@@ -55,6 +59,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
   console.log(dataProductOrder, ' dataProductOrder =>>>>>>>>>>)))))((((((');
 
   const deleteProductInCart = dataProductOrder.map(item => item._id);
+
+  const orderItems = dataProductOrder.map(item => ({
+    sizeId: item.PropertiesId,
+    quantity: item.Quantity,
+  }));
 
   console.log(deleteProductInCart, 'deeeeeeeeeeee');
 
@@ -152,40 +161,82 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
   // console.log(formattedDate);
 
+  const handleOrderProduct = async () => {
+    await axios
+      .post(`${API_COLOR_PRODUCT}`, {orderItems})
+      .then(function (response) {
+        if (response.data !== null) {
+          const data = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
+          console.log(data, 'kkkkkkk');
+          if (checkOrder(data) === true) {
+            postOrdertoServer();
+          } else {
+            ToastAndroid.showWithGravity(
+              'Sản phẩm đã hết',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM,
+            );
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
-  const handleOrderProduct = () => {
-    
-  if (isChecked) {
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append(
-      'Cookie',
-      'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
-    );
+  const postOrdertoServer = () => {
+    if (isChecked) {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append(
+        'Cookie',
+        'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+      );
 
-    const requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify({
-        UserId: idUser,
-        username : userName,
-        status: status,
-        date: formattedDate,
-        PTTT: "Thanh toán khi nhận hàng",
-        address: addressOrder,
-      }),
-      redirect: 'follow',
-    };
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify({
+          UserId: idUser,
+          username: userName,
+          status: status,
+          date: formattedDate,
+          PTTT: 'Thanh toán khi nhận hàng',
+          address: addressOrder,
+        }),
+        redirect: 'follow',
+      };
 
-    try {
-      fetch(API_ORDER, requestOptions)
-        .then(response => response.json())
-        .then(result => pushProductOnOrder(result));
-    } catch (error) {
-      console.log(error);
+      try {
+        fetch(API_ORDER, requestOptions)
+          .then(response => response.json())
+          .then(result => pushProductOnOrder(result));
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
-   
+  };
+
+  const checkOrder = data => {
+    let count = 0;
+
+    for (let index = 0; index < data.length; index++) {
+      for (let i = 0; i < orderItems.length; i++) {
+        // Sửa lỗi cú pháp: orderItems.lengtht thành orderItems.length
+        if (data[index].PropertiesId === orderItems[i].sizeId) {
+          // Sửa lỗi cú pháp: data.index.PropertiesId thành data[index].sizeId và orderItems.i.sizeId thành orderItems[i].PropertiesId
+          if (orderItems[i].quantity <= data[index].quantity) {
+            // Sửa lỗi cú pháp: orderItems.i.quantity thành orderItems[i].quantity và data.index.quantity thành data[index].quantity
+            count++;
+          }
+        }
+      }
+      if (count === orderItems.length) {
+        return true;
+      }
+    }
   };
 
   const pushProductOnOrder = data => {
@@ -487,7 +538,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Thanh toán khi nhận hàng
             </Text>
-            <View style={{ paddingRight : '5%'}}>
+            <View style={{paddingRight: '5%'}}>
               {/* Hình ảnh checkbox tùy chỉnh */}
               {isChecked ? (
                 <TouchableOpacity onPress={toggleCheckbox}>

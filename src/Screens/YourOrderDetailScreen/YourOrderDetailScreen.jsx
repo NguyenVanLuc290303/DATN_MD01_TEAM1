@@ -24,7 +24,7 @@ const YourOrderDetailScreen = ({navigation, route}) => {
 
   // console.log(OrderId, 'OrderId 000000');
 
-  // console.log(status, 'status : --------');
+  console.log(address, 'status : --------');
 
   const {userData} = User();
 
@@ -109,6 +109,12 @@ const YourOrderDetailScreen = ({navigation, route}) => {
     setIsModalVisible(false);
     cancelOrder();
   };
+
+  const handleEvaluate = (productId) =>{
+    navigation.navigate('EvualuateScreen' , {productId : productId })
+  }
+
+
   
 
   return (
@@ -158,10 +164,23 @@ const YourOrderDetailScreen = ({navigation, route}) => {
                       backgroundColor: `#${item.ColorCode}`,
                     }}></View>
                   <Text style={{marginTop: 5}}>Size : {item.Size}</Text>
-                </View>
-                <View style={{position: 'absolute', bottom: 10, right: 10}}>
                   <Text>Số lượng : {item.Quantity}</Text>
+
                 </View>
+                {
+                  status === 'Đã giao' ? 
+                  (
+                    <TouchableOpacity onPress={() => handleEvaluate(item._id)} style={{ height : '100%' , 
+                                    justifyContent : 'center' , 
+                                    right : 10 , 
+                                    position : 'absolute'}}>
+                      <Text style={{ fontWeight : '600' , color : COLORS.red}}>Đánh giá</Text>
+                    </TouchableOpacity>
+                  ) :(
+                    <></>
+                  )
+                }
+               
               </View>
             );
           }}
@@ -177,7 +196,7 @@ const YourOrderDetailScreen = ({navigation, route}) => {
             }}>
             Vận chuyển
           </Text>
-          <Text style={styles.priceTransport}>{costTranformer}</Text>
+          {/* <Text style={styles.priceTransport}>{costTranformer}</Text> */}
         </View>
       </View>
 

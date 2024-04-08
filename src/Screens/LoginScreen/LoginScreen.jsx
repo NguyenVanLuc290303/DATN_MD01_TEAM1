@@ -258,6 +258,26 @@ const LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style = {styles.mangxh}>
+        <TouchableOpacity style = {{}}>
+            <Image
+                 source={{ uri : 'https://www.pinclipart.com/picdir/middle/2-21918_download-transparent-background-facebook-logo-clipart-facebook-logo.png'}}
+                 style={{ width: 50, height: 50 ,borderRadius:10}}
+            />
+        </TouchableOpacity>
+        <TouchableOpacity>
+            <Image
+                 source={{ uri: 'https://tse3.mm.bing.net/th?id=OIP.jpQFunOi7r3t9JaTNLFXQgHaHa&pid=Api&P=0&h=180' }}
+                 style={{ width: 50, height: 50,borderRadius:10 ,marginLeft:50}}
+            />
+        </TouchableOpacity>
+        <TouchableOpacity>
+            <Image
+                 source={{ uri : 'https://cdn.imgbin.com/23/7/2/imgbin-google-logo-google-search-icon-google-google-logo-hEJMjnfCV4MA1gDtjaWTv5kc1.jpg'}}
+                 style={{ width: 50, height: 50 ,borderRadius:10,marginLeft:50}}
+            />
+        </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -267,7 +287,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  },
+  }, 
+    mangxh :{
+    width : '100%',
+    marginTop:20,
+    flexDirection:'row',
+    paddingLeft:0,
+    justifyContent : 'center'            
+},
   header: {
     marginVertical: 36,
   },

@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  RefreshControl
 } from 'react-native';
 import IconI from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,20 +26,32 @@ import Loading from '../../components/organisms/Loading/Loading';
 import LoadingHome from '../../components/organisms/LoadingHome/LoadingHome';
 import Slider from '../../components/morecules/SildeShow/Silder';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useListCategory from '../../services/category-services/use-all-list-category';
+import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
+
 
 import {styles} from './Home.style';
 const Home = ({navigation}) => {
   const {userData} = User();
   // const userName = dataUser.username;
-  const [dataCategory, setDataCategory] = React.useState([]);
   const [dataProduct, setDataProduct] = React.useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [likedProducts, setLikedProducts] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const [dataCategory] = useListCategory();
 
   const {setDataCart, dataCart} = Cart();
 
   console.log(dataCart.length, 'dataCart.length');
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchDataProduct();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   
    useEffect(() => {
     const loadLikedProducts = async () => {
@@ -109,30 +122,6 @@ const Home = ({navigation}) => {
     return isProductLiked(productId) ? 'red' : 'silver';
   };
 
-  const fetchDataCategory = () =>{
-    var myHeaders = new Headers();
-    myHeaders.append(
-      'Cookie',
-      'connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw',
-    );
-
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
-
-    fetch(API_CATEGORY_PRODUCT, requestOptions)
-      .then(response => response.json())
-      .then(result => setDataCategory(result))
-      .catch(error => console.log('error', error));
-  }
-
-
-  React.useEffect(() => {
-    fetchDataCategory();
-  }, []);
-
   React.useEffect(() => {
     axios
       .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
@@ -148,9 +137,8 @@ const Home = ({navigation}) => {
       });
   }, []);
 
-  console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
 
-  React.useEffect(() => {
+  const fetchDataProduct =  () =>{
     var myHeaders = new Headers();
     myHeaders.append(
       'Cookie',
@@ -167,7 +155,14 @@ const Home = ({navigation}) => {
       .then(response => response.json())
       .then(result => setDataProduct(result))
       .catch(error => console.log('error', error));
+  }
+
+  React.useEffect(() => {
+   fetchDataProduct();
   }, []);
+
+  console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
+
 
   return (
     <View style={styles.container}>
@@ -215,7 +210,9 @@ const Home = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <ScrollView>
+        <ScrollView refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        }>
           <Slider />
 
           <View style={{paddingLeft: 10, marginTop: 10}}>
@@ -247,44 +244,13 @@ const Home = ({navigation}) => {
               <View style={{paddingLeft: 10, marginTop: 10}}>
                 <Text style={styles.textHead}>Recommend</Text>
               </View>
-              <ScrollView contentContainerStyle={{  flexDirection: 'row', flexWrap: 'wrap'}}>
-                {dataProduct.map((item, index) => (
-                  <View
-                    key={index}
-                    style={[styles.viewItemProducts]}>
-                    <TouchableOpacity
-                      style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingTop: '5%',
-                      }}
-                      onPress={() =>
-                        navigation.navigate('DetailProductScreen', {
-                          _id: item._id,
-                          name: item.name,
-                          image: item.image,
-                          category: item.loai,
-                          describe : item.describe,
-                          price: item.price,
-                          quantitySold: item.quantitySold,
-                        })
-                      }>
-                      <Image
-                        source={{uri: item.image}}
-                        style={{width: 90, height: 131}}
-                      />
-                      <Text>{item.name}</Text>
-                      <Text>{item.price} USD</Text>
-                      {/* Thêm icon trái tim */}
-                      <TouchableOpacity
-                      style={styles.heartIcon}
-                      onPress={() => toggleFavorite(item._id)}>
-                      <Icon name="heart" size={20} color={renderHeartColor(item._id)} />
-                    </TouchableOpacity>
-                    </TouchableOpacity>
-                  </View>
-                ))}
-              </ScrollView>
+              <ProductListAll
+                dataListProduct={dataProduct}
+                onpressLove= {toggleFavorite} 
+                heartColor ={renderHeartColor}
+                navigation={navigation}
+              />
+
             </>
           ) : (
             <Loading />

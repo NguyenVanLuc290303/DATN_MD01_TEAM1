@@ -138,7 +138,7 @@ const CartScreen = ({navigation}) => {
     quantity: item.Quantity,
   }));
 
-  console.log(orderItems);
+  console.log(checkedItems, "jjjjjjjj");
 
 
   const handleOrderProduct = async () => {
@@ -167,13 +167,16 @@ const CartScreen = ({navigation}) => {
         ? response.data
         : [response.data];
         console.log(data , "kkkkkkk");
-        checkOrder(data);
-      }else{
-        ToastAndroid.showWithGravity(
-          'Sản phẩm đã hết',
-          ToastAndroid.SHORT,
-          ToastAndroid.BOTTOM
-        );
+        if(checkOrder(data) === true){
+          navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})
+                }
+                else{
+                  ToastAndroid.showWithGravity(
+                    'Sản phẩm đã hết',
+                    ToastAndroid.SHORT,
+                    ToastAndroid.BOTTOM
+                  );
+                }
       }
     })
     .catch(function (error) {
@@ -183,19 +186,29 @@ const CartScreen = ({navigation}) => {
 
 const checkOrder = (data) =>{
   
-  const isAnyNotSatisfied = orderItems.some(logObject => {
-    // Tìm đối tượng trong mảng trả về dựa trên sizeId
-    const returnedObject = data.find(returnedObj => returnedObj.PropertiesId === logObject.sizeId);
-    // Nếu không tìm thấy đối tượng trong mảng trả về hoặc quantity của LOG lớn hơn quantity của returnedArray
-    return !returnedObject || logObject.quantity < returnedObject.quantity;
-  });
+  let count = 0;
 
-  console.log(isAnyNotSatisfied);
-
-  if(isAnyNotSatisfied){
-    navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})
-  }
+  for (let index = 0; index < data.length; index++) {
+    for (let i = 0; i < orderItems.length; i++) { // Sửa lỗi cú pháp: orderItems.lengtht thành orderItems.length
+        if(data[index].PropertiesId === orderItems[i].sizeId){ // Sửa lỗi cú pháp: data.index.PropertiesId thành data[index].sizeId và orderItems.i.sizeId thành orderItems[i].PropertiesId
+            if(orderItems[i].quantity <= data[index].quantity){ // Sửa lỗi cú pháp: orderItems.i.quantity thành orderItems[i].quantity và data.index.quantity thành data[index].quantity
+                count++;
+            }
+        }        
+    }
+    if(count === orderItems.length){
+      return true;
+    }
 }
+
+
+
+
+
+  
+}
+
+
 
 
   const renderRightActions = (item, index, progress , dragX) => {

@@ -22,6 +22,7 @@ import storage from '@react-native-firebase/storage';
 import { API_UPDATE_USER } from '../../config/api-consts';
 import axios, { Axios } from 'axios';
 import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
+import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 
 const EditProfile = ({navigation}) => {
 
@@ -30,6 +31,9 @@ const EditProfile = ({navigation}) => {
   const dataURI =[];
 
   const reference = storage().ref(`avatars/${userData._id}`);
+
+  const [imageChange, setImageChange] = useState(null);
+
 
   const handleOnpressImagePicker = async () => {
     try {
@@ -42,7 +46,8 @@ const EditProfile = ({navigation}) => {
       if(!result.didCancel){
         const uriUPdate = result.assets[0].uri;
         // console.log(uriUPdate);
-        dataURI.push(uriUPdate);
+        // dataURI.push(uriUPdate);
+        setImageChange(uriUPdate);
       }
 
     } catch (error) {
@@ -56,9 +61,9 @@ const EditProfile = ({navigation}) => {
   const upLoadImageToFirebaseStorage = async () => {
     // const response = await fetch(dataURI[0]);
     // const blob = await response.blob();
-    console.log(dataURI[0]);
+    // console.log(dataURI[0]);
 
-    const task = reference.putFile(dataURI[0]);
+    const task = reference.putFile(imageChange);
     // Đợi quá trình upload hoàn thành
     task
       .then(async () => {
@@ -102,7 +107,7 @@ const EditProfile = ({navigation}) => {
             flexDirection: 'column',
           }}>
           <Image
-            source={{ uri : userData.image === "" ? IMAGE_URL_DEFAULT : userData.image}}
+            source={{ uri : imageChange === null ? userData.image : imageChange}}
             style={{
               width: 200,
               height: 200,
