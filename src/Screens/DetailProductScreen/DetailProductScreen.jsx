@@ -21,7 +21,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
 import IconA from 'react-native-vector-icons/AntDesign';
-import {styleCommon, textStyles, textTitleContent} from '../../theme/styles/CommomStyle';
+import {
+  styleCommon,
+  textStyles,
+  textTitleContent,
+} from '../../theme/styles/CommomStyle';
 import COLORS from '../../constants/colors';
 import {
   BottomSheetView,
@@ -38,14 +42,24 @@ import {styles} from './DetailProductScreen.style';
 import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
 import useListProduct from '../../services/product-services/use-all-list-product';
 import useListEvaluate from '../../services/evaluate-services/use-list-evaluate-product';
-import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
+import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const DetailProductScreen = ({navigation, route}) => {
-  const {_id, name, price, quantitySold, image, category, describe ,instruction , warrantyPolicy , material} =
-    route.params;
+  const {
+    _id,
+    name,
+    price,
+    quantitySold,
+    image,
+    category,
+    describe,
+    instruction,
+    warrantyPolicy,
+    material,
+  } = route.params;
 
   const {userData} = User();
 
@@ -69,16 +83,15 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
-
   const [productListAll] = useListProduct();
 
   const listEvaluate = useListEvaluate(_id);
 
   const productListSimilar = productListAll.filter(
-    item =>  item._id !== _id && item.category === category,
+    item => item._id !== _id && item.category === category,
   );
 
-  console.log(_id , "iiiiiiii");
+  console.log(_id, 'iiiiiiii');
 
   console.log(productListSimilar, 'datacartlength');
 
@@ -186,22 +199,17 @@ const DetailProductScreen = ({navigation, route}) => {
   };
 
   const handleScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-    { useNativeDriver: true }
+    [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
+    {useNativeDriver: true},
   );
-  
+
   const translateY = scrollOffsetY.interpolate({
     inputRange: [0, 100],
     outputRange: [0, 100],
-    extrapolate : 'clamp'
+    extrapolate: 'clamp',
   });
 
-
-
   const handleToCart = () => {
-
-    
-
     if (selectedColor !== null) {
       const myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
@@ -234,8 +242,7 @@ const DetailProductScreen = ({navigation, route}) => {
           requestOptions,
         )
           .then(response => response.json())
-          .then(result => 
-            {
+          .then(result => {
             if (result.status === 1) {
               addItemToCart(result);
               animationCart();
@@ -247,9 +254,7 @@ const DetailProductScreen = ({navigation, route}) => {
                 ToastAndroid.CENTER,
               );
             }
-          }
-        
-        );
+          });
       } catch (error) {
         console.log(error, ' lỗi thêm vào giỏ hàng');
       }
@@ -301,10 +306,10 @@ const DetailProductScreen = ({navigation, route}) => {
   return (
     <BottomSheetModalProvider>
       <SafeAreaView style={[styles.container]}>
-        <Animated.ScrollView contentContainerStyle={{flexGrow: 1}}
-           onScroll={handleScroll}
-          scrollEventThrottle={16}
-        >
+        <Animated.ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Icon name="arrow-back" size={32} color={COLORS.black} />
@@ -392,12 +397,14 @@ const DetailProductScreen = ({navigation, route}) => {
           <View style={styles.star}>
             <Text style={textStyles.textTitle}> Chất liệu : {material}</Text>
           </View>
-          <View >
+          <View>
             <Text style={textStyles.textTitle}>Hướng dẫn chọn size</Text>
           </View>
           <View>
-          <Image source={{ uri: instruction }} style={{ width : '100%' , height : 150 }}/>
-
+            <Image
+              source={{uri: instruction}}
+              style={{width: '100%', height: 150}}
+            />
           </View>
           <View>
             <Text style={textStyles.textTitle}>Chính sách bảo hành</Text>
@@ -409,13 +416,13 @@ const DetailProductScreen = ({navigation, route}) => {
                 <View style={{flexDirection: 'row'}}>
                   <Image
                     style={{width: 40, height: 40, borderRadius: 20}}
-                    source={{uri: item.imageuser }}
+                    source={{uri: item.imageuser}}
                   />
 
                   <View style={{marginLeft: 10}}>
                     <Text>{item.username}</Text>
                     <View style={{flexDirection: 'row', marginTop: 5}}>
-                    {Array.from({ length: item.star }).map((_, starIndex) => (
+                      {Array.from({length: item.star}).map((_, starIndex) => (
                         <TouchableOpacity key={starIndex}>
                           <Icon name="star" size={20} color={'yellow'} />
                         </TouchableOpacity>
@@ -436,16 +443,13 @@ const DetailProductScreen = ({navigation, route}) => {
                     width: '100%',
                     height: 1,
                     backgroundColor: '#E5E5E5',
-                    marginTop: 10
+                    marginTop: 10,
                   }}></View>
               </View>
             ))}
           </View>
-          <Text
-          style={textStyles.textTitle}
-          >Sản phẩm tương tự</Text>
-          <View
-            style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          <Text style={textStyles.textTitle}>Sản phẩm tương tự</Text>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {productListSimilar.map((item, index) => (
               <View key={index} style={[styles.viewItemProducts]}>
                 <TouchableOpacity
@@ -487,7 +491,7 @@ const DetailProductScreen = ({navigation, route}) => {
               left: 0,
               right: 0,
               height: 100,
-              transform: [{ translateY }]
+              transform: [{translateY}],
             },
           ]}>
           <View style={styles.rowContainer2}>
@@ -657,8 +661,8 @@ const DetailProductScreen = ({navigation, route}) => {
                               height: 35,
                               alignItems: 'center',
                               borderRadius: 10,
-                              marginTop: 10,
-                              marginBottom: 10,
+                              marginTop: 7,
+                              marginBottom: 7,
                               justifyContent: 'center',
                               backgroundColor:
                                 selectSize === item.size
@@ -716,8 +720,8 @@ const DetailProductScreen = ({navigation, route}) => {
                               height: 35,
                               alignItems: 'center',
                               borderRadius: 10,
-                              marginTop: 10,
-                              marginBottom: 10,
+                              marginTop: 7,
+                              marginBottom: 7,
                               justifyContent: 'center',
                               backgroundColor:
                                 selectSize === item.size
@@ -781,25 +785,28 @@ const DetailProductScreen = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-
-            <TouchableOpacity
+            <View
               style={{
-                width: '80%',
-                height: 40,
-                backgroundColor: COLORS.red,
+                width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                position: 'absolute',
-                bottom: 15,
-                right: 50,
-                left: 50,
-                borderRadius: 5,
-              }}
-              onPress={handleToCart}>
-              <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
-                xác nhận
-              </Text>
-            </TouchableOpacity>
+              }}>
+              <TouchableOpacity
+                style={{
+                  width: '80%',
+                  height: 40,
+                  backgroundColor: COLORS.red,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 5,
+                  marginTop: 10,
+                }}
+                onPress={handleToCart}>
+                <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
+                  xác nhận
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </BottomSheetModal>
 
@@ -943,8 +950,8 @@ const DetailProductScreen = ({navigation, route}) => {
                               height: 35,
                               alignItems: 'center',
                               borderRadius: 10,
-                              marginTop: 10,
-                              marginBottom: 10,
+                              marginTop: 7,
+                              marginBottom: 7,
                               justifyContent: 'center',
                               backgroundColor:
                                 selectSize === item.size
@@ -1002,8 +1009,8 @@ const DetailProductScreen = ({navigation, route}) => {
                               height: 35,
                               alignItems: 'center',
                               borderRadius: 10,
-                              marginTop: 10,
-                              marginBottom: 10,
+                              marginTop: 7,
+                              marginBottom: 7,
                               justifyContent: 'center',
                               backgroundColor:
                                 selectSize === item.size
@@ -1067,7 +1074,7 @@ const DetailProductScreen = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-
+            <View style={{ width : '100%' , justifyContent : 'center' ,alignItems : 'center'}}>
             <TouchableOpacity
               style={{
                 width: '80%',
@@ -1075,10 +1082,11 @@ const DetailProductScreen = ({navigation, route}) => {
                 backgroundColor: COLORS.red,
                 justifyContent: 'center',
                 alignItems: 'center',
-                position: 'absolute',
-                bottom: 15,
-                right: 50,
-                left: 50,
+                marginTop : 10,
+                // position: 'absolute',
+                // bottom: 15,
+                // right: 50,
+                // left: 50,
                 borderRadius: 5,
               }}
               onPress={handleToSale}>
@@ -1086,6 +1094,8 @@ const DetailProductScreen = ({navigation, route}) => {
                 xác nhận
               </Text>
             </TouchableOpacity>
+            </View>
+            
           </View>
         </BottomSheetModal>
       </SafeAreaView>
