@@ -55,15 +55,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
       data => {
         console.log('dataEventPayZalo', data);
         navigation.replace('NotificationOrderSuccess');
-        pushOrdertoServer();
-        // if (data.return_code === 1) {
-        //   alert('Pay success!');
-        //   navigation.replace('NotificationOrderSuccess');
-        //   pushOrdertoServer();
-        // } else {
-        //   alert('Pay error! ' + data.return_code);
-        //   console.log('data result code', data.return_code);
-        // }
+        handleOrderProduct();
       },
     );
     return () => subscription.remove();
@@ -140,59 +132,113 @@ const ZaloPaymentScreen = ({navigation, route}) => {
         if (resJson.return_code === 1) {
           var payZP = NativeModules.PayZaloBridge;
           payZP.payOrder(resJson.zp_trans_token);
-          pushOrdertoServer();
+          //handleOrderProduct();
         }
       })
       .catch(error => {
         console.log('error ', error);
       });
   };
+  const [isChecked, setIsChecked] = useState(false); // State để lưu trạng thái của checkbox
+  const idUser = userData._id;
+  const userName = userData.username;
+  const year = new Date().getFullYear();
+  let month = new Date().getMonth() + 1;
+  if (month < 10) {
+    month = '0' + month;
+  }
+  let date = new Date().getDate();
+  if (date < 10) {
+    date = '0' + date;
+  }
+  const hour = new Date().getHours();
+  const minutes = new Date().getMinutes();
+  const secounds = new Date().getSeconds();
+  const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
+  let addressOrder = '';
 
-  const pushOrdertoServer = () => {
-    axios
-      .post('/user', {
-        fUserId: userData._id,
-        status: status,
-        date: getCurrentDateYYMMDD(),
-        PTTT: 'đã thanh toán',
-        address: addressReceive,
-      })
-      .then(function (response) {
-        pushProductOnOrder(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const handleOrderProduct = () => {
+    if (isChecked) {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append(
+        'Cookie',
+        'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+      );
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify({
+          UserId: idUser,
+          username: userName,
+          status: status,
+          date: formattedDate,
+          PTTT: 'Thanh toán bằng zalopay',
+        }),
+        redirect: 'follow',
+      };
+
+      try {
+        fetch(API_ORDER, requestOptions)
+          .then(response => response.json())
+          .then(result => pushProductOnOrder(result));
+      } catch (error) {
+        console.error('Error placing order:', error);
+      }
+    }
   };
 
   const pushProductOnOrder = data => {
-    console.log(data);
+    // console.log(data);
 
     // console.log(numberPhone);
 
     const idOrder = data._id;
 
-    console.log(idOrder, 'IdOrder =>>>>>>>>>>>>');
+    // console.log(idOrder, 'IdOrder =>>>>>>>>>>>>');
 
     const dataArrayOrder = dataProductOrder;
 
     dataArrayOrder.forEach(item => {
       item.OrderId = idOrder;
     });
-    axios
-      .post('/user', {
-        danhSachSanPham: dataArrayOrder,
-      })
-      .then(function (response) {
-        if (response.data.status === 1) {
-          deleteProductCart();
+
+    const deleteQuantityProduct = dataArrayOrder.map(item => ({
+      sizeId: item.PropertiesId,
+      quantity: item.Quantity,
+    }));
+
+    // console.log(deleteQuantityProduct , 'JJJJJJJJJ');
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append(
+      'Cookie',
+      'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+    );
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify({danhSachSanPham: dataArrayOrder}),
+      redirect: 'follow',
+    };
+
+    try {
+      fetch(API_PRODUCT_ORDER, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          // if (result.status === 1) {
           removeFromCart(deleteProductInCart);
+          deleteProductCart();
+          downQuantityServer(deleteQuantityProduct);
           navigation.replace('NotificationOrderSuccess');
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+          // }
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const deleteProductCart = () => {
@@ -201,7 +247,19 @@ const ZaloPaymentScreen = ({navigation, route}) => {
         data: {productIds: deleteProductInCart}, // Truyền mảng productIds vào body của request
       })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+  const downQuantityServer = deleteQuantityProduct => {
+    axios
+      .post(`${API_DELETE_IN_CART}`, {
+        orderItems: deleteQuantityProduct, // Truyền mảng productIds vào body của request
+      })
+      .then(response => {
+        console.log(response.data, 'llllllll');
       })
       .catch(error => {
         console.error('Error:', error);
