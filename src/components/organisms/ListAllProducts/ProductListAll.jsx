@@ -23,10 +23,14 @@ const ProductListAll = ({dataListProduct , onpressLove , heartColor , navigation
                           _id: item._id,
                           name: item.name,
                           image: item.image,
-                          category: item.loai,
+                          category: item.category,
                           describe : item.describe,
                           price: item.price,
+                          material : item.material,
                           quantitySold: item.quantitySold,
+                          instruction : item.instruction,
+                          warrantyPolicy : item.warrantyPolicy,
+
                         })
                       }>
                       <Image

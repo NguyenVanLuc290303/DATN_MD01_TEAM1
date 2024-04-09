@@ -44,6 +44,20 @@ import COLORS from "../../constants/colors";
 export const textStyles = StyleSheet.create({
     white :{
         color : COLORS.white
+    },
+    textTitle :{
+        fontSize : 15,
+        margin : 5,
+        fontWeight : 'bold'
+    }
+    
+})
+
+export const textTitleContent = StyleSheet.create({
+    textTitle :{
+        fontSize : 15,
+        margin : 5,
+        fontWeight : 'bold'
     }
 })
 

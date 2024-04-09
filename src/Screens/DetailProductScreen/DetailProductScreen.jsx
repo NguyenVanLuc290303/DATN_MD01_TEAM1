@@ -21,7 +21,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
 import IconA from 'react-native-vector-icons/AntDesign';
-import {styleCommon} from '../../theme/styles/CommomStyle';
+import {styleCommon, textStyles, textTitleContent} from '../../theme/styles/CommomStyle';
 import COLORS from '../../constants/colors';
 import {
   BottomSheetView,
@@ -44,7 +44,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const DetailProductScreen = ({navigation, route}) => {
-  const {_id, name, price, quantitySold, image, category, describe} =
+  const {_id, name, price, quantitySold, image, category, describe ,instruction , warrantyPolicy , material} =
     route.params;
 
   const {userData} = User();
@@ -75,10 +75,12 @@ const DetailProductScreen = ({navigation, route}) => {
   const listEvaluate = useListEvaluate(_id);
 
   const productListSimilar = productListAll.filter(
-    item => item.category === category && item.id !== _id,
+    item =>  item._id !== _id && item.category === category,
   );
 
-  // console.log(dataCart, 'datacartlength');
+  console.log(_id , "iiiiiiii");
+
+  console.log(productListSimilar, 'datacartlength');
 
   // Hàm xử lý cộng số lượng
 
@@ -385,9 +387,22 @@ const DetailProductScreen = ({navigation, route}) => {
             {/* <AddToCart navigation={navigation}/> */}
           </View>
           <View style={styles.star}>
-            <Text> Đã bán : {quantitySold}</Text>
+            <Text style={textStyles.textTitle}> Đã bán : {quantitySold}</Text>
           </View>
-          <View style={styles.description}></View>
+          <View style={styles.star}>
+            <Text style={textStyles.textTitle}> Chất liệu : {material}</Text>
+          </View>
+          <View >
+            <Text style={textStyles.textTitle}>Hướng dẫn chọn size</Text>
+          </View>
+          <View>
+          <Image source={{ uri: instruction }} style={{ width : '100%' , height : 150 }}/>
+
+          </View>
+          <View>
+            <Text style={textStyles.textTitle}>Chính sách bảo hành</Text>
+            <Text>{warrantyPolicy}</Text>
+          </View>
           <View style={styles.evaluation}>
             {listEvaluate.map((item, index) => (
               <View style={{marginTop: 20}}>
@@ -426,11 +441,13 @@ const DetailProductScreen = ({navigation, route}) => {
               </View>
             ))}
           </View>
-
+          <Text
+          style={textStyles.textTitle}
+          >Sản phẩm tương tự</Text>
           <View
-            contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {productListSimilar.map((item, index) => (
-              <View style={[styles.viewItemProducts]}>
+              <View key={index} style={[styles.viewItemProducts]}>
                 <TouchableOpacity
                   style={{
                     alignItems: 'center',
