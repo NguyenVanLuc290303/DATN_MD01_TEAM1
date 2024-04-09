@@ -20,6 +20,8 @@ const Profile = ({navigation}) => {
 
   const {userData} = User();
 
+  console.log(userData.image);
+
 
 
   const [showModal, setShowModal] = useState(false);
@@ -184,7 +186,7 @@ const Profile = ({navigation}) => {
             flexDirection: 'column',
           }}>
           <Image
-            source={{ uri : userData.image === "" ? IMAGE_URL_DEFAULT : userData.image}}
+            source={{ uri: userData.image === "" ? IMAGE_URL_DEFAULT : userData.image}}
             style={{
               width: 200,
               height: 200,

@@ -12,7 +12,13 @@ import {
   Alert,
 } from 'react-native';
 import COLORS from '../../constants/colors';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import IconI from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMT from 'react-native-vector-icons/MaterialIcons';
+
+
+
 import {Icons} from '../../constants/images';
 import {ToggleButton} from 'react-native-paper';
 import axios, {Axios} from 'axios';
@@ -155,7 +161,7 @@ const RegisterScreen = ({navigation}) => {
               marginVertical: 12,
               color: COLORS.black,
             }}>
-            Create Account
+            Đăng ký tài khoản
           </Text>
         </View>
 
@@ -171,13 +177,16 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
+                flexDirection : 'row'
               }}>
+              <Icon name="phone" size={24} />
               <TextInput
                 placeholder="Số điện thoại"
                 placeholderTextColor={COLORS.black}
                 keyboardType="phone-pad"
                 style={{
                   width: '100%',
+                  paddingLeft : 10
                 }}
                 onChangeText={Text => setPhoneNumber(Text)}
               />
@@ -197,13 +206,16 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
+                flexDirection : 'row'
               }}>
+                <IconM name="email" size={24} />
               <TextInput
                 placeholder="Email"
                 placeholderTextColor={COLORS.black}
                 keyboardType="email-address"
                 style={{
                   width: '100%',
+                  paddingLeft : 10
                 }}
                 onChangeText={Text => setEmail(Text)}
               />
@@ -225,12 +237,15 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
+                flexDirection  : 'row'
               }}>
+                <Icon name="user" size={24}/>
               <TextInput
                 placeholder="Tên của bạn"
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
+                  paddingLeft : 10
                 }}
                 onChangeText={Text => setName(Text)}
               />
@@ -251,13 +266,16 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
+                flexDirection : 'row'
               }}>
+                <IconI name="lock-closed" size={24} />
               <TextInput
                 placeholder="Mật khẩu"
                 placeholderTextColor={COLORS.black}
                 secureTextEntry={!isPasswordShow}
                 style={{
                   width: '100%',
+                  paddingLeft : 10
                 }}
                 onChangeText={Text => setPassword(Text)}
               />
@@ -289,12 +307,15 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
+                flexDirection : 'row'
               }}>
+                <IconMT name="streetview" size={24}/>
               <TextInput
                 placeholder="Đường"
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
+                  paddingLeft : 10
                 }}
                 onChangeText={Text => setStreet(Text)}
               />
@@ -312,7 +333,9 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
+                flexDirection : 'row'
               }}>
+                <IconMT name="location-city" size={24}/>
               <TextInput
                 placeholder="Thành Phố"
                 placeholderTextColor={COLORS.black}
@@ -335,7 +358,7 @@ const RegisterScreen = ({navigation}) => {
                 height: 50,
                 backgroundColor: COLORS.black,
               }}>
-              <Text style={styles.submitText}>Create Account</Text>
+              <Text style={styles.submitText}>Đăng ký</Text>
             </TouchableOpacity>
           </View>
         </View>

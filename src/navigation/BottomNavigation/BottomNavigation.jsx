@@ -22,7 +22,6 @@ const BottomNavigation = ({navigation}) => {
         tabBarActiveTintColor: '#0c090a',
         headerShown: false,
         tabBarShowLabel: true,
-        
       }}>
       <Tab.Screen
         name="Home"
@@ -31,7 +30,7 @@ const BottomNavigation = ({navigation}) => {
           tabBarLabel: 'Home',
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
-              <Icon name="home-sharp" color={COLORS.App} size={32}/>
+              <Icon name="home-sharp" color={COLORS.App} size={30}/>
             ) : (
               <IconAndesign name="home" color={color} size={26} />
             )
@@ -46,7 +45,7 @@ const BottomNavigation = ({navigation}) => {
           tabBarLabel: 'Love',
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
-              <IconAndesign name="heart" color={COLORS.App} size={32} />
+              <IconAndesign name="heart" color={COLORS.App} size={30} />
             ):(
               <IconAndesign name="hearto" color={color} size={26} />
             )
@@ -57,7 +56,7 @@ const BottomNavigation = ({navigation}) => {
         name="Notification"
         component={Notification}
         options={{
-          headerShown: true,
+          headerShown: false,
           tabBarLabel: 'Notification',
           tabBarIcon: ({focused, color, size}) => (
             <TouchableOpacity
@@ -77,7 +76,7 @@ const BottomNavigation = ({navigation}) => {
                 <MaterialCommunityIcons
                   name="bell"
                   color={focused ? COLORS.App : color}
-                  size={focused ? 32 : 26}
+                  size={focused ? 30 : 26}
                 />
               </View>
             </TouchableOpacity>
@@ -91,7 +90,7 @@ const BottomNavigation = ({navigation}) => {
           headerShown: '',
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
-              <Icon name="chatbubble-ellipses-sharp" size={32} color={COLORS.App}/>
+              <Icon name="chatbubble-ellipses-sharp" size={30} color={COLORS.App}/>
             ):(
               <Icon name="chatbubble-ellipses-outline" size={26} color={color}/>
             )
@@ -105,7 +104,7 @@ const BottomNavigation = ({navigation}) => {
           headerShown: '',
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
-              <Icon name="person" color={COLORS.App} size={32} />
+              <Icon name="person" color={COLORS.App} size={30} />
 
             ) :(
               <Icon name="person-outline" color={color} size={26} />
@@ -118,3 +117,4 @@ const BottomNavigation = ({navigation}) => {
 };
 
 export default BottomNavigation;
+

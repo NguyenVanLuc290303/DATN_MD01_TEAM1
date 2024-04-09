@@ -33,6 +33,8 @@ import fi_check from '../assets/images/fi_check.png';
 import IconVoucher from '../assets/images/icon_voucher.png';
 import IconListOrder from'../assets/images/list-check-order.png';
 import IconZaloPay from '../assets/images/icons8-zalo-240.png';
+import IconFaceBook from '../assets/images/icons8-facebook-48.png';
+import IconGoogle from '../assets/images/icons8-google-48.png';
 
 export const Icons = {
   IconEye,
@@ -69,5 +71,7 @@ export const Icons = {
   fi_check,
   IconVoucher,
   IconListOrder,
-  IconZaloPay
+  IconZaloPay,
+  IconFaceBook,
+  IconGoogle
 };

@@ -67,9 +67,14 @@ const ProductCategory =  ({navigation, route}) => {
                             _id : item._id,
                             name : item.name,
                             image : item.image,
-                            category : item.loai,
+                            category : item.category,
                             price : item.price,
-                            quantitySold : item.quantitySold})}>
+                            describe : item.describe,
+                            material : item.material,
+                            quantitySold : item.quantitySold,
+                            instruction : item.instruction,
+                            warrantyPolicy : item.warrantyPolicy,
+                            })}>
                             <Image source={{ uri : item.image}} style={{ width : '70%' , height : '70%'}}/>
                             <HeaderTitle>{item.name}</HeaderTitle>
                             <Text>{item.price}</Text>

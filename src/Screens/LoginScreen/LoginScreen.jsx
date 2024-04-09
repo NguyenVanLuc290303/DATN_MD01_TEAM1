@@ -83,7 +83,7 @@ const LoginScreen = ({navigation}) => {
       .get(`${API_ADD_USERS}/${internationalPhoneNumber}`)
       .then(function (response) {
         // const data = Array.isArray(response.data) ? response.data : [response.data];
-        console.log(response.data, 'ffffffffff');
+        console.log(response.data , "ffffffffff");
 
         loginUser(response.data);
       })
@@ -103,11 +103,11 @@ const LoginScreen = ({navigation}) => {
         internationalPhoneNumber === dataUser.numberPhone &&
         password === dataUser.passwd
       ) {
-        console.log(dataUser);
+        console.log(dataUser)
         setUserData(dataUser);
         navigation.navigate('BottomNavigation');
       } else {
-        console.log(dataUser + 'data');
+        console.log(dataUser + "data")
         Alert.alert('thông tin sai');
       }
     } catch (error) {
@@ -258,6 +258,26 @@ const LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style = {styles.mangxh}>
+        <TouchableOpacity style = {{}}>
+            <Image
+                 source={{ uri : 'https://www.pinclipart.com/picdir/middle/2-21918_download-transparent-background-facebook-logo-clipart-facebook-logo.png'}}
+                 style={{ width: 50, height: 50 ,borderRadius:10}}
+            />
+        </TouchableOpacity>
+        <TouchableOpacity>
+            <Image
+                 source={{ uri: 'https://tse3.mm.bing.net/th?id=OIP.jpQFunOi7r3t9JaTNLFXQgHaHa&pid=Api&P=0&h=180' }}
+                 style={{ width: 50, height: 50,borderRadius:10 ,marginLeft:50}}
+            />
+        </TouchableOpacity>
+        <TouchableOpacity>
+            <Image
+                 source={{ uri : 'https://cdn.imgbin.com/23/7/2/imgbin-google-logo-google-search-icon-google-google-logo-hEJMjnfCV4MA1gDtjaWTv5kc1.jpg'}}
+                 style={{ width: 50, height: 50 ,borderRadius:10,marginLeft:50}}
+            />
+        </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -268,6 +288,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+    mangxh :{
+    width : '100%',
+    marginTop:20,
+    flexDirection:'row',
+    paddingLeft:0,
+    justifyContent : 'center'
+},
   header: {
     marginVertical: 36,
   },

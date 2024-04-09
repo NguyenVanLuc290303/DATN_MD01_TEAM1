@@ -69,6 +69,7 @@ import ChangeEmailScreen from './src/Screens/EditProfile/components/ChangeEmailS
 import ChangePhoneScreen from './src/Screens/EditProfile/components/ChangePhoneScreen/ChangePhoneScreen';
 import ChangeAddressScreen from './src/Screens/EditProfile/components/ChangeAddressScreen/ChangeAddressScreen';
 import ZaloPaymentScreen from './src/Screens/ZaloPaymentScreen/ZaloPaymentScreen';
+import EvualuateScreen from './src/Screens/EvaluateScreen/EvaluateScreen';
 
 
 // import {CartScreen} from './src/Screens';
@@ -284,6 +285,11 @@ function App() {
         <Stack.Screen
           name="ZaloPaymentScreen"
           component={ZaloPaymentScreen}
+          options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="EvualuateScreen"
+          component={EvualuateScreen}
           options={{headerShown: true}}
         />
       </Stack.Navigator>

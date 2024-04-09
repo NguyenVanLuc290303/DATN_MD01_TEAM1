@@ -10,18 +10,19 @@ const OrderDelivered = ({navigation}) => {
 
     console.log(listOrderDelivered, "order Deliverd =>>>>>>>>>>.")
 
-    const handleNavigationDetails = (OrderId, status) => {
+    const handleNavigationDetails = (OrderId, status , address) => {
         console.log(OrderId, '---------');
         navigation.navigate('YourOrderDetailScreen', {
           OrderId: OrderId,
           status: status,
+          address : address
         });
       };
 
     const renderItem = ({item, index}) => (
         <TouchableOpacity
           style={styles.item}
-          onPress={() => handleNavigationDetails(item._id, item.status)}>
+          onPress={() => handleNavigationDetails(item._id, item.status , item.address)}>
           <View style={styles.ViewImg}>
             <View >
             <Image style={styles.ImgItem} source={require('@/images/logoAPP_MD01_png.png')}/>

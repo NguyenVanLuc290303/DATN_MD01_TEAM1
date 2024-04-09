@@ -16,11 +16,16 @@ import {
   Animated,
   Easing,
   ToastAndroid,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
 import IconA from 'react-native-vector-icons/AntDesign';
-import {styleCommon} from '../../theme/styles/CommomStyle';
+import {
+  styleCommon,
+  textStyles,
+  textTitleContent,
+} from '../../theme/styles/CommomStyle';
 import COLORS from '../../constants/colors';
 import {
   BottomSheetView,
@@ -33,15 +38,32 @@ import {API_COLOR_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import {Cart} from '../../hooks/cartContext';
+import {styles} from './DetailProductScreen.style';
+import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
+import useListProduct from '../../services/product-services/use-all-list-product';
+import useListEvaluate from '../../services/evaluate-services/use-list-evaluate-product';
+import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const DetailProductScreen = ({navigation, route}) => {
-  const {_id, name, price, quantitySold, image, category ,describe} = route.params;
+  const {
+    _id,
+    name,
+    price,
+    quantitySold,
+    image,
+    category,
+    describe,
+    instruction,
+    warrantyPolicy,
+    material,
+  } = route.params;
 
   const {userData} = User();
 
   const {dataCart, addItemToCart} = Cart();
-
-  // console.log(dataCart, 'datacartlength');
 
   const idUser = userData._id;
 
@@ -57,22 +79,35 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const [quantity, setQuantity] = useState(1); // Số lượng mặc định là 1
 
-  const [quantityRemain , setQuantityRemain] = useState();
+  const [quantityRemain, setQuantityRemain] = useState();
 
+  const scrollOffsetY = useRef(new Animated.Value(0)).current;
+
+  const [productListAll] = useListProduct();
+
+  const listEvaluate = useListEvaluate(_id);
+
+  const productListSimilar = productListAll.filter(
+    item => item._id !== _id && item.category === category,
+  );
+
+  console.log(_id, 'iiiiiiii');
+
+  console.log(productListSimilar, 'datacartlength');
 
   // Hàm xử lý cộng số lượng
 
-  //Đang sai logic render của react 
-  const incrementQuantity =() => {
-    console.log(quantityRemain , ")))))))");
-    console.log(quantity, "_____________")
-    if(quantityRemain === quantity){
+  //Đang sai logic render của react
+  const incrementQuantity = () => {
+    console.log(quantityRemain, ')))))))');
+    console.log(quantity, '_____________');
+    if (quantityRemain === quantity) {
       ToastAndroid.showWithGravity(
         'Số lượng đã trong kho hàng đã hết',
         ToastAndroid.SHORT,
-        ToastAndroid.CENTER
+        ToastAndroid.CENTER,
       );
-    }else{
+    } else {
       setQuantity(quantity + 1);
     }
   };
@@ -102,7 +137,6 @@ const DetailProductScreen = ({navigation, route}) => {
       .then(result => setDaProperties(result))
       .catch(error => console.error(error));
   }, []);
-
 
   const bottomSheetModalRef = useRef(null);
 
@@ -139,8 +173,9 @@ const DetailProductScreen = ({navigation, route}) => {
   const animationPosition = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
 
   const [showImageAnimation, setShowImageAnimation] = useState(false);
+  // console.log(windowHeight , windowWidth ,"ooooo");
 
-  const animationCart = () =>{
+  const animationCart = () => {
     setShowImageAnimation(true);
     const shrinkAnimation = Animated.timing(animationScale, {
       toValue: 0,
@@ -149,7 +184,7 @@ const DetailProductScreen = ({navigation, route}) => {
     });
 
     const parabolicAnimation = Animated.timing(animationPosition, {
-      toValue: {x: 160, y: -190},
+      toValue: {x: windowWidth / 2.5, y: windowHeight / -3.8},
       easing: Easing.bezier(0.25, 0.1, 0.25, 1),
       duration: 1000,
       useNativeDriver: false,
@@ -161,99 +196,105 @@ const DetailProductScreen = ({navigation, route}) => {
       animationPosition.setValue({x: 0, y: 0});
       setShowImageAnimation(false);
     });
-  }
+  };
 
-  // console.log(selectedColor.name , "oooooooooooo");
+  const handleScroll = Animated.event(
+    [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
+    {useNativeDriver: true},
+  );
+
+  const translateY = scrollOffsetY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 100],
+    extrapolate: 'clamp',
+  });
 
   const handleToCart = () => {
+    if (selectedColor !== null) {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append(
+        'Cookie',
+        'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+      );
 
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify({
+          CartId: idUser,
+          ProductId: _id,
+          Name: name,
+          Price: price,
+          ColorCode: selectedColor.colorId,
+          Size: selectSize,
+          Quantity: quantity,
+          RemainQuantity: quantityRemain,
+          PropertiesId: idPropotiesS,
+          Image: selectedColor.image,
+        }),
+        redirect: 'follow',
+      };
 
-
-   if(selectedColor !== null){
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append(
-      'Cookie',
-      'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
-    );
-
-    const requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify({
-        CartId: idUser,
-        ProductId: _id,
-        Name: name,
-        Price: price,
-        ColorCode: selectedColor.colorId,
-        Size: selectSize,
-        Quantity: quantity,
-        RemainQuantity : quantityRemain,
-        PropertiesId: idPropotiesS,
-        Image: selectedColor.image,
-      }),
-      redirect: 'follow',
-    };
-
-    try {
-      fetch(
-        `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}`,
-        requestOptions,
-      )
-        .then(response => response.json())
-        .then(result => {
-          if(result.status !== 0){
-            addItemToCart(result);
-            animationCart();
-            handleClosePress();
-          }else{
-        ToastAndroid.showWithGravity(
-          'Sản phẩm đã có trong giỏ',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER
+      try {
+        fetch(
+          `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
+          requestOptions,
         )
-          }
-        });
-    } catch (error) {
-     console.log(error , " lỗi thêm vào giỏ hàng");
+          .then(response => response.json())
+          .then(result => {
+            if (result.status === 1) {
+              addItemToCart(result);
+              animationCart();
+              handleClosePress();
+            } else {
+              ToastAndroid.showWithGravity(
+                'Sản phẩm đã có trong giỏ',
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER,
+              );
+            }
+          });
+      } catch (error) {
+        console.log(error, ' lỗi thêm vào giỏ hàng');
+      }
+    } else {
+      ToastAndroid.showWithGravity(
+        'Bạn chưa chọn màu',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
-   }else{
-    ToastAndroid.showWithGravity(
-      'Bạn chưa chọn màu',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER
-    )
-   }
   };
 
   const handleToSale = () => {
-   if(selectedColor !== null){
-    const productSelect = [
-      {
-        ProductId: _id,
-        PropertiesId: idPropotiesS,
-        Name: name,
-        Size: selectSize,
-        Quantity: quantity,
-        ColorCode: selectedColor.colorId,
-        Price: price,
-        Image: selectedColor.image,
-      },
-    ];
+    if (selectedColor !== null) {
+      const productSelect = [
+        {
+          ProductId: _id,
+          PropertiesId: idPropotiesS,
+          Name: name,
+          Size: selectSize,
+          Quantity: quantity,
+          ColorCode: selectedColor.colorId,
+          Price: price,
+          Image: selectedColor.image,
+        },
+      ];
 
-    navigation.navigate('OrderDetailsScreen', {
-      dataProductOrder: productSelect,
-    });
-   }else{
-    ToastAndroid.showWithGravity(
-      'Bạn chưa chọn màu',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER
-    )
-   }
+      navigation.navigate('OrderDetailsScreen', {
+        dataProductOrder: productSelect,
+      });
+    } else {
+      ToastAndroid.showWithGravity(
+        'Bạn chưa chọn màu',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
   };
 
-  const handleOnpressSize = (size, id , quantity) => {
+  const handleOnpressSize = (size, id, quantity) => {
     // console.log(quantity ,  "số lượng còn trong size đó ?????");
     setQuantityRemain(quantity);
     setSelectSize(size);
@@ -265,87 +306,183 @@ const DetailProductScreen = ({navigation, route}) => {
   return (
     <BottomSheetModalProvider>
       <SafeAreaView style={[styles.container]}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" size={32} color={COLORS.black} />
-          </TouchableOpacity>
-          <View style={{flexDirection: 'row' , alignItems : 'center'}}>
-            <IconF name="search" size={28} color={COLORS.gray} />
-            <TouchableOpacity
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => navigation.navigate('CartScreen')}>
-              <Image source={require('@/icons/png/local_mall.png')} />
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  backgroundColor: COLORS.red,
-                  position: 'absolute',
-                  borderRadius: 10,
-                  top: 0,
-                  right: 0,
-                }}>
-                <Text style={{color: COLORS.white, marginLeft: 5}}>
-                  {dataCart.length}
-                </Text>
-              </View>
+        <Animated.ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" size={32} color={COLORS.black} />
             </TouchableOpacity>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <IconF name="search" size={28} color={COLORS.gray} />
+              <TouchableOpacity
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => navigation.navigate('CartScreen')}>
+                <Image source={require('@/icons/png/local_mall.png')} />
+                <View
+                  style={{
+                    width: 20,
+                    height: 20,
+                    backgroundColor: COLORS.red,
+                    position: 'absolute',
+                    borderRadius: 10,
+                    top: 0,
+                    right: 0,
+                  }}>
+                  <Text style={{color: COLORS.white, marginLeft: 5}}>
+                    {dataCart.length}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View style={styles.ViewImageProduct}>
-          <Image
-            source={{
-              uri: image,
-            }}
-            style={styles.imageProduct}
-          />
-          <Animated.View
-            style={[
-              {
-                transform: [
-                  {translateX: animationPosition.x},
-                  {translateY: animationPosition.y},
-                  {scale: animationScale},
-                ],
-                width: 100,
-                height: 100,
-                position: 'absolute',
-                borderRadius: 50,
-                zIndex: showImageAnimation ? 2 : -2,
-                backgroundColor: COLORS.white,
-              },
-            ]}>
+          <View style={styles.ViewImageProduct}>
             <Image
-              style={{width: 100, height: 100, borderRadius: 50}}
-              source={{uri: image}}
+              source={{
+                uri: image,
+              }}
+              style={styles.imageProduct}
             />
-          </Animated.View>
-        </View>
-        <View style={styles.infoProduct}>
-          <Text style={[styleCommon.h2, {color: COLORS.black}]}>{price}</Text>
-          <View>
-            <Text style={[styleCommon.h2, {color: COLORS.black}]}>{name}</Text>
+            <Animated.View
+              style={[
+                {
+                  transform: [
+                    {translateX: animationPosition.x},
+                    {translateY: animationPosition.y},
+                    {scale: animationScale},
+                  ],
+                  width: 100,
+                  height: 100,
+                  position: 'absolute',
+                  borderRadius: 50,
+                  zIndex: showImageAnimation ? 4 : -2,
+                  backgroundColor: COLORS.white,
+                },
+              ]}>
+              <Image
+                style={{width: 100, height: 100, borderRadius: 50}}
+                source={{uri: image}}
+              />
+            </Animated.View>
           </View>
-          <View>
-            <Text style={{color: COLORS.black, fontSize: 16}}>
-              {describe}
+          <View style={styles.infoProduct}>
+            <Text
+              style={[
+                styleCommon.h2,
+                {color: COLORS.black, fontWeight: 'bold', marginTop: 10},
+              ]}>
+              {price}
             </Text>
+            <View>
+              <Text style={[styleCommon.h2, {color: COLORS.black}]}>
+                {name}
+              </Text>
+            </View>
+            <View>
+              <Text style={{color: COLORS.black, fontSize: 16}}>
+                {describe}
+              </Text>
+            </View>
+            {/* <AddToCart navigation={navigation}/> */}
           </View>
-          {/* <AddToCart navigation={navigation}/> */}
-        </View>
-        <View style={styles.star}>
-          <Icon name="star" size={24} color={'yellow'} />
-          <Text>4.8/5</Text>
-          <Text> Đã bán{quantitySold}</Text>
-        </View>
-        <View style={styles.description}></View>
-        <View style={styles.evaluation}></View>
-        <View
+          <View style={styles.star}>
+            <Text style={textStyles.textTitle}> Đã bán : {quantitySold}</Text>
+          </View>
+          <View style={styles.star}>
+            <Text style={textStyles.textTitle}> Chất liệu : {material}</Text>
+          </View>
+          <View>
+            <Text style={textStyles.textTitle}>Hướng dẫn chọn size</Text>
+          </View>
+          <View>
+            <Image
+              source={{uri: instruction}}
+              style={{width: '100%', height: 150}}
+            />
+          </View>
+          <View>
+            <Text style={textStyles.textTitle}>Chính sách bảo hành</Text>
+            <Text>{warrantyPolicy}</Text>
+          </View>
+          <View style={styles.evaluation}>
+            {listEvaluate.map((item, index) => (
+              <View style={{marginTop: 20}}>
+                <View style={{flexDirection: 'row'}}>
+                  <Image
+                    style={{width: 40, height: 40, borderRadius: 20}}
+                    source={{uri: item.imageuser}}
+                  />
+
+                  <View style={{marginLeft: 10}}>
+                    <Text>{item.username}</Text>
+                    <View style={{flexDirection: 'row', marginTop: 5}}>
+                      {Array.from({length: item.star}).map((_, starIndex) => (
+                        <TouchableOpacity key={starIndex}>
+                          <Icon name="star" size={20} color={'yellow'} />
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+
+                <View style={{marginTop: 5, marginLeft: 20}}>
+                  <Text>{item.content}</Text>
+                  <Image
+                    style={{width: 80, height: 80}}
+                    source={{uri: item.imageContent}}
+                  />
+                </View>
+                <View
+                  style={{
+                    width: '100%',
+                    height: 1,
+                    backgroundColor: '#E5E5E5',
+                    marginTop: 10,
+                  }}></View>
+              </View>
+            ))}
+          </View>
+          <Text style={textStyles.textTitle}>Sản phẩm tương tự</Text>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            {productListSimilar.map((item, index) => (
+              <View key={index} style={[styles.viewItemProducts]}>
+                <TouchableOpacity
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingTop: '5%',
+                  }}
+                  onPress={() =>
+                    navigation.replace('DetailProductScreen', {
+                      _id: item._id,
+                      name: item.name,
+                      image: item.image,
+                      category: item.loai,
+                      describe: item.describe,
+                      price: item.price,
+                      quantitySold: item.quantitySold,
+                    })
+                  }>
+                  <Image
+                    source={{uri: item.image}}
+                    style={{width: 90, height: 131}}
+                  />
+                  <Text>{item.name}</Text>
+                  <Text>{item.price} USD</Text>
+                  {/* Thêm icon trái tim */}
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        </Animated.ScrollView>
+
+        <Animated.View
           style={[
             styles.bottomSheet,
             {
@@ -354,6 +491,7 @@ const DetailProductScreen = ({navigation, route}) => {
               left: 0,
               right: 0,
               height: 100,
+              transform: [{translateY}],
             },
           ]}>
           <View style={styles.rowContainer2}>
@@ -383,7 +521,7 @@ const DetailProductScreen = ({navigation, route}) => {
               <Text style={styles.orderButtonText}>Order</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animated.View>
 
         <BottomSheetModal
           ref={bottomSheetModalRef}
@@ -410,8 +548,6 @@ const DetailProductScreen = ({navigation, route}) => {
                       uri: selectedColor.image,
                     }}
                   />
-
-    
                 </View>
               ) : dataProperties[0] && dataProperties[0].image ? (
                 <View
@@ -501,7 +637,7 @@ const DetailProductScreen = ({navigation, route}) => {
                   }}
                   horizontal
                 />
-                
+
                 {selectedColor ? (
                   <View style={{marginTop: 10}}>
                     <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
@@ -525,15 +661,20 @@ const DetailProductScreen = ({navigation, route}) => {
                               height: 35,
                               alignItems: 'center',
                               borderRadius: 10,
-                              marginTop: 10,
-                              marginBottom: 10,
-                              justifyContent : 'center',
-                              backgroundColor : selectSize === item.size
-                                  ? "#000000"
-                                  :  "#D9D9D9"
+                              marginTop: 7,
+                              marginBottom: 7,
+                              justifyContent: 'center',
+                              backgroundColor:
+                                selectSize === item.size
+                                  ? '#000000'
+                                  : '#D9D9D9',
                             }}
                             onPress={() =>
-                              handleOnpressSize(item.size, item._id , item.quantity)
+                              handleOnpressSize(
+                                item.size,
+                                item._id,
+                                item.quantity,
+                              )
                             }>
                             <Text
                               style={{
@@ -543,9 +684,10 @@ const DetailProductScreen = ({navigation, route}) => {
                                 fontSize: 16,
                                 fontWeight: '600',
                                 paddingLeft: '5%',
-                                color :  selectSize === item.size
-                                ? "#FFFFFF"
-                                :  "#000000"
+                                color:
+                                  selectSize === item.size
+                                    ? '#FFFFFF'
+                                    : '#000000',
                               }}>
                               {item.size}
                             </Text>
@@ -557,61 +699,65 @@ const DetailProductScreen = ({navigation, route}) => {
                   </View>
                 ) : dataProperties[0] && dataProperties[0].sizes ? (
                   <View style={{marginTop: 10}}>
-                  <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
-                    Sizes:
-                  </Text>
-                  <FlatList
-                    data={
-                      dataProperties[0] && dataProperties[0].sizes
-                        ? dataProperties[0].sizes.filter(
-                            size => size.quantity > 0,
-                          )
-                        : []
-                    }
-                    // keyExtractor={(item, index) => index.toString()}
-                    renderItem={({item, index}) => {
-                      return (
-                        <TouchableOpacity
-                          style={{
-                            flexDirection: 'row',
-                            width: '30%',
-                            height: 35,
-                            alignItems: 'center',
-                            borderRadius: 10,
-                            marginTop: 10,
-                            marginBottom: 10,
-                            justifyContent : 'center',
-                            backgroundColor : selectSize === item.size
-                                ? "#000000"
-                                :  "#D9D9D9"
-                          }}
-                          onPress={() =>
-                            handleOnpressSize(item.size, item._id , item.quantity)
-                          }>
-                          <Text
+                    <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
+                      Sizes:
+                    </Text>
+                    <FlatList
+                      data={
+                        dataProperties[0] && dataProperties[0].sizes
+                          ? dataProperties[0].sizes.filter(
+                              size => size.quantity > 0,
+                            )
+                          : []
+                      }
+                      // keyExtractor={(item, index) => index.toString()}
+                      renderItem={({item, index}) => {
+                        return (
+                          <TouchableOpacity
                             style={{
-                              width: '85%',
-                              // marginRight: 10,
-                              // marginLeft: 10,
-                              fontSize: 16,
-                              fontWeight: '600',
-                              paddingLeft: '5%',
-                              color :  selectSize === item.size
-                              ? "#FFFFFF"
-                              :  "#000000"
-                            }}>
-                            {item.size}
-                          </Text>
-                          {/* <Text>{item.quantity}</Text> */}
-                        </TouchableOpacity>
-                      );
-                    }}
-                  />
-                </View>
-                ) :(
-                  <View>
-                    
+                              flexDirection: 'row',
+                              width: '30%',
+                              height: 35,
+                              alignItems: 'center',
+                              borderRadius: 10,
+                              marginTop: 7,
+                              marginBottom: 7,
+                              justifyContent: 'center',
+                              backgroundColor:
+                                selectSize === item.size
+                                  ? '#000000'
+                                  : '#D9D9D9',
+                            }}
+                            onPress={() =>
+                              handleOnpressSize(
+                                item.size,
+                                item._id,
+                                item.quantity,
+                              )
+                            }>
+                            <Text
+                              style={{
+                                width: '85%',
+                                // marginRight: 10,
+                                // marginLeft: 10,
+                                fontSize: 16,
+                                fontWeight: '600',
+                                paddingLeft: '5%',
+                                color:
+                                  selectSize === item.size
+                                    ? '#FFFFFF'
+                                    : '#000000',
+                              }}>
+                              {item.size}
+                            </Text>
+                            {/* <Text>{item.quantity}</Text> */}
+                          </TouchableOpacity>
+                        );
+                      }}
+                    />
                   </View>
+                ) : (
+                  <View></View>
                 )}
               </View>
             </View>
@@ -639,25 +785,28 @@ const DetailProductScreen = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-
-            <TouchableOpacity
+            <View
               style={{
-                width: '80%',
-                height: 40,
-                backgroundColor: COLORS.red,
+                width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                position: 'absolute',
-                bottom: 15,
-                right: 50,
-                left: 50,
-                borderRadius: 5,
-              }}
-              onPress={handleToCart}>
-              <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
-                xác nhận
-              </Text>
-            </TouchableOpacity>
+              }}>
+              <TouchableOpacity
+                style={{
+                  width: '80%',
+                  height: 40,
+                  backgroundColor: COLORS.red,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 5,
+                  marginTop: 10,
+                }}
+                onPress={handleToCart}>
+                <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
+                  xác nhận
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </BottomSheetModal>
 
@@ -777,7 +926,7 @@ const DetailProductScreen = ({navigation, route}) => {
                   }}
                   horizontal
                 />
-                
+
                 {selectedColor ? (
                   <View style={{marginTop: 10}}>
                     <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
@@ -801,15 +950,20 @@ const DetailProductScreen = ({navigation, route}) => {
                               height: 35,
                               alignItems: 'center',
                               borderRadius: 10,
-                              marginTop: 10,
-                              marginBottom: 10,
-                              justifyContent : 'center',
-                              backgroundColor : selectSize === item.size
-                                  ? "#000000"
-                                  :  "#D9D9D9"
+                              marginTop: 7,
+                              marginBottom: 7,
+                              justifyContent: 'center',
+                              backgroundColor:
+                                selectSize === item.size
+                                  ? '#000000'
+                                  : '#D9D9D9',
                             }}
                             onPress={() =>
-                              handleOnpressSize(item.size, item._id , item.quantity)
+                              handleOnpressSize(
+                                item.size,
+                                item._id,
+                                item.quantity,
+                              )
                             }>
                             <Text
                               style={{
@@ -819,9 +973,10 @@ const DetailProductScreen = ({navigation, route}) => {
                                 fontSize: 16,
                                 fontWeight: '600',
                                 paddingLeft: '5%',
-                                color :  selectSize === item.size
-                                ? "#FFFFFF"
-                                :  "#000000"
+                                color:
+                                  selectSize === item.size
+                                    ? '#FFFFFF'
+                                    : '#000000',
                               }}>
                               {item.size}
                             </Text>
@@ -833,61 +988,65 @@ const DetailProductScreen = ({navigation, route}) => {
                   </View>
                 ) : dataProperties[0] && dataProperties[0].sizes ? (
                   <View style={{marginTop: 10}}>
-                  <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
-                    Sizes:
-                  </Text>
-                  <FlatList
-                    data={
-                      dataProperties[0] && dataProperties[0].sizes
-                        ? dataProperties[0].sizes.filter(
-                            size => size.quantity > 0,
-                          )
-                        : []
-                    }
-                    // keyExtractor={(item, index) => index.toString()}
-                    renderItem={({item, index}) => {
-                      return (
-                        <TouchableOpacity
-                          style={{
-                            flexDirection: 'row',
-                            width: '30%',
-                            height: 35,
-                            alignItems: 'center',
-                            borderRadius: 10,
-                            marginTop: 10,
-                            marginBottom: 10,
-                            justifyContent : 'center',
-                            backgroundColor : selectSize === item.size
-                                ? "#000000"
-                                :  "#D9D9D9"
-                          }}
-                          onPress={() =>
-                            handleOnpressSize(item.size, item._id , item.quantity)
-                          }>
-                          <Text
+                    <Text style={[styleCommon.h4, {color: COLORS.gray}]}>
+                      Sizes:
+                    </Text>
+                    <FlatList
+                      data={
+                        dataProperties[0] && dataProperties[0].sizes
+                          ? dataProperties[0].sizes.filter(
+                              size => size.quantity > 0,
+                            )
+                          : []
+                      }
+                      // keyExtractor={(item, index) => index.toString()}
+                      renderItem={({item, index}) => {
+                        return (
+                          <TouchableOpacity
                             style={{
-                              width: '85%',
-                              // marginRight: 10,
-                              // marginLeft: 10,
-                              fontSize: 16,
-                              fontWeight: '600',
-                              paddingLeft: '5%',
-                              color :  selectSize === item.size
-                              ? "#FFFFFF"
-                              :  "#000000"
-                            }}>
-                            {item.size}
-                          </Text>
-                          {/* <Text>{item.quantity}</Text> */}
-                        </TouchableOpacity>
-                      );
-                    }}
-                  />
-                </View>
-                ) :(
-                  <View>
-                    
+                              flexDirection: 'row',
+                              width: '30%',
+                              height: 35,
+                              alignItems: 'center',
+                              borderRadius: 10,
+                              marginTop: 7,
+                              marginBottom: 7,
+                              justifyContent: 'center',
+                              backgroundColor:
+                                selectSize === item.size
+                                  ? '#000000'
+                                  : '#D9D9D9',
+                            }}
+                            onPress={() =>
+                              handleOnpressSize(
+                                item.size,
+                                item._id,
+                                item.quantity,
+                              )
+                            }>
+                            <Text
+                              style={{
+                                width: '85%',
+                                // marginRight: 10,
+                                // marginLeft: 10,
+                                fontSize: 16,
+                                fontWeight: '600',
+                                paddingLeft: '5%',
+                                color:
+                                  selectSize === item.size
+                                    ? '#FFFFFF'
+                                    : '#000000',
+                              }}>
+                              {item.size}
+                            </Text>
+                            {/* <Text>{item.quantity}</Text> */}
+                          </TouchableOpacity>
+                        );
+                      }}
+                    />
                   </View>
+                ) : (
+                  <View></View>
                 )}
               </View>
             </View>
@@ -915,7 +1074,7 @@ const DetailProductScreen = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-
+            <View style={{ width : '100%' , justifyContent : 'center' ,alignItems : 'center'}}>
             <TouchableOpacity
               style={{
                 width: '80%',
@@ -923,10 +1082,11 @@ const DetailProductScreen = ({navigation, route}) => {
                 backgroundColor: COLORS.red,
                 justifyContent: 'center',
                 alignItems: 'center',
-                position: 'absolute',
-                bottom: 15,
-                right: 50,
-                left: 50,
+                marginTop : 10,
+                // position: 'absolute',
+                // bottom: 15,
+                // right: 50,
+                // left: 50,
                 borderRadius: 5,
               }}
               onPress={handleToSale}>
@@ -934,135 +1094,13 @@ const DetailProductScreen = ({navigation, route}) => {
                 xác nhận
               </Text>
             </TouchableOpacity>
+            </View>
+            
           </View>
         </BottomSheetModal>
-
       </SafeAreaView>
     </BottomSheetModalProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  rowContainer2: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  bottomSheet: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    backgroundColor: '#FFF',
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    elevation: 10,
-    justifyContent: 'center', // Thêm dòng này để đẩy bottom sheet xuống dưới
-  },
-
-  orderButton: {
-    backgroundColor: '#FF2271',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
-  },
-  orderButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
-
-  header: {
-    height: '6%',
-    flexDirection: 'row',
-    paddingLeft: '5%',
-    paddingRight: '5%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  ViewImageProduct: {
-    width: '100%',
-    height: '40%',
-    // borderBottomEndRadius: 30,
-    // borderBottomStartRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imageProduct: {
-    width: '100%',
-    height: '100%',
-    marginTop: '5%',
-  },
-  infoProduct: {
-    width: '100%',
-    marginTop: 10,
-    paddingLeft: '2%',
-  },
-  quantity: {
-    flexDirection: 'row',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.gray,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  btnAddToCard: {
-    width: '35%',
-    height: 50,
-    borderWidth: 1.2,
-    borderColor: COLORS.red,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  footer: {
-    height: 80,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderTopWidth: 0.5,
-    borderColor: '#FFF',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
-    elevation: 5,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  imageProductChild: {
-    width: 100,
-    height: 100,
-    borderWidth: 0.5,
-    borderColor: COLORS.black,
-    borderRadius: 2,
-  },
-  btnSaleNow: {
-    width: '35%',
-    height: 50,
-    backgroundColor: COLORS.red,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bottomSheetContainer: {
-    flex: 1,
-    padding: '3%',
-  },
-  evaluation: {},
-  star: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  description: {},
-  animatedImage: {},
-});
 
 export default DetailProductScreen;
