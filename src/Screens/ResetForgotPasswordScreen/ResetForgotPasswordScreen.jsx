@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ToastAndroid
 } from 'react-native';
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
@@ -29,9 +30,30 @@ const ResetForgotPasswordScreen = ({navigation ,route}) => {
 
   const [passwordConfirm, setPasswordConfirm] = useState();
 
-  const handerForgotPasswordReset = () => {
-    //api reset password
 
+  function convertToInternationalPhoneNumber(phoneNumber) {
+    // Kiểm tra nếu số điện thoại không hợp lệ hoặc rỗng
+    if (!phoneNumber || typeof phoneNumber !== 'string') {
+      return null;
+    }
+
+    // Xóa các ký tự không phải số
+    phoneNumber = phoneNumber.replace(/\D/g, '');
+
+    // Nếu số điện thoại không có 10 chữ số (không tính mã quốc gia), trả về null
+    if (phoneNumber.length !== 10) {
+      return null;
+    }
+
+    // Thêm mã quốc gia +84 vào đầu số điện thoại
+    return '+84' + phoneNumber.slice(1);
+  }
+
+  const handerForgotPasswordReset = async () => {
+
+   const internationalPhoneNumber = await convertToInternationalPhoneNumber(phoneNumber);
+
+    console.log(internationalPhoneNumber);
     if(passwordReset === passwordConfirm){
  
     try {
@@ -50,9 +72,17 @@ const ResetForgotPasswordScreen = ({navigation ,route}) => {
         redirect: 'follow',
       };
   
-      fetch(`${API_RESSET_PASSWORD}/${phoneNumber}`, requestOptions)
+      fetch(`${API_RESSET_PASSWORD}/${internationalPhoneNumber}`, requestOptions)
         .then(response => response.json())
-        .then(result => console.log(result)).then(() =>  setVisible(true))
+        .then(result => {
+          if(result.status ===1){
+            ToastAndroid.showWithGravity(
+              'Thay Đổi mật khẩu thành công ',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM
+            );
+          }
+        }).then(() => navigation.navigate('LoginScreen'))
         .catch(error => console.error(error));
 
     } catch (error) {
@@ -95,12 +125,12 @@ const ResetForgotPasswordScreen = ({navigation ,route}) => {
         </TouchableOpacity>
       </View>
 
-      <SuccessNotificationModal 
+      {/* <SuccessNotificationModal 
         visible={visible}
         textContent={"Thay đổi thành công"}
         
         >
-      </SuccessNotificationModal>
+      </SuccessNotificationModal> */}
     </View>
   );
 };

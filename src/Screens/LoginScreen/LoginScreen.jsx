@@ -83,8 +83,9 @@ const LoginScreen = ({navigation}) => {
       .get(`${API_ADD_USERS}/${internationalPhoneNumber}`)
       .then(function (response) {
         // const data = Array.isArray(response.data) ? response.data : [response.data];
+        console.log(response.data, 'ffffffffff');
+
         loginUser(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);

@@ -21,17 +21,21 @@ export function CartProvider({children}) {
 
   const removeFromCart = (itemIds) => {
     console.log('Chạy tới đây rồi');
-
-    console.log(itemIds, "hhhhh")
+  
+    console.log(itemIds, "hhhhh");
+  
+    console.log(dataCart._id , "kkkjjjjjj");
+  
+    console.log(dataCart, "ppppppppppp");
+  
     const updatedCartItems = dataCart.filter(
-      item =>
-        !itemIds.includes(item._id) // Lọc ra các mục không có trong danh sách ID cần xóa
+      item => !itemIds.includes(item._id) // Lọc ra các mục không có trong danh sách ID cần xóa
     );
-
+    console.log(updatedCartItems , "updateCartItem");
+  
     setDataCart(updatedCartItems);
   };
 
-  console.log(dataCart, "777777777")
 
   return (
     <CartContext.Provider

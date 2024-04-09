@@ -129,22 +129,42 @@ const Home = ({navigation}) => {
       .catch(error => console.log('error', error));
   }, []);
 
+
+  console.log(dataCategory)
+
   React.useEffect(() => {
-    axios
-      .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
-      .then(function (response) {
-        const data = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
-        // console.log(data);
-setDataCart(data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // axios
+    //   .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
+    //   .then(function (response) {
+    //     const data = Array.isArray(response.data)
+    //       ? response.data
+    //       : [response.data];
+    //     // console.log(data);
+    //   setDataCart(data);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      'Cookie',
+      'connect.sid=s%3A6OVdwmhVv_cQCbw4O0bbeLxswZhLoCI6.fr%2FkDyMb%2B3Sh7az52%2B%2Fh6rYH0bR79IHMJ9R3yV8%2FKUw',
+    );
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(`${API_PRODUCT_TO_CART}/${userData._id}`, requestOptions)
+      .then(response => response.json())
+      .then(result => setDataCart(result))
+      .catch(error => console.log('error', error));
   }, []);
 
-  // console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
+  console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
 
   React.useEffect(() => {
     var myHeaders = new Headers();
@@ -165,9 +185,9 @@ setDataCart(data);
       .catch(error => console.log('error', error));
   }, []);
 
-  console.log('render lại , HomeScreen');
+  // console.log('render lại , HomeScreen');
 
-  console.log(dataProduct)
+  // console.log(dataProduct)
 
 
 
