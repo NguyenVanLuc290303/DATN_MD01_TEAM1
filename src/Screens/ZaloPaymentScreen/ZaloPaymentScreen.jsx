@@ -50,21 +50,23 @@ const ZaloPaymentScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    const subscription = payZaloBridgeEmitter.addListener(
+    let subscription = payZaloBridgeEmitter.addListener(
       'EventPayZalo',
       data => {
         console.log('dataEventPayZalo', data);
-        if (data.return_code === 1) {
-          alert('Pay success!');
-          navigation.replace('NotificationOrderSuccess');
-          pushOrdertoServer();
-        } else {
-          alert('Pay error! ' + data.return_code);
-          console.log('data result code', data.return_code);
-        }
+        navigation.replace('NotificationOrderSuccess');
+        pushOrdertoServer();
+        // if (data.return_code === 1) {
+        //   alert('Pay success!');
+        //   navigation.replace('NotificationOrderSuccess');
+        //   pushOrdertoServer();
+        // } else {
+        //   alert('Pay error! ' + data.return_code);
+        //   console.log('data result code', data.return_code);
+        // }
       },
     );
-    return () => subscription.removeListener();
+    return () => subscription.remove();
   }, []);
 
   const getCurrentDateYYMMDD = () => {
@@ -74,9 +76,9 @@ const ZaloPaymentScreen = ({navigation, route}) => {
 
   const createZaloPayOrder = async () => {
     let apptransid = getCurrentDateYYMMDD() + '_' + new Date().getTime();
-    let appid = 553;
+    let appid = 2553;
     let amount = parseInt(pricePayment);
-    let appuser = 'ZaloPayDemo';
+    let appuser = 'Android_Demo';
     let apptime = new Date().getTime();
     let embeddata = '{}';
     let item = '[]';
@@ -97,7 +99,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
       item;
     let mac = CryptoJS.HmacSHA256(
       hmacInput,
-      '9phuAOYhan4urywHTh0ndEXiV3pKHr5Q',
+      'PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL',
     );
     console.log('====================================');
     console.log('hmacInput: ' + hmacInput);
@@ -113,6 +115,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
       item: item,
       description: description,
       mac: mac,
+      bank_code: 'zalopayapp',
     };
 
     console.log(order);

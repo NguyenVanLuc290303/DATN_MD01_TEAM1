@@ -16,51 +16,16 @@ import vn.zalopay.sdk.listeners.PayOrderListener
 
 class ZPModule(private val mReactContext: ReactApplicationContext) : ReactContextBaseJavaModule(
     mReactContext
-) {
+),PayOrderListener  {
     val PAYMENTSUCCESS = "1"
     val PAYMENTFAILED = "-1"
     val PAYMENTCANCELED = "4"
-    var listener: PayOrderListener = object : PayOrderListener {
-        override fun onPaymentSucceeded(
-            transactionId: String,
-            transToken: String,
-            appTransID: String
-        ) {
-            // Handle Success
-            val params = Arguments.createMap()
-            params.putString("transactionId", transactionId)
-            params.putString("transToken", transToken)
-            params.putString("appTransID", appTransID)
-            params.putString("returnCode", PAYMENTSUCCESS)
-            sendEvent(mReactContext, "EventPayZalo", params)
-        }
 
-        override fun onPaymentCanceled(transToken: String, appTransID: String) {
-            // Handle Cancel
-            val params = Arguments.createMap()
-            params.putString("returnCode", PAYMENTCANCELED)
-            params.putString("zpTranstoken", transToken)
-            params.putString("appTransID", appTransID)
-            sendEvent(mReactContext, "EventPayZalo", params)
-        }
-
-        override fun onPaymentError(
-            zaloPayError: ZaloPayError,
-            transToken: String,
-            appTransID: String
-        ) {
-            // Handle Error
-            val params = Arguments.createMap()
-            params.putString("returnCode", PAYMENTFAILED)
-            params.putString("zpTranstoken", transToken)
-            params.putString("appTransID", appTransID)
-            sendEvent(mReactContext, "EventPayZalo", params)
-            Log.d("ZPModule", "onPaymentError: ${zaloPayError}");
-        }
-    }
     var activityEventListener: BaseActivityEventListener = object : BaseActivityEventListener() {
         override fun onNewIntent(intent: Intent) {
             super.onNewIntent(intent)
+            ZaloPaySDK.getInstance().onResult(intent);
+
         }
     }
 
@@ -77,7 +42,7 @@ class ZPModule(private val mReactContext: ReactApplicationContext) : ReactContex
         val currentActivity = currentActivity
         ZaloPaySDK.getInstance().payOrder(
             currentActivity!!,
-            zpTransToken!!, "demozpdk://app", listener
+            zpTransToken!!, "demozpdk://app", this
         )
     }
 
@@ -86,10 +51,58 @@ class ZPModule(private val mReactContext: ReactApplicationContext) : ReactContex
         ZaloPaySDK.getInstance().navigateToZaloOnStore(mReactContext)
     }
 
+    @ReactMethod
+    fun addListener(eventName: String) {
+
+    }
+
+    @ReactMethod
+    fun removeListeners(count: Int) {
+
+    }
+
     private fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap) {
         reactContext.getJSModule(
             DeviceEventManagerModule.RCTDeviceEventEmitter::class.java
         )
             .emit(eventName, params)
+    }
+
+    override fun onPaymentSucceeded(
+        transactionId: String,
+        transToken: String,
+        appTransID: String
+    ) {
+        Log.d("ZPModule", "onPaymentSucceeded: ${transactionId}")
+        // Handle Success
+        val params = Arguments.createMap()
+        params.putString("transactionId", transactionId)
+        params.putString("transToken", transToken)
+        params.putString("appTransID", appTransID)
+        params.putString("returnCode", PAYMENTSUCCESS)
+        sendEvent(mReactContext, "EventPayZalo", params)
+    }
+
+    override fun onPaymentCanceled(transToken: String, appTransID: String) {
+        Log.d("ZPModule", "onPaymentCanceled: ${transToken}")
+        // Handle Cancel
+        val params = Arguments.createMap()
+        params.putString("returnCode", PAYMENTCANCELED)
+        params.putString("zpTranstoken", transToken)
+        params.putString("appTransID", appTransID)
+        sendEvent(mReactContext, "EventPayZalo", params)
+    }
+
+    override fun onPaymentError(     zaloPayError: ZaloPayError,
+                                     transToken: String,
+                                     appTransID: String) {
+        Log.d("ZPModule", "onPaymentError: ${zaloPayError}")
+        // Handle Error
+        val params = Arguments.createMap()
+        params.putString("returnCode", PAYMENTFAILED)
+        params.putString("zpTranstoken", transToken)
+        params.putString("appTransID", appTransID)
+        sendEvent(mReactContext, "EventPayZalo", params)
+        Log.d("ZPModule", "onPaymentError: ${zaloPayError}");
     }
 }
