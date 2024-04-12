@@ -88,13 +88,14 @@ const YourOrderDetailScreen = ({navigation, route}) => {
       });
 
       axios
-        .delete(`${API_ORDER}/${OrderId}`)
-        .then(function (response) {
-          console.log(response.msg);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      .put(`${API_ORDER}/${OrderId}`, { status: "Hủy" })
+      .then(function (response) {
+        console.log(response.data); // response.data thường chứa dữ liệu trả về từ server
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    
       Alert.alert('Hủy Thành CÔng !  ');
       navigation.navigate('BottomNavigation');
     } else {
@@ -113,6 +114,10 @@ const YourOrderDetailScreen = ({navigation, route}) => {
 
   const handleEvaluate = (productId) =>{
     callCheckEvaluate(productId);
+  }
+
+  const Returns = (OrderId) =>{
+    navigation.navigate('ReasonScreen' , {OrderId : OrderId })
   }
 
   const callCheckEvaluate = async (productId) =>{
@@ -230,6 +235,33 @@ console.log(dataOrderDetail , "ppppppppppp");
           alignItems: 'center',
         }}>
         {status === 'Đã giao' ? (
+
+            
+<View>
+  
+<TouchableOpacity
+          onPress={()=> { Returns(OrderId)}}
+
+            style={{
+              width: 350,
+              height: 50,
+              borderRadius: 15,
+              borderWidth: 1,
+              borderColor: COLORS.App,
+              backgroundColor: COLORS.App,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 20,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Lato-Black',
+                fontSize: 20,
+                color: COLORS.white,
+              }}>
+              Trả Hàng
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={{
               width: 350,
@@ -250,7 +282,7 @@ console.log(dataOrderDetail , "ppppppppppp");
               }}>
               Mua lại
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity></View>
         ) : (
           <TouchableOpacity
           onPress={handleCancelOrder}
