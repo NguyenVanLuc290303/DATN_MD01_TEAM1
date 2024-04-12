@@ -5,9 +5,11 @@ import {styles} from './Return.style'
 
 const ReturnOrderScreen = ({navigation}) => {
 
-
-    const listOrderDelivered = useOrderList().filter(item => item.status === "Trả hàng");
-    
+  const listOrderDelivered = useOrderList().filter(item => 
+    item.status === "Trả hàng" || 
+    item.status === "Xác nhận trả" || 
+    item.status === "Không thể trả"
+);
 
   
 

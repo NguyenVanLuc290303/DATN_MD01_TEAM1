@@ -117,7 +117,35 @@ const YourOrderDetailScreen = ({navigation, route}) => {
   }
 
   const Returns = (OrderId) =>{
-    navigation.navigate('ReasonScreen' , {OrderId : OrderId })
+
+    axios
+    .get(`${API_ORDER}/getOD/${OrderId}`)
+    .then(function (response) {
+      console.log(response.data); // response.data thường chứa dữ liệu trả về từ server
+      const deliveryDate1 = new Date(response.data.deliveryDate);
+   
+      const currentTime = new Date();
+      console.log(deliveryDate1 + " date "  + currentTime);
+      const timeDifference = currentTime.getTime() - deliveryDate1.getTime();
+
+// Chuyển 1 ngày thành milliseconds (1 ngày = 24 giờ * 60 phút * 60 giây * 1000 milliseconds)
+        const oneDayInMillis = 24 * 60 * 60 * 1000;
+
+        // Kiểm tra nếu khoảng thời gian vượt quá 1 ngày
+        if (timeDifference > oneDayInMillis) {
+          ToastAndroid.showWithGravity(
+            'Đã Giao Quá 1 Ngày Bạn Không Thể Trả Hàng ',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM
+          )
+        } else {
+           navigation.navigate('ReasonScreen' , {OrderId : OrderId })
+        }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+   
   }
 
   const callCheckEvaluate = async (productId) =>{
