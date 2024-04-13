@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {
   Button,
   StyleSheet,
@@ -7,14 +7,14 @@ import {
   View,
   Image,
   TextInput,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
-import { User } from '../../hooks/useContext';
-import { API_ADDRESS } from '../../config/api-consts';
+import {User} from '../../hooks/useContext';
+import {API_ADDRESS} from '../../config/api-consts';
 import axios from 'axios';
 
-const AddDeliveryScreen = ({ navigation }) => {
-  const { userData } = User();
+const AddDeliveryScreen = ({navigation}) => {
+  const {userData} = User();
 
   const [textName, setTextName] = useState('');
   const [textPhone, setTextPhone] = useState('');
@@ -25,7 +25,14 @@ const AddDeliveryScreen = ({ navigation }) => {
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    if (textName && textPhone && textStreet && textCity && textDistrict && textWard) {
+    if (
+      textName &&
+      textPhone &&
+      textStreet &&
+      textCity &&
+      textDistrict &&
+      textWard
+    ) {
       setIsComplete(true);
     } else {
       setIsComplete(false);
@@ -58,7 +65,14 @@ const AddDeliveryScreen = ({ navigation }) => {
   };
 
   const checkInputs = () => {
-    if (textName && textPhone && textStreet && textCity && textDistrict && textWard) {
+    if (
+      textName &&
+      textPhone &&
+      textStreet &&
+      textCity &&
+      textDistrict &&
+      textWard
+    ) {
       setIsComplete(true);
     } else {
       setIsComplete(false);
@@ -68,7 +82,7 @@ const AddDeliveryScreen = ({ navigation }) => {
   const handleComplete = () => {
     if (isComplete) {
       console.log('Inputs are complete');
-      const city = textWard+', '+textDistrict+', '+textCity;
+      const city = textWard + ', ' + textDistrict + ', ' + textCity;
 
       const dataAddress = {
         UserId: userData._id,
@@ -76,16 +90,17 @@ const AddDeliveryScreen = ({ navigation }) => {
         city: city,
         street: textStreet,
         phone: textPhone,
-      }
+      };
       // sử lý khi ấn nút thêm mới
-      axios.post(API_ADDRESS, dataAddress)
+      axios
+        .post(API_ADDRESS, dataAddress)
         .then(function (response) {
           console.log(response);
           if (response.data) {
             ToastAndroid.showWithGravity(
               'Thêm thành công',
               ToastAndroid.SHORT,
-              ToastAndroid.BOTTOM
+              ToastAndroid.BOTTOM,
             );
             setTextName('');
             setTextCity('');
@@ -93,7 +108,6 @@ const AddDeliveryScreen = ({ navigation }) => {
             setTextStreet('');
 
             // navigation.navigate('DeliveryScreen');
-
           }
         })
         .catch(function (error) {
@@ -102,7 +116,7 @@ const AddDeliveryScreen = ({ navigation }) => {
     }
   };
 
-  console.log('render lại', "AdđeliveryScreen");
+  console.log('render lại', 'AdđeliveryScreen');
 
   return (
     <View style={styles.container}>
@@ -115,7 +129,7 @@ const AddDeliveryScreen = ({ navigation }) => {
         }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
-            style={{ width: 22, height: 22 }}
+            style={{width: 22, height: 22}}
             source={require('@/images/back.png')}
           />
         </TouchableOpacity>
@@ -125,13 +139,13 @@ const AddDeliveryScreen = ({ navigation }) => {
             alignItems: 'center',
             marginLeft: 20,
           }}>
-          <Text style={{ fontSize: 20, color: 'black' }}>Địa Chỉ mới</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>Địa Chỉ Mới</Text>
         </View>
       </View>
-      <Text style={{ margin: 10 }}>Liên Hệ</Text>
+      <Text style={{margin: 10}}>Liên Hệ</Text>
       <View>
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Họ và Tên"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -140,9 +154,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Số điện thoại"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -152,10 +166,10 @@ const AddDeliveryScreen = ({ navigation }) => {
           }}
         />
       </View>
-      <Text style={{ margin: 10 }}>Địa Chỉ</Text>
+      <Text style={{margin: 10}}>Địa Chỉ</Text>
       <View>
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Tỉnh/Thành Phố"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -164,9 +178,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Quận/Huyện"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -175,9 +189,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Phường/Xã"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -186,9 +200,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Tên đường"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -211,7 +225,7 @@ const AddDeliveryScreen = ({ navigation }) => {
         }}
         onPress={handleComplete}
         disabled={!isComplete}>
-        <Text style={{ color: isComplete ? 'white' : 'gray' }}>Thêm mới</Text>
+        <Text style={{color: isComplete ? 'white' : 'gray'}}>Thêm mới</Text>
       </TouchableOpacity>
     </View>
   );

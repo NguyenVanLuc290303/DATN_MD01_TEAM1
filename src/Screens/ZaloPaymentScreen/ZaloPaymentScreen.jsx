@@ -14,7 +14,7 @@ import {Icons} from '../../constants/images';
 import COLORS from '../../constants/colors';
 import CryptoJS from 'crypto-js';
 import {User} from '../../hooks/useContext';
-import {API_ORDER} from '../../config/api-consts';
+import {API_COLOR_PRODUCT, API_ORDER} from '../../config/api-consts';
 import {API_PRODUCT_ORDER, API_DELETE_IN_CART} from '../../config/api-consts';
 import axios, {Axios} from 'axios';
 import {Cart} from '../../hooks/cartContext';
@@ -46,6 +46,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
 
   const handlePaymentZalo = () => {
     createZaloPayOrder();
+    handleOrderProduct();
     return;
   };
 
@@ -132,7 +133,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
         if (resJson.return_code === 1) {
           var payZP = NativeModules.PayZaloBridge;
           payZP.payOrder(resJson.zp_trans_token);
-          //handleOrderProduct();
+          handleOrderProduct();
         }
       })
       .catch(error => {
@@ -157,7 +158,56 @@ const ZaloPaymentScreen = ({navigation, route}) => {
   const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
   let addressOrder = '';
 
-  const handleOrderProduct = () => {
+  const orderItems = dataProductOrder.map(item => ({
+    sizeId: item.PropertiesId,
+    quantity: item.Quantity,
+  }));
+
+  const checkOrder = data => {
+    let count = 0;
+
+    for (let index = 0; index < data.length; index++) {
+      for (let i = 0; i < orderItems.length; i++) {
+        // Sửa lỗi cú pháp: orderItems.lengtht thành orderItems.length
+        if (data[index].PropertiesId === orderItems[i].sizeId) {
+          // Sửa lỗi cú pháp: data.index.PropertiesId thành data[index].sizeId và orderItems.i.sizeId thành orderItems[i].PropertiesId
+          if (orderItems[i].quantity <= data[index].quantity) {
+            // Sửa lỗi cú pháp: orderItems.i.quantity thành orderItems[i].quantity và data.index.quantity thành data[index].quantity
+            count++;
+          }
+        }
+      }
+      if (count === orderItems.length) {
+        return true;
+      }
+    }
+  };
+  const handleOrderProduct = async () => {
+    await axios
+      .post(`${API_COLOR_PRODUCT}`, {orderItems})
+      .then(function (response) {
+        if (response.data !== null) {
+          const data = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
+          console.log(data, 'kkkkkkk');
+          if (checkOrder(data) === true) {
+            postOrdertoServer();
+          } else {
+            ToastAndroid.showWithGravity(
+              'Sản phẩm đã hết',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM,
+            );
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const postOrdertoServer = () => {
     if (isChecked) {
       const myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
@@ -175,6 +225,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
           status: status,
           date: formattedDate,
           PTTT: 'Thanh toán bằng zalopay',
+          address: addressOrder,
         }),
         redirect: 'follow',
       };
@@ -184,7 +235,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
           .then(response => response.json())
           .then(result => pushProductOnOrder(result));
       } catch (error) {
-        console.error('Error placing order:', error);
+        console.log(error);
       }
     }
   };

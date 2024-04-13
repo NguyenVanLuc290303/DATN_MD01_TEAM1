@@ -377,7 +377,7 @@ const DetailProductScreen = ({navigation, route}) => {
                 styleCommon.h2,
                 {color: COLORS.black, fontWeight: 'bold', marginTop: 10},
               ]}>
-              {price}
+              {price} VNĐ
             </Text>
             <View>
               <Text style={[styleCommon.h2, {color: COLORS.black}]}>
@@ -444,7 +444,8 @@ const DetailProductScreen = ({navigation, route}) => {
                     height: 1,
                     backgroundColor: '#E5E5E5',
                     marginTop: 10,
-                  }}></View>
+                  }}
+                />
               </View>
             ))}
           </View>
@@ -474,7 +475,7 @@ const DetailProductScreen = ({navigation, route}) => {
                     style={{width: 90, height: 131}}
                   />
                   <Text>{item.name}</Text>
-                  <Text>{item.price} USD</Text>
+                  <Text>{item.price} vnđ</Text>
                   {/* Thêm icon trái tim */}
                 </TouchableOpacity>
               </View>
@@ -502,6 +503,7 @@ const DetailProductScreen = ({navigation, route}) => {
               <IconF name="home" size={28} color={COLORS.black} />
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={() => navigation.navigate('Chat')}
               style={{flexDirection: 'column', alignItems: 'center'}}>
               <Text style={{color: COLORS.black}}>Trò chuyện</Text>
               <Icon
@@ -757,7 +759,7 @@ const DetailProductScreen = ({navigation, route}) => {
                     />
                   </View>
                 ) : (
-                  <View></View>
+                  <View />
                 )}
               </View>
             </View>
@@ -1046,7 +1048,7 @@ const DetailProductScreen = ({navigation, route}) => {
                     />
                   </View>
                 ) : (
-                  <View></View>
+                  <View />
                 )}
               </View>
             </View>
@@ -1074,28 +1076,32 @@ const DetailProductScreen = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-            <View style={{ width : '100%' , justifyContent : 'center' ,alignItems : 'center'}}>
-            <TouchableOpacity
+            <View
               style={{
-                width: '80%',
-                height: 40,
-                backgroundColor: COLORS.red,
+                width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop : 10,
-                // position: 'absolute',
-                // bottom: 15,
-                // right: 50,
-                // left: 50,
-                borderRadius: 5,
-              }}
-              onPress={handleToSale}>
-              <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
-                xác nhận
-              </Text>
-            </TouchableOpacity>
+              }}>
+              <TouchableOpacity
+                style={{
+                  width: '80%',
+                  height: 40,
+                  backgroundColor: COLORS.red,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 10,
+                  // position: 'absolute',
+                  // bottom: 15,
+                  // right: 50,
+                  // left: 50,
+                  borderRadius: 5,
+                }}
+                onPress={handleToSale}>
+                <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
+                  xác nhận
+                </Text>
+              </TouchableOpacity>
             </View>
-            
           </View>
         </BottomSheetModal>
       </SafeAreaView>

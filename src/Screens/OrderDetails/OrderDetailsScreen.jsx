@@ -396,7 +396,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
 
           <View style={styles.textTransport}>
             <Text style={styles.transportInfo}>Vận chuyển tiêu chuẩn</Text>
-            <Text style={styles.priceTransport}>{costTranformer}</Text>
+            <Text style={styles.priceTransport}>{costTranformer} VNĐ</Text>
           </View>
           <View style={styles.addressTransport}>
             {/* <Image
@@ -422,7 +422,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
             </Text>
           </View> */}
         </View>
-        <View
+        <TouchableOpacity
+          onPress={() => navigation.navigate('VoucherScreen')}
           style={{
             marginTop: 10,
             flexDirection: 'row',
@@ -442,11 +443,10 @@ const OrderDetailsScreen = ({navigation, route}) => {
               Voucher của shop
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('VoucherScreen')}>
+          <TouchableOpacity>
             <Image source={Icons.IconNext} style={{width: 20, height: 20}} />
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             backgroundColor: COLORS.white,
@@ -473,7 +473,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Sản phẩm
             </Text>
-            <Text style={styles.priceTransport}>{totalPriceProduct}</Text>
+            <Text style={styles.priceTransport}>{totalPriceProduct} VNĐ</Text>
           </View>
           <View style={styles.textTransport}>
             <Text
@@ -485,7 +485,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Vận chuyển
             </Text>
-            <Text style={styles.priceTransport}>{costTranformer}</Text>
+            <Text style={styles.priceTransport}>{costTranformer} VNĐ</Text>
           </View>
           <View style={styles.textTransport2}>
             <Text
@@ -497,7 +497,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Tổng
             </Text>
-            <Text style={styles.priceTransport2}>{totalPrice}</Text>
+            <Text style={styles.priceTransport2}>{totalPrice} VNĐ</Text>
           </View>
         </View>
         <View
@@ -552,7 +552,16 @@ const OrderDetailsScreen = ({navigation, route}) => {
             </View>
           </View>
 
-          <View style={styles.textTransport3}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ZaloPaymentScreen', {
+                dataProductOrder: dataProductOrder,
+                pricePayment: totalPrice,
+                addressReceive: addressOrder,
+                deleteProductInCart: deleteProductInCart,
+              })
+            }
+            style={styles.textTransport3}>
             <Image
               style={{
                 width: 34,
@@ -574,19 +583,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
               Zalo Pay
             </Text>
             <Text
-              onPress={() =>
-                navigation.navigate('ZaloPaymentScreen', {
-                  dataProductOrder: dataProductOrder,
-                  pricePayment: totalPrice,
-                  addressReceive: addressOrder,
-                  deleteProductInCart: deleteProductInCart,
-                })
-              }
               style={styles.priceTransport3}>
               Liên kết
             </Text>
-          </View>
-          <View style={styles.textTransport4}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('PaymentScreen')} style={styles.textTransport4}>
             <Image
               style={{
                 width: 30,
@@ -608,7 +609,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               Thẻ tín dụng/Ghi nợ
             </Text>
             <View style={{paddingRight: '18%'}} />
-          </View>
+          </TouchableOpacity>
         </View>
         <View
           style={{

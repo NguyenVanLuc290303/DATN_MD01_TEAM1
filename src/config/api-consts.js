@@ -101,7 +101,7 @@ export const API_PRODUCT_ORDER_ID = `https://${IP_ADDRESS}/api-sanpham/getOD`;
 
 export const API_PRODUCT_TO_CART = `https://${IP_ADDRESS}/api-sanpham/SPG`;
 
-export const API_DELETE_IN_CART = `httpss://${IP_ADDRESS}/api-sanpham`;
+export const API_DELETE_IN_CART = `https://${IP_ADDRESS}/api-sanpham`;
 
 //api address
 
