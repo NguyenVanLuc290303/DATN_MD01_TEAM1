@@ -2,6 +2,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import OrderDelivered from '../../Screens/YourOrderScreen/component/OrderDelivered/OrderDelivered';
 import OrderDelivering from '../../Screens/YourOrderScreen/component/OrderDelivering/OrderDelivering';
 import WaitForCofirm from '../../Screens/YourOrderScreen/component/WaitForComfirm/WaitForComfirm';
+import ReturnOrderScreen from '../../Screens/YourOrderScreen/component/Return/ReturnOrderScreen';
+import CancleScreen from '../../Screens/YourOrderScreen/component/Cancle/CancleScreen';
 import Confirm from '../../Screens/YourOrderScreen/component/Confirm/Confirm';
 import {NavigationContainer} from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
@@ -58,6 +60,26 @@ export default function MyTabsOrder() {
       <Tab.Screen
         name="Đã giao"
         component={OrderDelivered}
+        options={{
+          // tabBarLabel: 'Home',
+          tabBarIcon: ({focused, color, size}) => (
+            <IconMT name="text-box-check-outline" color={focused ? COLORS.App : color} size={24} />
+          ),
+        }}
+      />
+       <Tab.Screen
+        name="Đơn Hủy"
+        component={CancleScreen}
+        options={{
+          // tabBarLabel: 'Home',
+          tabBarIcon: ({focused, color, size}) => (
+            <IconMT name="text-box-check-outline" color={focused ? COLORS.App : color} size={24} />
+          ),
+        }}
+      />
+         <Tab.Screen
+        name="Đơn Trả"
+        component={ReturnOrderScreen}
         options={{
           // tabBarLabel: 'Home',
           tabBarIcon: ({focused, color, size}) => (

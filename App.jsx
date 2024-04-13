@@ -70,6 +70,7 @@ import ChangePhoneScreen from './src/Screens/EditProfile/components/ChangePhoneS
 import ChangeAddressScreen from './src/Screens/EditProfile/components/ChangeAddressScreen/ChangeAddressScreen';
 import ZaloPaymentScreen from './src/Screens/ZaloPaymentScreen/ZaloPaymentScreen';
 import EvualuateScreen from './src/Screens/EvaluateScreen/EvaluateScreen';
+import ReasonScreen from './src/Screens/EvaluateScreen/ReasonScreen';
 
 
 // import {CartScreen} from './src/Screens';
@@ -290,6 +291,11 @@ function App() {
         <Stack.Screen
           name="EvualuateScreen"
           component={EvualuateScreen}
+          options={{headerShown: true}}
+        />
+          <Stack.Screen
+          name="ReasonScreen"
+          component={ReasonScreen}
           options={{headerShown: true}}
         />
       </Stack.Navigator>
