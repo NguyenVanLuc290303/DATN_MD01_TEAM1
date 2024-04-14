@@ -43,7 +43,7 @@ const Profile = ({navigation}) => {
 
   const navigateToNotifications = () => {
     console.log('Notifications Action');
-    navigation.navigate('Notification');
+    navigation.navigate('SettingNotificationScreen');
   };
 
   const navigateToPrivacy = () => {
@@ -53,19 +53,19 @@ const Profile = ({navigation}) => {
   const accountItem = [
     {
       icon: Icons.IconEditProfile,
-      text: 'Edit Profile',
+      text: 'Thông tin',
       action: navigateToEditProfile,
     },
 
     {
       icon: Icons.IconListOrder,
-      text: 'Your Order',
+      text: 'Đơn hàng của bạn',
       action: navigateToSecurity,
     },
 
     {
       icon: Icons.IconNotification,
-      text: 'Notifications',
+      text: 'Cài đặt thông báo',
       action: navigateToNotifications,
     },
 
@@ -162,7 +162,7 @@ const Profile = ({navigation}) => {
     // },
     {
       icon: Icons.IconLogOut,
-      text: 'Log out',
+      text: 'Đăng xuất',
       action: logout,
     },
   ];
@@ -203,7 +203,7 @@ const Profile = ({navigation}) => {
           {/*Account Setting*/}
           <View style={{marginBottom: 12}}>
             <Text style={{marginVertical: 10, color: COLORS.black}}>
-              Account
+              Tài khoản
             </Text>
             <View style={{borderRadius: 12, color: COLORS.black}}>
               {accountItem.map((item, index) => (

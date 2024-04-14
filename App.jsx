@@ -70,6 +70,7 @@ import ChangePhoneScreen from './src/Screens/EditProfile/components/ChangePhoneS
 import ChangeAddressScreen from './src/Screens/EditProfile/components/ChangeAddressScreen/ChangeAddressScreen';
 import ZaloPaymentScreen from './src/Screens/ZaloPaymentScreen/ZaloPaymentScreen';
 import EvualuateScreen from './src/Screens/EvaluateScreen/EvaluateScreen';
+import SettingNotificationScreen from './src/Screens/SettingNotificationScreen/SettingNotificationScreen';
 
 
 // import {CartScreen} from './src/Screens';
@@ -291,6 +292,11 @@ function App() {
           name="EvualuateScreen"
           component={EvualuateScreen}
           options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="SettingNotificationScreen"
+          component={SettingNotificationScreen}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

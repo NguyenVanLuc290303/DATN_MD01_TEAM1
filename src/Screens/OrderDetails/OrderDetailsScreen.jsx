@@ -186,6 +186,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
       });
   };
 
+  console.log(isChecked);
+
   const postOrdertoServer = () => {
     if (isChecked) {
       const myHeaders = new Headers();
@@ -314,6 +316,24 @@ const OrderDetailsScreen = ({navigation, route}) => {
       .catch(error => {
         console.error('Error:', error);
       });
+  };
+
+  const handleZaloPay = () => {
+    if(isChecked){
+      ToastAndroid.showWithGravity(
+        'Vui lòng tắt thanh toán khi nhận hàng',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+    }else{
+      navigation.navigate('ZaloPaymentScreen', {
+        dataProductOrder: dataProductOrder,
+        pricePayment: totalPrice,
+        addressReceive: addressOrder,
+        deleteProductInCart: deleteProductInCart,
+      });
+    }
+    
   };
 
   return (
@@ -573,16 +593,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Zalo Pay
             </Text>
-            <Text
-              onPress={() =>
-                navigation.navigate('ZaloPaymentScreen', {
-                  dataProductOrder: dataProductOrder,
-                  pricePayment: totalPrice,
-                  addressReceive: addressOrder,
-                  deleteProductInCart: deleteProductInCart,
-                })
-              }
-              style={styles.priceTransport3}>
+            <Text onPress={handleZaloPay} style={styles.priceTransport3}>
               Liên kết
             </Text>
           </View>

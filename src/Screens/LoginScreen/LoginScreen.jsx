@@ -180,9 +180,9 @@ const LoginScreen = ({navigation}) => {
         <View style={styles.header}>
           <Image source={Icons.IconApp} style={styles.iconShop} alt="Logo" />
 
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Đăng nhập</Text>
 
-          <Text style={styles.subtitle}>Please sign in to continue</Text>
+          {/* <Text style={styles.subtitle}></Text> */}
         </View>
         <View style={styles.form}>
           <View style={styles.input}>
@@ -219,13 +219,13 @@ const LoginScreen = ({navigation}) => {
           <Text
             style={styles.title2}
             onPress={() => navigation.navigate('ForgotPassword')}>
-            Forgot Password
+            Quên mật khẩu
           </Text>
 
           <View style={styles.formAction}>
             <TouchableOpacity onPress={handerOnlickLogin}>
               <View style={styles.btn}>
-                <Text style={styles.btnText}>Login</Text>
+                <Text style={styles.btnText}>Đăng nhập</Text>
               </View>
             </TouchableOpacity>
             <View style={{flex: 1}} />
@@ -250,7 +250,7 @@ const LoginScreen = ({navigation}) => {
                     color: 'blue',
                     marginRight: 10,
                   }}>
-                  Remember Me ?
+                  Nhớ mật khẩu ?
                 </Text>
                 <Image
                   source={{uri: imageUri}}
@@ -268,8 +268,8 @@ const LoginScreen = ({navigation}) => {
             style={{marginTop: 'auto'}}
             onPress={() => navigation.navigate('RegisterScreen')}>
             <Text style={styles.formFooter}>
-              Don't have an account?{''}
-              <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>
+              Bạn chưa có tài khoản ?{''}
+              <Text style={{textDecorationLine: 'underline'}}>Đăng ký</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    marginVertical: 36,
+    marginVertical: 20,
   },
   title: {
     fontSize: 27,
@@ -337,10 +337,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconShop: {
-    width: 80,
-    height: 80,
+    width: 150,
+    height: 150,
     alignSelf: 'center',
-    marginBottom: 36,
   },
   subtitle: {
     fontSize: 15,
