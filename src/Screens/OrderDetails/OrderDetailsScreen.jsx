@@ -359,35 +359,39 @@ const OrderDetailsScreen = ({navigation, route}) => {
                     <View style={styles.productDetailsWrapper}>
                       <Text style={styles.productDetails}>{item.Size}</Text>
                     </View>
-                    <View style={styles.rowContainer}>
-                      <View style={styles.priceContainer}>
-                        <Text style={styles.salePrice}>{item.Price}</Text>
-                      </View>
-                      <View
-                        style={[
-                          styles.countProduct,
-                          {
-                            width: '50%',
-                            flexDirection: 'row',
-                            borderWidth: 1,
-                            borderColor: '#272727',
-                          },
-                        ]}>
-                        <Text
-                          style={{
-                            flex: 3,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            alignSelf: 'center',
-                            textAlign: 'center',
-                            borderWidth: 0.5,
-                            borderColor: '#272727',
-                            color: COLORS.black,
-                          }}>
-                          {item.Quantity}
-                        </Text>
-                      </View>
+                    <View style={styles.productDetailsWrapper}>
+                      <Text style={styles.productDetails}> Số Lượng :{item.Quantity}</Text>
                     </View>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.salePrice}>{item.Price} VNĐ</Text>
+                    </View>
+                    {/*<View style={styles.rowContainer}>*/}
+
+                    {/*  <View*/}
+                    {/*    style={[*/}
+                    {/*      styles.countProduct,*/}
+                    {/*      {*/}
+                    {/*        width: '50%',*/}
+                    {/*        flexDirection: 'row',*/}
+                    {/*        borderWidth: 1,*/}
+                    {/*        borderColor: '#272727',*/}
+                    {/*      },*/}
+                    {/*    ]}>*/}
+                    {/*    <Text*/}
+                    {/*      style={{*/}
+                    {/*        flex: 3,*/}
+                    {/*        justifyContent: 'center',*/}
+                    {/*        alignItems: 'center',*/}
+                    {/*        alignSelf: 'center',*/}
+                    {/*        textAlign: 'center',*/}
+                    {/*        borderWidth: 0.5,*/}
+                    {/*        borderColor: '#272727',*/}
+                    {/*        color: COLORS.black,*/}
+                    {/*      }}>*/}
+                    {/*      {item.Quantity}*/}
+                    {/*    </Text>*/}
+                    {/*  </View>*/}
+                    {/*</View>*/}
                   </View>
                 </View>
               ))}
@@ -724,7 +728,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 1,
     borderRadius: 5,
-    alignSelf: 'flex-start', // Căn chỉnh cho phù hợp với vùng chữ
+    alignSelf: 'flex-start',
   },
   priceContainer: {
     flexDirection: 'column',

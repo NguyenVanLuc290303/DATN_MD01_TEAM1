@@ -301,13 +301,13 @@ const checkOrder = (data) =>{
               <View style={styles.rowContainer}>
                 <View style={styles.priceContainer}>
                   <Text style={styles.salePrice}>{item.priceSale}</Text>
-                  <Text style={styles.regularPrice}>{item.Price}</Text>
+                  <Text style={styles.regularPrice}>{item.Price} VNĐ</Text>
                 </View>
                 <View
                   style={[
                     styles.countProduct,
                     {
-                      width: '60%',
+                      width: '50%',
                       flexDirection: 'row',
                       borderWidth: 1,
                       borderColor: '#272727',
@@ -386,11 +386,11 @@ const checkOrder = (data) =>{
               onPress={allChecked ? handleUncheckAll : handleChooseAll}
             />
             <Text style={styles.checkboxLabel}>
-              Choose All ({checkedItemCount})
+              Chọn tất cả ({checkedItemCount})
             </Text>
           </View>
           {/* Title */}
-          <Text style={styles.title}>{totalPrice}</Text>
+          <Text style={styles.title}>{totalPrice} VNĐ</Text>
           {/* Order Button */}
           <TouchableOpacity
             style={styles.orderButton}

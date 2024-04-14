@@ -137,7 +137,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#DEDEDE',
     },
-    textInputSearch: {},
+    textInputSearch: {
+        color : COLORS.black
+    },
     viewItem: {
         width: 75,
         height: 105,
