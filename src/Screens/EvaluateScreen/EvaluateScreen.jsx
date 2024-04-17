@@ -80,35 +80,58 @@ const reference = storage().ref(`evaluate/${userData._id}`);
   };
 
   const updateImageUserToMongoDB = (imageURL) =>{
-    const datetime = useDateCurrent();
 
-    console.log(datetime);
+    if(imageURL === ""){
+      ToastAndroid.showWithGravity(
+        'Chưa có hình ảnh đánh giá',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }else if(context == null){
+      ToastAndroid.showWithGravity(
+        'Chưa có nội dung đánh giá',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+
+    }else if(rating === 0){
+      ToastAndroid.showWithGravity(
+        'Chưa có đánh giá sao',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }else{
+      const datetime = useDateCurrent();
+
+      console.log(datetime);
+      
+  
+      axios.post(API_EVALUATE, {
+          UserId  : userData._id,
+          ProductId : productId,
+          username : userData.username,
+          imageuser : userData.image,
+          datetime : datetime,
+          content : context,
+          imageContent : imageURL,
+          star : rating
+        })
+        .then(function (response) {
+          if(response.data){
+            ToastAndroid.showWithGravity(
+              'Thêm đánh giá thành công',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM
+            );
+          }
+        }).then(
+          () => navigation.goBack()
+        )
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
     
-
-    axios.post(API_EVALUATE, {
-        UserId  : userData._id,
-        ProductId : productId,
-        username : userData.username,
-        imageuser : userData.image,
-        datetime : datetime,
-        content : context,
-        imageContent : imageURL,
-        star : rating
-      })
-      .then(function (response) {
-        if(response.data){
-          ToastAndroid.showWithGravity(
-            'Thêm đánh giá thành công',
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM
-          );
-        }
-      }).then(
-        () => navigation.goBack()
-      )
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
   return (

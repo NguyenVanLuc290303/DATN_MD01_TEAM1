@@ -51,22 +51,22 @@ const Home = ({navigation}) => {
     }, 2000);
   }, []);
 
-  useEffect(() => {
-    const loadLikedProducts = async () => {
-      try {
-        const likedProductsString = await AsyncStorage.getItem(
-          `likedProducts_${userData._id}`,
-        );
-        if (likedProductsString !== null) {
-          setLikedProducts(JSON.parse(likedProductsString));
-        }
-      } catch (error) {
-        console.error('Lỗi khi tải trạng thái yêu thích:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const loadLikedProducts = async () => {
+  //     try {
+  //       const likedProductsString = await AsyncStorage.getItem(
+  //         `likedProducts_${userData._id}`,
+  //       );
+  //       if (likedProductsString !== null) {
+  //         setLikedProducts(JSON.parse(likedProductsString));
+  //       }
+  //     } catch (error) {
+  //       console.error('Lỗi khi tải trạng thái yêu thích:', error);
+  //     }
+  //   };
 
-    loadLikedProducts();
-  }, [userData._id]);
+  //   loadLikedProducts();
+  // }, [userData._id]);
 
   const toggleFavorite = async productId => {
     try {
@@ -138,7 +138,9 @@ const Home = ({navigation}) => {
   };
 
   React.useEffect(() => {
-    axios
+
+    if(userData){
+      axios
       .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
       .then(function (response) {
         const data = Array.isArray(response.data)
@@ -150,7 +152,9 @@ const Home = ({navigation}) => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+    }
+   
+  }, [userData]);
 
   const fetchDataProduct = () => {
     var myHeaders = new Headers();

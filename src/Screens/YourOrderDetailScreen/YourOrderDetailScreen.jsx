@@ -88,13 +88,14 @@ const YourOrderDetailScreen = ({navigation, route}) => {
       });
 
       axios
-        .delete(`${API_ORDER}/${OrderId}`)
-        .then(function (response) {
-          console.log(response.msg);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      .put(`${API_ORDER}/${OrderId}`, { status: "Hủy" })
+      .then(function (response) {
+        console.log(response.data); // response.data thường chứa dữ liệu trả về từ server
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    
       Alert.alert('Hủy Thành CÔng !  ');
       navigation.navigate('BottomNavigation');
     } else {
@@ -113,6 +114,38 @@ const YourOrderDetailScreen = ({navigation, route}) => {
 
   const handleEvaluate = (productId) =>{
     callCheckEvaluate(productId);
+  }
+
+  const Returns = (OrderId) =>{
+
+    axios
+    .get(`${API_ORDER}/getOD/${OrderId}`)
+    .then(function (response) {
+      console.log(response.data); // response.data thường chứa dữ liệu trả về từ server
+      const deliveryDate1 = new Date(response.data.deliveryDate);
+   
+      const currentTime = new Date();
+      console.log(deliveryDate1 + " date "  + currentTime);
+      const timeDifference = currentTime.getTime() - deliveryDate1.getTime();
+
+// Chuyển 1 ngày thành milliseconds (1 ngày = 24 giờ * 60 phút * 60 giây * 1000 milliseconds)
+        const oneDayInMillis = 24 * 60 * 60 * 1000;
+
+        // Kiểm tra nếu khoảng thời gian vượt quá 1 ngày
+        if (timeDifference > oneDayInMillis) {
+          ToastAndroid.showWithGravity(
+            'Đã Giao Quá 1 Ngày Bạn Không Thể Trả Hàng ',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM
+          )
+        } else {
+           navigation.navigate('ReasonScreen' , {OrderId : OrderId })
+        }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+   
   }
 
   const callCheckEvaluate = async (productId) =>{
@@ -230,6 +263,33 @@ console.log(dataOrderDetail , "ppppppppppp");
           alignItems: 'center',
         }}>
         {status === 'Đã giao' ? (
+
+            
+<View>
+  
+<TouchableOpacity
+          onPress={()=> { Returns(OrderId)}}
+
+            style={{
+              width: 350,
+              height: 50,
+              borderRadius: 15,
+              borderWidth: 1,
+              borderColor: COLORS.App,
+              backgroundColor: COLORS.App,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 20,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Lato-Black',
+                fontSize: 20,
+                color: COLORS.white,
+              }}>
+              Trả Hàng
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={{
               width: 350,
@@ -250,7 +310,7 @@ console.log(dataOrderDetail , "ppppppppppp");
               }}>
               Mua lại
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity></View>
         ) : (
           <TouchableOpacity
           onPress={handleCancelOrder}

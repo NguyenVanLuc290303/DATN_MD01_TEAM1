@@ -1,31 +1,66 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, FlatList, TextInput, TouchableOpacity, Image, Animated, StyleSheet } from 'react-native';
-import { firebase } from '@react-native-firebase/database';
+import React, {useEffect, useState, useRef, useMemo , useCallback} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Animated,
+  StyleSheet,
+} from 'react-native';
+import {firebase} from '@react-native-firebase/database';
 import COLORS from '../../constants/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
 import HeaderTitle from '../../components/atoms/HeaderTitle/HeaderTitle';
-import { User } from '../../hooks/useContext';
+import {User} from '../../hooks/useContext';
+import Login from '../../components/organisms/Login/Login';
 
-const Chat = ({ navigation }) => {
-  const { userData } = User();
+const Chat = ({navigation}) => {
+  const {userData} = User();
   const [contentMessage, setContentMessage] = useState('');
   const [dataMessage, setDataMessage] = useState([]);
-  const refConversation = firebase.app().database('https://vidu2-96b2f-default-rtdb.asia-southeast1.firebasedatabase.app/',).ref('/tinnhan');
+  const refConversation = firebase
+    .app()
+    .database(
+      'https://vidu2-96b2f-default-rtdb.asia-southeast1.firebasedatabase.app/',
+    )
+    .ref('/tinnhan');
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    // Lắng nghe sự kiện child_added để nhận tin nhắn mới
-    const onChildAdded = refConversation.on('child_added', snapshot => {
-      const newMessage = snapshot.val();
-      // Kiểm tra nếu message có UserId trùng với userData._id thì mới thêm vào state
-      if (newMessage.UserId === userData._id) {
-        setDataMessage(prevMessages => [...prevMessages, newMessage]);
-      }
-    });
-  
-    return () => refConversation.off('child_added', onChildAdded);
+  const bottomSheetModalRef = useRef(null);
+
+  const snapPoints = useMemo(() => ['25%', '100%'], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
   }, []);
+
+  const handleSheetChanges = useCallback(index => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+
+  useEffect(() => {
+    if (!userData) {
+      handlePresentModalPress();
+    } else {
+      const onChildAdded = refConversation.on('child_added', snapshot => {
+        const newMessage = snapshot.val();
+        // Kiểm tra nếu message có UserId trùng với userData._id thì mới thêm vào state
+        if (newMessage.UserId === userData._id) {
+          setDataMessage(prevMessages => [...prevMessages, newMessage]);
+        }
+      });
+  
+      return () => refConversation.off('child_added', onChildAdded);
+    }
+    // Lắng nghe sự kiện child_added để nhận tin nhắn mới
+  }, [userData]);
 
   const handleOnclickSend = async () => {
     const year = new Date().getFullYear();
@@ -61,62 +96,94 @@ const Chat = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.header, { transform: [{ translateY }] }]}>
-        <Image style={styles.logoApp} source={require('@/images/logoAPP_MD01_png.png')} />
-        <HeaderTitle>Fashion Koru</HeaderTitle>
-      </Animated.View>
+      {userData ? (
+        <>
+          <Animated.View style={[styles.header, {transform: [{translateY}]}]}>
+            <Image
+              style={styles.logoApp}
+              source={require('@/images/logoAPP_MD01_png.png')}
+            />
+            <HeaderTitle>Fashion Koru</HeaderTitle>
+          </Animated.View>
 
-      <FlatList
-        contentContainerStyle={{
-          zIndex: 100,
-          position: 'relative',
-          marginTop: 60,
-        }}
-        data={dataMessage}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-          { useNativeDriver: false }
-        )}
-        renderItem={({ item }) => {
-          const isYour = userData._id === item.UserId && item.sender !== "admin";
-          return (
-            <View
-              style={{
-                alignItems:
-                  userData._id === item.UserId && item.sender !== "admin" ? 'flex-end' : 'flex-start',
-                margin: 8,
-                justifyContent: 'center',
-              }}>
-              <View style={{
-                height: 45,
-                borderWidth: 1,
-                borderRadius: 20,
-                backgroundColor: userData._id === item.UserId && item.sender !== "admin" ? COLORS.gray : COLORS.white,
-              }}>
-                <Text style={{ color: userData._id === item.UserId && item.sender !== "admin" ? COLORS.white : COLORS.black, fontSize: 20, padding: 10 }}>{item.content}</Text>
-              </View>
-            </View>
-          );
-        }}
-      />
-
-      <View style={styles.inputChat}>
-        <TouchableOpacity>
-          <Icon name="camera-outline" size={32} />
-        </TouchableOpacity>
-        <TextInput
-          style={{ width: '70%' }}
-          placeholder="Your content mesages"
-          value={contentMessage}
-          onChangeText={text => setContentMessage(text)}
+          <FlatList
+            contentContainerStyle={{
+              zIndex: 100,
+              position: 'relative',
+              marginTop: 60,
+            }}
+            data={dataMessage}
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {y: scrollOffsetY}}}],
+              {useNativeDriver: false},
+            )}
+            renderItem={({item}) => {
+              const isYour =
+                userData._id === item.UserId && item.sender !== 'admin';
+              return (
+                <View
+                  style={{
+                    alignItems:
+                      userData._id === item.UserId && item.sender !== 'admin'
+                        ? 'flex-end'
+                        : 'flex-start',
+                    margin: 8,
+                    justifyContent: 'center',
+                  }}>
+                  <View
+                    style={{
+                      height: 45,
+                      borderWidth: 1,
+                      borderRadius: 20,
+                      backgroundColor:
+                        userData._id === item.UserId && item.sender !== 'admin'
+                          ? COLORS.gray
+                          : COLORS.white,
+                    }}>
+                    <Text
+                      style={{
+                        color:
+                          userData._id === item.UserId &&
+                          item.sender !== 'admin'
+                            ? COLORS.white
+                            : COLORS.black,
+                        fontSize: 20,
+                        padding: 10,
+                      }}>
+                      {item.content}
+                    </Text>
+                  </View>
+                </View>
+              );
+            }}
+          />
+          <View style={styles.inputChat}>
+            <TouchableOpacity>
+              <Icon name="camera-outline" size={32} />
+            </TouchableOpacity>
+            <TextInput
+              style={{width: '70%'}}
+              placeholder="Your content mesages"
+              value={contentMessage}
+              onChangeText={text => setContentMessage(text)}
+            />
+            <TouchableOpacity>
+              <Icon name="mic" size={32} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleOnclickSend}>
+              <IconF name="send" size={32} />
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <Login
+          bottomSheetModalRef={bottomSheetModalRef}
+          snapPoints={snapPoints}
+          handleSheetChanges={handleSheetChanges}
+          handleClosePress={handleClosePress}
+          navigation={navigation}
         />
-        <TouchableOpacity>
-          <Icon name="mic" size={32} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleOnclickSend}>
-          <IconF name="send" size={32} />
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 };

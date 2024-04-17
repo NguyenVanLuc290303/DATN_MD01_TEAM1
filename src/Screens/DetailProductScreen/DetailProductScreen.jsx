@@ -32,6 +32,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetScrollView,
+  BottomSheetBackdropProps
 } from '@gorhom/bottom-sheet';
 import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
@@ -43,11 +44,13 @@ import ProductListAll from '../../components/organisms/ListAllProducts/ProductLi
 import useListProduct from '../../services/product-services/use-all-list-product';
 import useListEvaluate from '../../services/evaluate-services/use-list-evaluate-product';
 import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
+import { isSameDay } from 'react-native-gifted-chat';
+import Animate, { Extrapolate, interpolate } from 'react-native-reanimated';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const DetailProductScreen = ({navigation, route}) => {
+const DetailProductScreen = ({navigation, route  }) => {
   const {
     _id,
     name,
@@ -61,11 +64,26 @@ const DetailProductScreen = ({navigation, route}) => {
     material,
   } = route.params;
 
+  let dataCart;
+  let addItemToCart;
+  let idUser;
+
+
   const {userData} = User();
 
-  const {dataCart, addItemToCart} = Cart();
 
-  const idUser = userData._id;
+  
+  if (userData) {
+    ({ dataCart, addItemToCart } = Cart());
+
+    idUser = userData._id;
+  }else{
+    dataCart = 0;
+  }
+
+
+
+   
 
   const [dataProperties, setDaProperties] = useState([]);
 
@@ -140,6 +158,9 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const bottomSheetModalRef = useRef(null);
 
+  // const animatedIndex = useRef(new Animated.Value(0)).current;
+
+
   const snapPoints = useMemo(() => ['25%', '70%'], []);
 
   const handlePresentModalPress = useCallback(index => {
@@ -162,6 +183,7 @@ const DetailProductScreen = ({navigation, route}) => {
   const handleClosePressSale = useCallback(() => {
     bottomSheetModalSaleRef.current?.close();
   }, []);
+
 
   const [checkProductCarts, setCheckProductCarts] = useState(null);
 
@@ -210,61 +232,70 @@ const DetailProductScreen = ({navigation, route}) => {
   });
 
   const handleToCart = () => {
-    if (selectedColor !== null) {
-      const myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-      myHeaders.append(
-        'Cookie',
-        'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
-      );
-
-      const requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: JSON.stringify({
-          CartId: idUser,
-          ProductId: _id,
-          Name: name,
-          Price: price,
-          ColorCode: selectedColor.colorId,
-          Size: selectSize,
-          Quantity: quantity,
-          RemainQuantity: quantityRemain,
-          PropertiesId: idPropotiesS,
-          Image: selectedColor.image,
-        }),
-        redirect: 'follow',
-      };
-
-      try {
-        fetch(
-          `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
-          requestOptions,
-        )
-          .then(response => response.json())
-          .then(result => {
-            if (result.status === 1) {
-              addItemToCart(result);
-              animationCart();
-              handleClosePress();
-            } else {
-              ToastAndroid.showWithGravity(
-                'Sản phẩm đã có trong giỏ',
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER,
-              );
-            }
-          });
-      } catch (error) {
-        console.log(error, ' lỗi thêm vào giỏ hàng');
+    if(userData){
+      if (selectedColor !== null) {
+        const myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        myHeaders.append(
+          'Cookie',
+          'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+        );
+  
+        const requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: JSON.stringify({
+            CartId: idUser,
+            ProductId: _id,
+            Name: name,
+            Price: price,
+            ColorCode: selectedColor.colorId,
+            Size: selectSize,
+            Quantity: quantity,
+            RemainQuantity: quantityRemain,
+            PropertiesId: idPropotiesS,
+            Image: selectedColor.image,
+          }),
+          redirect: 'follow',
+        };
+  
+        try {
+          fetch(
+            `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
+            requestOptions,
+          )
+            .then(response => response.json())
+            .then(result => {
+              if (result.status === 1) {
+                addItemToCart(result);
+                animationCart();
+                handleClosePress();
+              } else {
+                ToastAndroid.showWithGravity(
+                  'Sản phẩm đã có trong giỏ',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              }
+            });
+        } catch (error) {
+          console.log(error, ' lỗi thêm vào giỏ hàng');
+        }
+      } else {
+        ToastAndroid.showWithGravity(
+          'Bạn chưa chọn màu',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
       }
-    } else {
+    }else{
       ToastAndroid.showWithGravity(
-        'Bạn chưa chọn màu',
+        'Hãy đăng nhập trước khi thêm giỏ hàng',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
     }
+   
   };
 
   const handleToSale = () => {
@@ -305,7 +336,7 @@ const DetailProductScreen = ({navigation, route}) => {
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView style={[styles.container]}>
+      <Animate.View style={[styles.container ]}>
         <Animated.ScrollView
           contentContainerStyle={{flexGrow: 1}}
           onScroll={handleScroll}
@@ -1098,7 +1129,7 @@ const DetailProductScreen = ({navigation, route}) => {
             
           </View>
         </BottomSheetModal>
-      </SafeAreaView>
+      </Animate.View>
     </BottomSheetModalProvider>
   );
 };

@@ -352,9 +352,10 @@ const RegisterScreen = ({navigation}) => {
                 marginTop: 18,
                 marginBottom: 4,
                 borderWidth: 1,
+                borderColor : COLORS.App,
                 borderRadius: 8,
                 height: 50,
-                backgroundColor: COLORS.black,
+                backgroundColor: COLORS.App,
               }}>
               <Text style={styles.submitText}>Đăng ký</Text>
             </TouchableOpacity>

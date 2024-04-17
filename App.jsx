@@ -71,7 +71,7 @@ import ChangeAddressScreen from './src/Screens/EditProfile/components/ChangeAddr
 import ZaloPaymentScreen from './src/Screens/ZaloPaymentScreen/ZaloPaymentScreen';
 import EvualuateScreen from './src/Screens/EvaluateScreen/EvaluateScreen';
 import SettingNotificationScreen from './src/Screens/SettingNotificationScreen/SettingNotificationScreen';
-
+import { PortalProvider } from '@gorhom/portal';
 
 // import {CartScreen} from './src/Screens';
 
@@ -87,18 +87,13 @@ function App() {
     }
     return true;
   };
-
-  const ProfileStack = ({navigation}) => {
-    <Stack.Navigator screenOptions={{headerShown: true}}>
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
-    </Stack.Navigator>;
-  };
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1}}>
+    <PortalProvider>
     <UserProvider>
     <CartProvider>
     <NavigationContainer>
+
       <Stack.Navigator
         initialRouteName={'FisrtScreen'}
         screenOptions={{headerShown: false}}>
@@ -300,9 +295,10 @@ function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+
     </CartProvider>
     </UserProvider>
-
+    </PortalProvider>
     </GestureHandlerRootView>
   );
 }

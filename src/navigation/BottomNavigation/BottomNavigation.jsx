@@ -27,7 +27,7 @@ const BottomNavigation = ({navigation}) => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Trang chủ',
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
               <Icon name="home-sharp" color={COLORS.App} size={30}/>
@@ -42,7 +42,7 @@ const BottomNavigation = ({navigation}) => {
         component={Love}
         headerShown={true}
         options={{
-          tabBarLabel: 'Love',
+          tabBarLabel: 'Yêu thích',
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
               <IconAndesign name="heart" color={COLORS.App} size={30} />
@@ -57,7 +57,7 @@ const BottomNavigation = ({navigation}) => {
         component={Notification}
         options={{
           headerShown: false,
-          tabBarLabel: 'Notification',
+          tabBarLabel: 'Thông báo',
           tabBarIcon: ({focused, color, size}) => (
             <TouchableOpacity
               style={{
@@ -88,6 +88,7 @@ const BottomNavigation = ({navigation}) => {
         component={Chat}
         options={{
           headerShown: '',
+          tabBarLabel :"Tin nhắn",
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
               <Icon name="chatbubble-ellipses-sharp" size={30} color={COLORS.App}/>
@@ -102,6 +103,7 @@ const BottomNavigation = ({navigation}) => {
         component={Profile}
         options={{
           headerShown: '',
+          tabBarLabel :"Cá nhân",
           tabBarIcon: ({focused, color, size}) => (
             focused ? (
               <Icon name="person" color={COLORS.App} size={30} />
