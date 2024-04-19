@@ -175,6 +175,7 @@ const LoginScreen = ({navigation}) => {
   }, []);
 
   return (
+    
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>

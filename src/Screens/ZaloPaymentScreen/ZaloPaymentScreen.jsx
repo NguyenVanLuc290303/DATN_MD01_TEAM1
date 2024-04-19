@@ -132,7 +132,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
         if (resJson.return_code === 1) {
           var payZP = NativeModules.PayZaloBridge;
           payZP.payOrder(resJson.zp_trans_token);
-          //handleOrderProduct();
+          handleOrderProduct();
         }
       })
       .catch(error => {
@@ -158,7 +158,6 @@ const ZaloPaymentScreen = ({navigation, route}) => {
   let addressOrder = '';
 
   const handleOrderProduct = () => {
-    if (isChecked) {
       const myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
       myHeaders.append(
@@ -186,7 +185,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
       } catch (error) {
         console.error('Error placing order:', error);
       }
-    }
+    
   };
 
   const pushProductOnOrder = data => {

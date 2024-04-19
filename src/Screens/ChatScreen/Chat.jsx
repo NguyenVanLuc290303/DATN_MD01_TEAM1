@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo , useCallback} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   View,
   Text,
@@ -27,7 +27,6 @@ const Chat = ({navigation}) => {
       'https://vidu2-96b2f-default-rtdb.asia-southeast1.firebasedatabase.app/',
     )
     .ref('/tinnhan');
-  const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
   const bottomSheetModalRef = useRef(null);
 
@@ -44,10 +43,15 @@ const Chat = ({navigation}) => {
   const handleClosePress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
+  const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (!userData) {
-      handlePresentModalPress();
+      const unsubscribe = navigation.addListener('focus', () => {
+        handlePresentModalPress();
+        });
+
+    return unsubscribe;
     } else {
       const onChildAdded = refConversation.on('child_added', snapshot => {
         const newMessage = snapshot.val();
@@ -56,11 +60,11 @@ const Chat = ({navigation}) => {
           setDataMessage(prevMessages => [...prevMessages, newMessage]);
         }
       });
-  
+
       return () => refConversation.off('child_added', onChildAdded);
     }
     // Lắng nghe sự kiện child_added để nhận tin nhắn mới
-  }, [userData]);
+  }, [userData ,navigation]);
 
   const handleOnclickSend = async () => {
     const year = new Date().getFullYear();

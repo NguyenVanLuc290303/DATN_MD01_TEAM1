@@ -32,7 +32,8 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetScrollView,
-  BottomSheetBackdropProps
+  BottomSheetBackdropProps,
+  BottomSheetBackdrop
 } from '@gorhom/bottom-sheet';
 import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
@@ -46,6 +47,7 @@ import useListEvaluate from '../../services/evaluate-services/use-list-evaluate-
 import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
 import { isSameDay } from 'react-native-gifted-chat';
 import Animate, { Extrapolate, interpolate } from 'react-native-reanimated';
+import Login from '../../components/organisms/Login/Login';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -182,6 +184,23 @@ const DetailProductScreen = ({navigation, route  }) => {
 
   const handleClosePressSale = useCallback(() => {
     bottomSheetModalSaleRef.current?.close();
+  }, []);
+
+  const bottomSheetModalRefLogin = useRef(null);
+
+  const snapPointsLogin = useMemo(() => ['25%', '100%'], []);
+
+
+  const handlePresentModalPressLogin = useCallback(() => {
+    bottomSheetModalRefLogin.current?.present();
+  }, []);
+
+  const handleSheetChangesLogin = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePressLogin = useCallback(() => {
+    bottomSheetModalRefLogin.current?.close();
   }, []);
 
 
@@ -332,6 +351,14 @@ const DetailProductScreen = ({navigation, route  }) => {
     setIdPropoties(id);
   };
 
+  const handleToCartScreen = () =>{
+    if (userData) {
+      navigation.navigate('CartScreen');
+    }else{
+      handlePresentModalPressLogin();
+    }
+  }
+
   // console.log('renderlai');
 
   return (
@@ -354,7 +381,7 @@ const DetailProductScreen = ({navigation, route  }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onPress={() => navigation.navigate('CartScreen')}>
+                onPress={handleToCartScreen}>
                 <Image source={require('@/icons/png/local_mall.png')} />
                 <View
                   style={{
@@ -406,7 +433,7 @@ const DetailProductScreen = ({navigation, route  }) => {
             <Text
               style={[
                 styleCommon.h2,
-                {color: COLORS.black, fontWeight: 'bold', marginTop: 10},
+                {color: COLORS.red, fontWeight: 'bold', marginTop: 10},
               ]}>
               {price}
             </Text>
@@ -558,7 +585,9 @@ const DetailProductScreen = ({navigation, route  }) => {
           ref={bottomSheetModalRef}
           index={1}
           snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
+          onChange={handleSheetChanges}
+          backdropComponent={BottomSheetBackdrop}
+          >
           <View style={styles.bottomSheetContainer}>
             <View
               style={{
@@ -847,7 +876,9 @@ const DetailProductScreen = ({navigation, route  }) => {
           ref={bottomSheetModalSaleRef}
           index={1}
           snapPoints={snapPoints}
-          onChange={handleSheetChangesSale}>
+          onChange={handleSheetChangesSale}
+          backdropComponent={BottomSheetBackdrop}
+          >
           <View style={styles.bottomSheetContainer}>
             <View
               style={{
@@ -1114,10 +1145,6 @@ const DetailProductScreen = ({navigation, route  }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop : 10,
-                // position: 'absolute',
-                // bottom: 15,
-                // right: 50,
-                // left: 50,
                 borderRadius: 5,
               }}
               onPress={handleToSale}>
@@ -1129,6 +1156,15 @@ const DetailProductScreen = ({navigation, route  }) => {
             
           </View>
         </BottomSheetModal>
+
+        <Login
+          bottomSheetModalRef={bottomSheetModalRefLogin}
+          snapPoints={snapPointsLogin}
+          handleSheetChanges={handleSheetChangesLogin}
+          handleClosePress={handleClosePressLogin}
+          navigation={navigation}
+          />
+
       </Animate.View>
     </BottomSheetModalProvider>
   );

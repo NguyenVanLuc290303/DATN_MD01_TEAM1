@@ -27,8 +27,7 @@ import axios, {Axios} from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconI from 'react-native-vector-icons/Ionicons';
 import IconF from 'react-native-vector-icons/Feather';
-import { Portal } from '@gorhom/portal';
-
+import {Portal} from '@gorhom/portal';
 
 const Login = ({
   snapPoints,
@@ -190,124 +189,136 @@ const Login = ({
   useEffect(() => {
     getData();
   }, []);
+
+  const handleNavigationRegister = () => {
+    navigation.navigate('RegisterScreen');
+    handleClosePress();
+  };
   return (
     <Portal>
-    <BottomSheetModalProvider>
-      <View>
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
-          <View style={{flex: 1}}>
-            <ScrollView style={styles.container}>
-              <View style={styles.header}>
-                <TouchableOpacity
-                  style={{flex: 1, position: 'absolute', top: 0, right: 0}}
-                  onPress={handleClosePress}>
-                  <IconF name="x" size={24} color={'black'} />
-                </TouchableOpacity>
-                <Image
-                  source={Icons.IconApp}
-                  style={styles.iconShop}
-                  alt="Logo"
-                />
-
-                <Text style={styles.title}>Đăng nhập</Text>
-
-                {/* <Text style={styles.subtitle}></Text> */}
-              </View>
-              <View style={styles.form}>
-                <View style={styles.input}>
-                  <Icon name="phone" size={24} />
-                  <TextInput
-                    defaultValue={phone}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    // keyboardType="phone-pad"
-                    style={{paddingLeft: 10}}
-                    // value={form.email}
-                    placeholder="Enter your phone"
-                    placeholderTextColor="#6b7280"
-                    onChangeText={text => setPhoneNumber(text)}
-                  />
-                </View>
-
-                <View style={styles.input}>
-                  <IconI name="lock-closed" size={24} />
-                  <TextInput
-                    defaultValue={password}
-                    secureTextEntry={!showPassword}
-                    style={{flex: 1, paddingLeft: 10, color: COLORS.black}}
-                    // value={form.password}
-                    placeholder="Enter your password"
-                    placeholderTextColor="#6b7280"
-                    onChangeText={Text => setPassWord(Text)}
-                  />
-                  <TouchableOpacity onPress={toggleShowPassword}>
-                    <IconI name={showPassword ? 'eye' : 'eye-off'} size={24} />
+      <BottomSheetModalProvider>
+        <View>
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}>
+            <View style={{flex: 1}}>
+              <ScrollView style={styles.container}>
+                <View style={styles.header}>
+                  <TouchableOpacity
+                    style={{flex: 1, position: 'absolute', top: 0, right: 0}}
+                    onPress={handleClosePress}>
+                    <IconF name="x" size={24} color={'black'} />
                   </TouchableOpacity>
+                  <Image
+                    source={Icons.IconApp}
+                    style={styles.iconShop}
+                    alt="Logo"
+                  />
+
+                  <Text style={styles.title}>Đăng nhập</Text>
+
+                  {/* <Text style={styles.subtitle}></Text> */}
                 </View>
-                <View style={{ flexDirection : 'row' , justifyContent : 'space-between'}}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        saveData(phone, password);
-                        changeImage();
-                      }}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginRight: 10,
-                      }}>
-                      <Text
-                        style={{
-                          color: 'blue',
-                          marginRight: 10,
-                        }}>
-                        Nhớ mật khẩu ?
-                      </Text>
-                      <Image
-                        source={{uri: imageUri}}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 10,
-                        }}
+                <View style={styles.form}>
+                  <View style={styles.input}>
+                    <Icon name="phone" size={24} />
+                    <TextInput
+                      defaultValue={phone}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      // keyboardType="phone-pad"
+                      style={{paddingLeft: 10}}
+                      // value={form.email}
+                      placeholder="Enter your phone"
+                      placeholderTextColor="#6b7280"
+                      onChangeText={text => setPhoneNumber(text)}
+                    />
+                  </View>
+
+                  <View style={styles.input}>
+                    <IconI name="lock-closed" size={24} />
+                    <TextInput
+                      defaultValue={password}
+                      secureTextEntry={!showPassword}
+                      style={{flex: 1, paddingLeft: 10, color: COLORS.black}}
+                      // value={form.password}
+                      placeholder="Enter your password"
+                      placeholderTextColor="#6b7280"
+                      onChangeText={Text => setPassWord(Text)}
+                    />
+                    <TouchableOpacity onPress={toggleShowPassword}>
+                      <IconI
+                        name={showPassword ? 'eye' : 'eye-off'}
+                        size={24}
                       />
                     </TouchableOpacity>
                   </View>
-                  <Text
-                    style={styles.title2}
-                    onPress={() => navigation.navigate('ForgotPassword')}>
-                    Quên mật khẩu
-                  </Text>
-                </View>
-                <View style={styles.formAction}>
-                  <TouchableOpacity onPress={handerOnlickLogin}>
-                    <View style={styles.btn}>
-                      <Text style={styles.btnText}>Đăng nhập</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          saveData(phone, password);
+                          changeImage();
+                        }}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginRight: 10,
+                        }}>
+                        <Text
+                          style={{
+                            color: 'blue',
+                            marginRight: 10,
+                          }}>
+                          Nhớ mật khẩu ?
+                        </Text>
+                        <Image
+                          source={{uri: imageUri}}
+                          style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: 10,
+                          }}
+                        />
+                      </TouchableOpacity>
                     </View>
+                    <Text
+                      style={styles.title2}
+                      onPress={() => navigation.navigate('ForgotPassword')}>
+                      Quên mật khẩu
+                    </Text>
+                  </View>
+                  <View style={styles.formAction}>
+                    <TouchableOpacity onPress={handerOnlickLogin}>
+                      <View style={styles.btn}>
+                        <Text style={styles.btnText}>Đăng nhập</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  <TouchableOpacity
+                    style={{marginTop: 'auto'}}
+                    onPress={handleNavigationRegister}>
+                    <Text style={styles.formFooter}>
+                      Bạn chưa có tài khoản ?{''}
+                      <Text style={{textDecorationLine: 'underline'}}>
+                        Đăng ký
+                      </Text>
+                    </Text>
                   </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity
-                  style={{marginTop: 'auto'}}
-                  onPress={() => navigation.navigate('RegisterScreen')}>
-                  <Text style={styles.formFooter}>
-                    Bạn chưa có tài khoản ?{''}
-                    <Text style={{textDecorationLine: 'underline'}}>
-                      Đăng ký
-                    </Text>
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.mangxh}>
-                {/* <TouchableOpacity style={{ flexDirection : 'row' , justifyContent : 'center', alignItems : 'center'}}>
+                <View style={styles.mangxh}>
+                  {/* <TouchableOpacity style={{ flexDirection : 'row' , justifyContent : 'center', alignItems : 'center'}}>
                   <Image
                     source={require('../../../assets/images/icons8-facebook-48.png')}
                     style={{width: 50, height: 50, borderRadius: 10}}
@@ -316,38 +327,44 @@ const Login = ({
                     Đăng nhập bằng Facebook
                   </Text>
                 </TouchableOpacity> */}
-                <TouchableOpacity style={{ flexDirection : 'row' , justifyContent : 'center' , alignItems : 'center' , borderWidth : 1 , borderRadius : 7}}>
-                  <Image
-                    source={require('../../../assets/images/icon_google_2.png')}
+                  <TouchableOpacity
                     style={{
-                      width: 50,
                       height: 50,
-                      borderRadius: 10,
-                    }}
-                  />
-                  <Text>Đăng nhập bằng google</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>
-        </BottomSheetModal>
-      </View>
-    </BottomSheetModalProvider>
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderWidth: 1,
+                      borderRadius: 7,
+                    }}>
+                    <Image
+                      source={require('../../../assets/images/icon_google_2.png')}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 10,
+                      }}
+                    />
+                    <Text>Đăng nhập bằng google</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </View>
+          </BottomSheetModal>
+        </View>
+      </BottomSheetModalProvider>
     </Portal>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex : 1,
+    flex: 1,
     backgroundColor: '#FFFFFF',
-
   },
   mangxh: {
     width: '100%',
     padding: 20,
     justifyContent: 'center',
-
   },
   header: {
     marginVertical: 20,

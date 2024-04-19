@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect ,useRef , useCallback, useMemo} from 'react';
 import {
   FlatList,
   Image,
@@ -27,6 +27,7 @@ import Slider from '../../components/morecules/SildeShow/Silder';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useListCategory from '../../services/category-services/use-all-list-category';
 import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
+import Login from '../../components/organisms/Login/Login';
 
 import {styles} from './Home.style';
 const Home = ({navigation}) => {
@@ -42,6 +43,24 @@ const Home = ({navigation}) => {
   const {setDataCart, dataCart} = Cart();
 
   console.log(dataCart.length, 'dataCart.length');
+
+  
+  const bottomSheetModalRef = useRef(null);
+
+  const snapPoints = useMemo(() => ['25%', '100%'], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleSheetChanges = useCallback(index => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -181,6 +200,14 @@ const Home = ({navigation}) => {
 
   console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
 
+  const handleToCartScreen = () =>{
+    if (userData) {
+      navigation.navigate('CartScreen');
+    }else{
+      handlePresentModalPress();
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View>
@@ -208,7 +235,7 @@ const Home = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onPress={() => navigation.navigate('CartScreen')}>
+              onPress={handleToCartScreen}>
               <Image source={require('@/icons/png/local_mall.png')} />
               <View
                 style={{
@@ -273,6 +300,13 @@ const Home = ({navigation}) => {
             <Loading />
           )}
         </ScrollView>
+        <Login
+          bottomSheetModalRef={bottomSheetModalRef}
+          snapPoints={snapPoints}
+          handleSheetChanges={handleSheetChanges}
+          handleClosePress={handleClosePress}
+          navigation={navigation}
+          />
       </View>
     </View>
   );
