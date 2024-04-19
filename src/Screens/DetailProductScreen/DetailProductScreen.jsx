@@ -36,6 +36,7 @@ import {
 import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
+import { API_PRODUCT } from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import {Cart} from '../../hooks/cartContext';
 import {styles} from './DetailProductScreen.style';
@@ -43,6 +44,7 @@ import ProductListAll from '../../components/organisms/ListAllProducts/ProductLi
 import useListProduct from '../../services/product-services/use-all-list-product';
 import useListEvaluate from '../../services/evaluate-services/use-list-evaluate-product';
 import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -91,16 +93,16 @@ const DetailProductScreen = ({navigation, route}) => {
     item => item._id !== _id && item.category === category,
   );
 
-  console.log(_id, 'iiiiiiii');
+  // console.log(_id, 'iiiiiiii');
 
-  console.log(productListSimilar, 'datacartlength');
+  // console.log(productListSimilar, 'datacartlength');
 
   // Hàm xử lý cộng số lượng
 
   //Đang sai logic render của react
   const incrementQuantity = () => {
-    console.log(quantityRemain, ')))))))');
-    console.log(quantity, '_____________');
+    // console.log(quantityRemain, ')))))))');
+    // console.log(quantity, '_____________');
     if (quantityRemain === quantity) {
       ToastAndroid.showWithGravity(
         'Số lượng đã trong kho hàng đã hết',
@@ -120,6 +122,18 @@ const DetailProductScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
+
+    const increaseViewCount = async () => {
+      try {
+          await axios.get(`${API_PRODUCT}/view/${name}`);
+          console.log('Tăng View Thành CÔng');
+      } catch (error) {
+          console.error('Error increasing view count:', error);
+      }
+  };
+  increaseViewCount();
+
+
     const myHeaders = new Headers();
     myHeaders.append(
       'Cookie',
