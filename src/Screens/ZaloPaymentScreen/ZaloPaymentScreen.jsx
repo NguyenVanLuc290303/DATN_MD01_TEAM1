@@ -44,10 +44,13 @@ const ZaloPaymentScreen = ({navigation, route}) => {
     },
   };
 
-  const handlePaymentZalo = () => {
-    createZaloPayOrder();
-    handleOrderProduct();
-    return;
+    const handlePaymentZalo = async () => {
+      try {
+        await createZaloPayOrder(); // Tạo đơn hàng Zalo Pay
+        await handleOrderProduct(); // Đẩy đơn hàng lên server
+      } catch (error) {
+        console.error("Error during Zalo Pay order creation and order handling:", error);
+      }
   };
 
   useEffect(() => {
