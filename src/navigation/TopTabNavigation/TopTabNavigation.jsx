@@ -2,9 +2,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import OrderDelivered from '../../Screens/YourOrderScreen/component/OrderDelivered/OrderDelivered';
 import OrderDelivering from '../../Screens/YourOrderScreen/component/OrderDelivering/OrderDelivering';
 import WaitForCofirm from '../../Screens/YourOrderScreen/component/WaitForComfirm/WaitForComfirm';
+import Confirm from '../../Screens/YourOrderScreen/component/Confirm/Confirm';
 import ReturnOrderScreen from '../../Screens/YourOrderScreen/component/Return/ReturnOrderScreen';
 import CancleScreen from '../../Screens/YourOrderScreen/component/Cancle/CancleScreen';
-import Confirm from '../../Screens/YourOrderScreen/component/Confirm/Confirm';
 import {NavigationContainer} from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import IconAndesign from  'react-native-vector-icons/AntDesign';
@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 export default function MyTabsOrder() {
   const Tab = createMaterialTopTabNavigator();
-  
+
   return (
     <Tab.Navigator
     screenOptions={{
@@ -25,7 +25,7 @@ export default function MyTabsOrder() {
       animationEnabled : false,
       tabBarLabelStyle : { fontSize : 12, fontWeight : "bold" }
     }}
-   
+
     >
       <Tab.Screen
         name="chờ xác nhận"

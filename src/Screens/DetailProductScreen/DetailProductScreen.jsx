@@ -32,6 +32,8 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetScrollView,
+  BottomSheetBackdropProps,
+  BottomSheetBackdrop
 } from '@gorhom/bottom-sheet';
 import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
@@ -44,6 +46,9 @@ import ProductListAll from '../../components/organisms/ListAllProducts/ProductLi
 import useListProduct from '../../services/product-services/use-all-list-product';
 import useListEvaluate from '../../services/evaluate-services/use-list-evaluate-product';
 import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
+import { isSameDay } from 'react-native-gifted-chat';
+import Animate, { Extrapolate, interpolate } from 'react-native-reanimated';
+import Login from '../../components/organisms/Login/Login';
 import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
@@ -63,11 +68,26 @@ const DetailProductScreen = ({navigation, route}) => {
     material,
   } = route.params;
 
+  let dataCart;
+  let addItemToCart;
+  let idUser;
+
+
   const {userData} = User();
 
-  const {dataCart, addItemToCart} = Cart();
 
-  const idUser = userData._id;
+
+  if (userData) {
+    ({ dataCart, addItemToCart } = Cart());
+
+    idUser = userData._id;
+  }else{
+    dataCart = 0;
+  }
+
+
+
+
 
   const [dataProperties, setDaProperties] = useState([]);
 
@@ -93,16 +113,16 @@ const DetailProductScreen = ({navigation, route}) => {
     item => item._id !== _id && item.category === category,
   );
 
-  // console.log(_id, 'iiiiiiii');
+  console.log(_id, 'iiiiiiii');
 
-  // console.log(productListSimilar, 'datacartlength');
+  console.log(productListSimilar, 'datacartlength');
 
   // Hàm xử lý cộng số lượng
 
   //Đang sai logic render của react
   const incrementQuantity = () => {
-    // console.log(quantityRemain, ')))))))');
-    // console.log(quantity, '_____________');
+    console.log(quantityRemain, ')))))))');
+    console.log(quantity, '_____________');
     if (quantityRemain === quantity) {
       ToastAndroid.showWithGravity(
         'Số lượng đã trong kho hàng đã hết',
@@ -122,18 +142,6 @@ const DetailProductScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-
-    const increaseViewCount = async () => {
-      try {
-          await axios.get(`${API_PRODUCT}/view/${name}`);
-          console.log('Tăng View Thành CÔng');
-      } catch (error) {
-          console.error('Error increasing view count:', error);
-      }
-  };
-  increaseViewCount();
-
-
     const myHeaders = new Headers();
     myHeaders.append(
       'Cookie',
@@ -154,7 +162,10 @@ const DetailProductScreen = ({navigation, route}) => {
 
   const bottomSheetModalRef = useRef(null);
 
-  const snapPoints = useMemo(() => ['25%', '70%'], []);
+  // const animatedIndex = useRef(new Animated.Value(0)).current;
+
+
+  const snapPoints = useMemo(() => ['25%', '75%'], []);
 
   const handlePresentModalPress = useCallback(index => {
     bottomSheetModalRef.current?.present();
@@ -176,6 +187,24 @@ const DetailProductScreen = ({navigation, route}) => {
   const handleClosePressSale = useCallback(() => {
     bottomSheetModalSaleRef.current?.close();
   }, []);
+
+  const bottomSheetModalRefLogin = useRef(null);
+
+  const snapPointsLogin = useMemo(() => ['25%', '100%'], []);
+
+
+  const handlePresentModalPressLogin = useCallback(() => {
+    bottomSheetModalRefLogin.current?.present();
+  }, []);
+
+  const handleSheetChangesLogin = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePressLogin = useCallback(() => {
+    bottomSheetModalRefLogin.current?.close();
+  }, []);
+
 
   const [checkProductCarts, setCheckProductCarts] = useState(null);
 
@@ -224,61 +253,70 @@ const DetailProductScreen = ({navigation, route}) => {
   });
 
   const handleToCart = () => {
-    if (selectedColor !== null) {
-      const myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-      myHeaders.append(
-        'Cookie',
-        'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
-      );
+    if(userData){
+      if (selectedColor !== null) {
+        const myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        myHeaders.append(
+          'Cookie',
+          'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+        );
 
-      const requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: JSON.stringify({
-          CartId: idUser,
-          ProductId: _id,
-          Name: name,
-          Price: price,
-          ColorCode: selectedColor.colorId,
-          Size: selectSize,
-          Quantity: quantity,
-          RemainQuantity: quantityRemain,
-          PropertiesId: idPropotiesS,
-          Image: selectedColor.image,
-        }),
-        redirect: 'follow',
-      };
+        const requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: JSON.stringify({
+            CartId: idUser,
+            ProductId: _id,
+            Name: name,
+            Price: price,
+            ColorCode: selectedColor.colorId,
+            Size: selectSize,
+            Quantity: quantity,
+            RemainQuantity: quantityRemain,
+            PropertiesId: idPropotiesS,
+            Image: selectedColor.image,
+          }),
+          redirect: 'follow',
+        };
 
-      try {
-        fetch(
-          `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
-          requestOptions,
-        )
-          .then(response => response.json())
-          .then(result => {
-            if (result.status === 1) {
-              addItemToCart(result);
-              animationCart();
-              handleClosePress();
-            } else {
-              ToastAndroid.showWithGravity(
-                'Sản phẩm đã có trong giỏ',
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER,
-              );
-            }
-          });
-      } catch (error) {
-        console.log(error, ' lỗi thêm vào giỏ hàng');
+        try {
+          fetch(
+            `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
+            requestOptions,
+          )
+            .then(response => response.json())
+            .then(result => {
+              if (result.status === 1) {
+                addItemToCart(result);
+                animationCart();
+                handleClosePress();
+              } else {
+                ToastAndroid.showWithGravity(
+                  'Sản phẩm đã có trong giỏ',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              }
+            });
+        } catch (error) {
+          console.log(error, ' lỗi thêm vào giỏ hàng');
+        }
+      } else {
+        ToastAndroid.showWithGravity(
+          'Bạn chưa chọn màu',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
       }
-    } else {
+    }else{
       ToastAndroid.showWithGravity(
-        'Bạn chưa chọn màu',
+        'Hãy đăng nhập trước khi thêm giỏ hàng',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
     }
+
   };
 
   const handleToSale = () => {
@@ -315,11 +353,19 @@ const DetailProductScreen = ({navigation, route}) => {
     setIdPropoties(id);
   };
 
+  const handleToCartScreen = () =>{
+    if (userData) {
+      navigation.navigate('CartScreen');
+    }else{
+      handlePresentModalPressLogin();
+    }
+  }
+
   // console.log('renderlai');
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView style={[styles.container]}>
+      <Animate.View style={[styles.container ]}>
         <Animated.ScrollView
           contentContainerStyle={{flexGrow: 1}}
           onScroll={handleScroll}
@@ -337,7 +383,7 @@ const DetailProductScreen = ({navigation, route}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                onPress={() => navigation.navigate('CartScreen')}>
+                onPress={handleToCartScreen}>
                 <Image source={require('@/icons/png/local_mall.png')} />
                 <View
                   style={{
@@ -389,7 +435,7 @@ const DetailProductScreen = ({navigation, route}) => {
             <Text
               style={[
                 styleCommon.h2,
-                {color: COLORS.black, fontWeight: 'bold', marginTop: 10},
+                {color: COLORS.red, fontWeight: 'bold', marginTop: 10},
               ]}>
               {price} VNĐ
             </Text>
@@ -543,7 +589,9 @@ const DetailProductScreen = ({navigation, route}) => {
           ref={bottomSheetModalRef}
           index={1}
           snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
+          onChange={handleSheetChanges}
+          backdropComponent={BottomSheetBackdrop}
+          >
           <View style={styles.bottomSheetContainer}>
             <View
               style={{
@@ -832,7 +880,9 @@ const DetailProductScreen = ({navigation, route}) => {
           ref={bottomSheetModalSaleRef}
           index={1}
           snapPoints={snapPoints}
-          onChange={handleSheetChangesSale}>
+          onChange={handleSheetChangesSale}
+          backdropComponent={BottomSheetBackdrop}
+          >
           <View style={styles.bottomSheetContainer}>
             <View
               style={{
@@ -1090,35 +1140,35 @@ const DetailProductScreen = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-            <View
+            <View style={{ width : '100%' , justifyContent : 'center' ,alignItems : 'center'}}>
+            <TouchableOpacity
               style={{
-                width: '100%',
+                width: '80%',
+                height: 40,
+                backgroundColor: COLORS.red,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
-              <TouchableOpacity
-                style={{
-                  width: '80%',
-                  height: 40,
-                  backgroundColor: COLORS.red,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: 10,
-                  // position: 'absolute',
-                  // bottom: 15,
-                  // right: 50,
-                  // left: 50,
-                  borderRadius: 5,
-                }}
-                onPress={handleToSale}>
-                <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
-                  xác nhận
-                </Text>
-              </TouchableOpacity>
+                marginTop : 10,
+                borderRadius: 5,
+              }}
+              onPress={handleToSale}>
+              <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
+                Xác nhận
+              </Text>
+            </TouchableOpacity>
             </View>
           </View>
         </BottomSheetModal>
-      </SafeAreaView>
+
+        <Login
+          bottomSheetModalRef={bottomSheetModalRefLogin}
+          snapPoints={snapPointsLogin}
+          handleSheetChanges={handleSheetChangesLogin}
+          handleClosePress={handleClosePressLogin}
+          navigation={navigation}
+          />
+
+      </Animate.View>
     </BottomSheetModalProvider>
   );
 };

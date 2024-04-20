@@ -143,10 +143,10 @@ const RegisterScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView style={{flex: 1, marginHorizontal: 22}}>
-        <View style={{marginBottom: 80, marginTop: 20, alignItems: 'center'}}>
-          <Image source={Icons.IconApp} style={{width: 100, height: 100}} />
+        <View style={{marginBottom: 40, marginTop: 20, alignItems: 'center'}}>
+          <Image source={Icons.IconApp} style={{width: 150, height: 150}} />
         </View>
-        <View style={{marginVertical: 22}}>
+        <View style={{marginVertical: 0}}>
           <Text
             style={{
               fontSize: 22,
@@ -352,9 +352,10 @@ const RegisterScreen = ({navigation}) => {
                 marginTop: 18,
                 marginBottom: 4,
                 borderWidth: 1,
+                borderColor : COLORS.App,
                 borderRadius: 8,
                 height: 50,
-                backgroundColor: COLORS.black,
+                backgroundColor: COLORS.App,
               }}>
               <Text style={styles.submitText}>Đăng ký</Text>
             </TouchableOpacity>

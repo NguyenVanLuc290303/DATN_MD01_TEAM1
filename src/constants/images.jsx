@@ -1,6 +1,6 @@
 import IconEye from '../assets/images/icon_eye_visibility.png';
 import IconEyeHide from '../assets/images/icon_eye_visibility_off.png';
-import IconApp from '../assets/images/logo_app.jpg';
+import IconApp from '../assets/images/imageLogo_login.png';
 import IconHome from '../assets/images/icon_home.png';
 import IconChat from '../assets/images/icon_chat.png';
 import IconLove from '../assets/images/icon_love.png';

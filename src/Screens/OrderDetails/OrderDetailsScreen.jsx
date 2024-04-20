@@ -186,6 +186,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
       });
   };
 
+  console.log(isChecked);
+
   const postOrdertoServer = () => {
     if (isChecked) {
       const myHeaders = new Headers();
@@ -314,6 +316,24 @@ const OrderDetailsScreen = ({navigation, route}) => {
       .catch(error => {
         console.error('Error:', error);
       });
+  };
+
+  const handleZaloPay = () => {
+    if(isChecked){
+      ToastAndroid.showWithGravity(
+        'Vui lòng tắt thanh toán khi nhận hàng',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+    }else{
+      navigation.navigate('ZaloPaymentScreen', {
+        dataProductOrder: dataProductOrder,
+        pricePayment: totalPrice,
+        addressReceive: addressOrder,
+        deleteProductInCart: deleteProductInCart,
+      });
+    }
+
   };
 
   return (
@@ -556,16 +576,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
             </View>
           </View>
 
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ZaloPaymentScreen', {
-                dataProductOrder: dataProductOrder,
-                pricePayment: totalPrice,
-                addressReceive: addressOrder,
-                deleteProductInCart: deleteProductInCart,
-              })
-            }
-            style={styles.textTransport3}>
+          <View style={styles.textTransport3}>
             <Image
               style={{
                 width: 34,
@@ -586,12 +597,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Zalo Pay
             </Text>
-            <Text
-              style={styles.priceTransport3}>
+            <Text onPress={handleZaloPay} style={styles.priceTransport3}>
               Liên kết
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('PaymentScreen')} style={styles.textTransport4}>
+          </View>
+          <View style={styles.textTransport4}>
             <Image
               style={{
                 width: 30,
@@ -613,7 +623,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               Thẻ tín dụng/Ghi nợ
             </Text>
             <View style={{paddingRight: '18%'}} />
-          </TouchableOpacity>
+          </View>
         </View>
         <View
           style={{
@@ -728,7 +738,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 1,
     borderRadius: 5,
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-start', // Căn chỉnh cho phù hợp với vùng chữ
   },
   priceContainer: {
     flexDirection: 'column',

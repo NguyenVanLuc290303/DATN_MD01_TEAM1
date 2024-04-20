@@ -211,7 +211,6 @@ const ZaloPaymentScreen = ({navigation, route}) => {
   };
 
   const postOrdertoServer = () => {
-    if (isChecked) {
       const myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
       myHeaders.append(
@@ -238,9 +237,8 @@ const ZaloPaymentScreen = ({navigation, route}) => {
           .then(response => response.json())
           .then(result => pushProductOnOrder(result));
       } catch (error) {
-        console.log(error);
+        console.error('Error placing order:', error);
       }
-    }
   };
 
   const pushProductOnOrder = data => {

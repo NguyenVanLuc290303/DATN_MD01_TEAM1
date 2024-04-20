@@ -70,6 +70,8 @@ import ChangePhoneScreen from './src/Screens/EditProfile/components/ChangePhoneS
 import ChangeAddressScreen from './src/Screens/EditProfile/components/ChangeAddressScreen/ChangeAddressScreen';
 import ZaloPaymentScreen from './src/Screens/ZaloPaymentScreen/ZaloPaymentScreen';
 import EvualuateScreen from './src/Screens/EvaluateScreen/EvaluateScreen';
+import SettingNotificationScreen from './src/Screens/SettingNotificationScreen/SettingNotificationScreen';
+import { PortalProvider } from '@gorhom/portal';
 import ReasonScreen from './src/Screens/EvaluateScreen/ReasonScreen';
 
 
@@ -87,18 +89,13 @@ function App() {
     }
     return true;
   };
-
-  const ProfileStack = ({navigation}) => {
-    <Stack.Navigator screenOptions={{headerShown: true}}>
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
-    </Stack.Navigator>;
-  };
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1}}>
+    <PortalProvider>
     <UserProvider>
     <CartProvider>
     <NavigationContainer>
+
       <Stack.Navigator
         initialRouteName={'FisrtScreen'}
         screenOptions={{headerShown: false}}>
@@ -122,7 +119,7 @@ function App() {
           component={YourOrderScreen}
           options={{headerShown: false}}
         />
-      
+
          <Stack.Screen
           name="YourOrderDetailScreen"
           component={YourOrderDetailScreen}
@@ -138,8 +135,8 @@ function App() {
           component={RegisterScreen}
           options={{headerShown: false}}
         />
-      
-        
+
+
         <Stack.Screen
           name="OnboardingScreen"
           component={OnboardingScreen}
@@ -190,18 +187,18 @@ function App() {
           component={ResetForgotPasswordScreen}
           options={{headerShown: false}}
         />
-        
+
           <Stack.Screen
             name="DetailProductScreen"
             component={DetailProductScreen}
             options={{headerShown: false}}
           />
-        
+
          <Stack.Screen
           name="HomeScreen"
           component={Home}
           options={{headerShown : false}}
-        /> 
+        />
          <Stack.Screen
           name="ProductCategory"
           component={ProductCategory}
@@ -298,11 +295,17 @@ function App() {
           component={ReasonScreen}
           options={{headerShown: true}}
         />
+        <Stack.Screen
+          name="SettingNotificationScreen"
+          component={SettingNotificationScreen}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
+
     </CartProvider>
     </UserProvider>
-
+    </PortalProvider>
     </GestureHandlerRootView>
   );
 }

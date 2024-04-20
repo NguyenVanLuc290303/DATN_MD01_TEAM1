@@ -20,7 +20,6 @@ import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {API_PRODUCT , API_COLOR_PRODUCT} from '../../config/api-consts';
-import ModalConfirm from '../../components/dialog/ModalConfirm';
 import { Cart } from '../../hooks/cartContext';
 import Loading from '../../components/organisms/Loading/Loading';
 import useListOrderQuantity from '../../services/check-order-quantity-services/use-list-order-quantity';

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect ,useRef , useCallback, useMemo} from 'react';
 import {
   FlatList,
   Image,
@@ -27,6 +27,7 @@ import Slider from '../../components/morecules/SildeShow/Silder';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useListCategory from '../../services/category-services/use-all-list-category';
 import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
+import Login from '../../components/organisms/Login/Login';
 
 import {styles} from './Home.style';
 const Home = ({navigation}) => {
@@ -43,6 +44,24 @@ const Home = ({navigation}) => {
 
   console.log(dataCart.length, 'dataCart.length');
 
+
+  const bottomSheetModalRef = useRef(null);
+
+  const snapPoints = useMemo(() => ['25%', '100%'], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleSheetChanges = useCallback(index => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchDataProduct();
@@ -51,22 +70,22 @@ const Home = ({navigation}) => {
     }, 2000);
   }, []);
 
-  useEffect(() => {
-    const loadLikedProducts = async () => {
-      try {
-        const likedProductsString = await AsyncStorage.getItem(
-          `likedProducts_${userData._id}`,
-        );
-        if (likedProductsString !== null) {
-          setLikedProducts(JSON.parse(likedProductsString));
-        }
-      } catch (error) {
-        console.error('Lỗi khi tải trạng thái yêu thích:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const loadLikedProducts = async () => {
+  //     try {
+  //       const likedProductsString = await AsyncStorage.getItem(
+  //         `likedProducts_${userData._id}`,
+  //       );
+  //       if (likedProductsString !== null) {
+  //         setLikedProducts(JSON.parse(likedProductsString));
+  //       }
+  //     } catch (error) {
+  //       console.error('Lỗi khi tải trạng thái yêu thích:', error);
+  //     }
+  //   };
 
-    loadLikedProducts();
-  }, [userData._id]);
+  //   loadLikedProducts();
+  // }, [userData._id]);
 
   const toggleFavorite = async productId => {
     try {
@@ -138,7 +157,9 @@ const Home = ({navigation}) => {
   };
 
   React.useEffect(() => {
-    axios
+
+    if(userData){
+      axios
       .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
       .then(function (response) {
         const data = Array.isArray(response.data)
@@ -150,7 +171,9 @@ const Home = ({navigation}) => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+    }
+
+  }, [userData]);
 
   const fetchDataProduct = () => {
     var myHeaders = new Headers();
@@ -176,6 +199,14 @@ const Home = ({navigation}) => {
   }, []);
 
   console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
+
+  const handleToCartScreen = () =>{
+    if (userData) {
+      navigation.navigate('CartScreen');
+    }else{
+      handlePresentModalPress();
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -204,7 +235,7 @@ const Home = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onPress={() => navigation.navigate('CartScreen')}>
+              onPress={handleToCartScreen}>
               <Image source={require('@/icons/png/local_mall.png')} />
               <View
                 style={{
@@ -230,7 +261,7 @@ const Home = ({navigation}) => {
           <Slider />
 
           <View style={{paddingLeft: 10, marginTop: 10}}>
-            <Text style={styles.textHead}>Category</Text>
+            <Text style={styles.textHead}>Thể loại</Text>
           </View>
           {dataCategory.length > 0 ? (
             <>
@@ -256,24 +287,30 @@ const Home = ({navigation}) => {
                 </ScrollView>
               </View>
               <View style={{paddingLeft: 10, marginTop: 10}}>
-                <Text style={styles.textHead}>Recommend</Text>
+                <Text style={styles.textHead}>Giới thiệu hot</Text>
               </View>
-              <ScrollView>
-                <ProductListAll
-                  dataListProduct={dataProduct}
-                  onpressLove={toggleFavorite}
-                  heartColor={renderHeartColor}
-                  navigation={navigation}
-                />
-              </ScrollView>
+              <ProductListAll
+                dataListProduct={dataProduct}
+                onpressLove={toggleFavorite}
+                heartColor={renderHeartColor}
+                navigation={navigation}
+              />
             </>
           ) : (
             <Loading />
           )}
         </ScrollView>
+        <Login
+          bottomSheetModalRef={bottomSheetModalRef}
+          snapPoints={snapPoints}
+          handleSheetChanges={handleSheetChanges}
+          handleClosePress={handleClosePress}
+          navigation={navigation}
+          />
       </View>
     </View>
   );
 };
 
 export default Home;
+

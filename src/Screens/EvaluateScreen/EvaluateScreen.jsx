@@ -61,54 +61,80 @@ const reference = storage().ref(`evaluate/${userData._id}`);
     // const response = await fetch(dataURI[0]);
     // const blob = await response.blob();
     // console.log(dataURI[0]);
+    if(image){
+      const task = reference.putFile(image);
+      // Đợi quá trình upload hoàn thành
+      task
+        .then(async () => {
+          console.log('Image uploaded to the bucket!');
+  
+          // Lấy URL của ảnh sau khi đã tải lên Firebase Storage
+          const url = await reference.getDownloadURL();
+          console.log('Download URL:', url);
+  
+          updateImageUserToMongoDB(url);
+        })
+        .catch(error => {
+          console.error('Error uploading image:', error);
+        });
+    }else{
+      ToastAndroid.showWithGravity(
+        'Chưa có hình ảnh đánh giá',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }
 
-    const task = reference.putFile(image);
-    // Đợi quá trình upload hoàn thành
-    task
-      .then(async () => {
-        console.log('Image uploaded to the bucket!');
-
-        // Lấy URL của ảnh sau khi đã tải lên Firebase Storage
-        const url = await reference.getDownloadURL();
-        console.log('Download URL:', url);
-
-        updateImageUserToMongoDB(url);
-      })
-      .catch(error => {
-        console.error('Error uploading image:', error);
-      });
+   
   };
 
   const updateImageUserToMongoDB = (imageURL) =>{
-    const datetime = useDateCurrent();
 
-    console.log(datetime);
+    if(context == null){
+      ToastAndroid.showWithGravity(
+        'Chưa có nội dung đánh giá',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+
+    }else if(rating === 0){
+      ToastAndroid.showWithGravity(
+        'Chưa có đánh giá sao',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }else{
+      const datetime = useDateCurrent();
+
+      console.log(datetime);
+      
+  
+      axios.post(API_EVALUATE, {
+          UserId  : userData._id,
+          ProductId : productId,
+          username : userData.username,
+          imageuser : userData.image,
+          datetime : datetime,
+          content : context,
+          imageContent : imageURL,
+          star : rating
+        })
+        .then(function (response) {
+          if(response.data){
+            ToastAndroid.showWithGravity(
+              'Thêm đánh giá thành công',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM
+            );
+          }
+        }).then(
+          () => navigation.goBack()
+        )
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
     
-
-    axios.post(API_EVALUATE, {
-        UserId  : userData._id,
-        ProductId : productId,
-        username : userData.username,
-        imageuser : userData.image,
-        datetime : datetime,
-        content : context,
-        imageContent : imageURL,
-        star : rating
-      })
-      .then(function (response) {
-        if(response.data){
-          ToastAndroid.showWithGravity(
-            'Thêm đánh giá thành công',
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM
-          );
-        }
-      }).then(
-        () => navigation.goBack()
-      )
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
   return (
