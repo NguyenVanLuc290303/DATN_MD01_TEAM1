@@ -163,7 +163,7 @@ const DetailProductScreen = ({navigation, route  }) => {
   // const animatedIndex = useRef(new Animated.Value(0)).current;
 
 
-  const snapPoints = useMemo(() => ['25%', '70%'], []);
+  const snapPoints = useMemo(() => ['25%', '75%'], []);
 
   const handlePresentModalPress = useCallback(index => {
     bottomSheetModalRef.current?.present();

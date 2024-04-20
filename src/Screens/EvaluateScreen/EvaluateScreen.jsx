@@ -61,33 +61,36 @@ const reference = storage().ref(`evaluate/${userData._id}`);
     // const response = await fetch(dataURI[0]);
     // const blob = await response.blob();
     // console.log(dataURI[0]);
-
-    const task = reference.putFile(image);
-    // Đợi quá trình upload hoàn thành
-    task
-      .then(async () => {
-        console.log('Image uploaded to the bucket!');
-
-        // Lấy URL của ảnh sau khi đã tải lên Firebase Storage
-        const url = await reference.getDownloadURL();
-        console.log('Download URL:', url);
-
-        updateImageUserToMongoDB(url);
-      })
-      .catch(error => {
-        console.error('Error uploading image:', error);
-      });
-  };
-
-  const updateImageUserToMongoDB = (imageURL) =>{
-
-    if(imageURL === ""){
+    if(image){
+      const task = reference.putFile(image);
+      // Đợi quá trình upload hoàn thành
+      task
+        .then(async () => {
+          console.log('Image uploaded to the bucket!');
+  
+          // Lấy URL của ảnh sau khi đã tải lên Firebase Storage
+          const url = await reference.getDownloadURL();
+          console.log('Download URL:', url);
+  
+          updateImageUserToMongoDB(url);
+        })
+        .catch(error => {
+          console.error('Error uploading image:', error);
+        });
+    }else{
       ToastAndroid.showWithGravity(
         'Chưa có hình ảnh đánh giá',
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM
       );
-    }else if(context == null){
+    }
+
+   
+  };
+
+  const updateImageUserToMongoDB = (imageURL) =>{
+
+    if(context == null){
       ToastAndroid.showWithGravity(
         'Chưa có nội dung đánh giá',
         ToastAndroid.SHORT,
