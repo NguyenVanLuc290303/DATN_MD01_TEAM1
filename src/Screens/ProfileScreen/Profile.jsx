@@ -21,6 +21,7 @@ import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
 import {User} from '../../hooks/useContext';
 import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 import Icon from 'react-native-vector-icons/Ionicons';
+import IconF from 'react-native-vector-icons/FontAwesome';
 import Login from '../../components/organisms/Login/Login';
 
 const Profile = ({navigation}) => {
@@ -90,7 +91,7 @@ const Profile = ({navigation}) => {
       icon: Icons.IconPrivacy,
       text: 'Privacy',
       action: navigateToPrivacy,
-    },
+    }
   ];
 
   const renderSettingItem = ({icon, text, action}) => (
@@ -110,7 +111,7 @@ const Profile = ({navigation}) => {
   );
 
   const navigateToSubscription = () => {
-    console.log('My Subscription Action');
+    navigation.navigate('DeliveryScreen')
   };
 
   const navigateToSupport = () => {
@@ -124,7 +125,7 @@ const Profile = ({navigation}) => {
   const supportItems = [
     {
       icon: Icons.IconSubscription,
-      text: 'My Subscription',
+      text: 'Thêm địa chỉ giao hàng',
       action: navigateToSubscription,
     },
     {icon: Icons.IconHelp, text: 'Help & Support', action: navigateToSupport},
@@ -141,14 +142,6 @@ const Profile = ({navigation}) => {
 
   const navigateToDataSaver = () => {
     console.log('Data Saver Action');
-  };
-
-  const navigateToReportProblem = () => {
-    console.log('Data Saver Action');
-  };
-
-  const addAccount = () => {
-    console.log('Add Account Action');
   };
 
   const logout = () => {
@@ -208,23 +201,14 @@ const Profile = ({navigation}) => {
               />
             </View>
             {/*Account Setting*/}
-            <View style={{marginBottom: 12}}>
-              <Text style={{marginVertical: 10, color: COLORS.black}}>
+            <View style={{marginBottom: 0}}>
+              <Text style={{marginVertical: 0, color: COLORS.black}}>
                 Tài khoản
               </Text>
               <View style={{borderRadius: 12, color: COLORS.black}}>
                 {accountItem.map((item, index) => (
                   <Fragment key={index}>{renderSettingItem(item)}</Fragment>
                 ))}
-              </View>
-            </View>
-
-            {/*Support and About Setting*/}
-            <View style={{marginBottom: 12}}>
-              <Text style={{marginVertical: 10, color: COLORS.black}}>
-                Support and About
-              </Text>
-              <View style={{borderRadius: 12, color: COLORS.black}}>
                 {supportItems.map((item, index) => (
                   <Fragment key={index}>{renderSettingItem(item)}</Fragment>
                 ))}

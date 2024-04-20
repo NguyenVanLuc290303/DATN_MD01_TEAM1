@@ -93,7 +93,7 @@ const DetailProductScreen = ({navigation, route  }) => {
 
   // data select
 
-  const [selectSize, setSelectSize] = useState();
+  const [selectSize, setSelectSize] = useState(null);
 
   const [idPropotiesS, setIdPropoties] = useState();
 
@@ -253,52 +253,60 @@ const DetailProductScreen = ({navigation, route  }) => {
   const handleToCart = () => {
     if(userData){
       if (selectedColor !== null) {
-        const myHeaders = new Headers();
-        myHeaders.append('Content-Type', 'application/json');
-        myHeaders.append(
-          'Cookie',
-          'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
-        );
-  
-        const requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: JSON.stringify({
-            CartId: idUser,
-            ProductId: _id,
-            Name: name,
-            Price: price,
-            ColorCode: selectedColor.colorId,
-            Size: selectSize,
-            Quantity: quantity,
-            RemainQuantity: quantityRemain,
-            PropertiesId: idPropotiesS,
-            Image: selectedColor.image,
-          }),
-          redirect: 'follow',
-        };
-  
-        try {
-          fetch(
-            `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
-            requestOptions,
-          )
-            .then(response => response.json())
-            .then(result => {
-              if (result.status === 1) {
-                addItemToCart(result);
-                animationCart();
-                handleClosePress();
-              } else {
-                ToastAndroid.showWithGravity(
-                  'Sản phẩm đã có trong giỏ',
-                  ToastAndroid.SHORT,
-                  ToastAndroid.CENTER,
-                );
-              }
-            });
-        } catch (error) {
-          console.log(error, ' lỗi thêm vào giỏ hàng');
+        if(selectSize !== null){
+          const myHeaders = new Headers();
+          myHeaders.append('Content-Type', 'application/json');
+          myHeaders.append(
+            'Cookie',
+            'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
+          );
+    
+          const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({
+              CartId: idUser,
+              ProductId: _id,
+              Name: name,
+              Price: price,
+              ColorCode: selectedColor.colorId,
+              Size: selectSize,
+              Quantity: quantity,
+              RemainQuantity: quantityRemain,
+              PropertiesId: idPropotiesS,
+              Image: selectedColor.image,
+            }),
+            redirect: 'follow',
+          };
+    
+          try {
+            fetch(
+              `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
+              requestOptions,
+            )
+              .then(response => response.json())
+              .then(result => {
+                if (result.status === 1) {
+                  addItemToCart(result);
+                  animationCart();
+                  handleClosePress();
+                } else {
+                  ToastAndroid.showWithGravity(
+                    'Sản phẩm đã có trong giỏ',
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                  );
+                }
+              });
+          } catch (error) {
+            console.log(error, ' lỗi thêm vào giỏ hàng');
+          }
+        }else{
+          ToastAndroid.showWithGravity(
+            'Bạn chưa chọn size',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
         }
       } else {
         ToastAndroid.showWithGravity(
@@ -318,30 +326,47 @@ const DetailProductScreen = ({navigation, route  }) => {
   };
 
   const handleToSale = () => {
-    if (selectedColor !== null) {
-      const productSelect = [
-        {
-          ProductId: _id,
-          PropertiesId: idPropotiesS,
-          Name: name,
-          Size: selectSize,
-          Quantity: quantity,
-          ColorCode: selectedColor.colorId,
-          Price: price,
-          Image: selectedColor.image,
-        },
-      ];
-
-      navigation.navigate('OrderDetailsScreen', {
-        dataProductOrder: productSelect,
-      });
-    } else {
+    if(userData !== null){
+      if (selectedColor !== null) {
+        if(selectSize !== null){
+          const productSelect = [
+            {
+              ProductId: _id,
+              PropertiesId: idPropotiesS,
+              Name: name,
+              Size: selectSize,
+              Quantity: quantity,
+              ColorCode: selectedColor.colorId,
+              Price: price,
+              Image: selectedColor.image,
+            },
+          ];
+    
+          navigation.navigate('OrderDetailsScreen', {
+            dataProductOrder: productSelect,
+          });
+        } else {
+          ToastAndroid.showWithGravity(
+            'Bạn chưa chọn kích thước',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
+        }else{
+          ToastAndroid.showWithGravity(
+            'Bạn chưa chọn màu',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
+    }else{
       ToastAndroid.showWithGravity(
-        'Bạn chưa chọn màu',
+        'Bạn chưa đăng nhập hãy đăng nhập',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
     }
+   
   };
 
   const handleOnpressSize = (size, id, quantity) => {
