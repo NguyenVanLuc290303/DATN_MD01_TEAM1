@@ -47,7 +47,6 @@ const ZaloPaymentScreen = ({navigation, route}) => {
     const handlePaymentZalo = async () => {
       try {
         await createZaloPayOrder(); // Tạo đơn hàng Zalo Pay
-        await handleOrderProduct(); // Đẩy đơn hàng lên server
       } catch (error) {
         console.error("Error during Zalo Pay order creation and order handling:", error);
       }
@@ -227,7 +226,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
           status: status,
           date: formattedDate,
           PTTT: 'Thanh toán bằng zalopay',
-          address: addressOrder,
+          address: addressReceive,
         }),
         redirect: 'follow',
       };

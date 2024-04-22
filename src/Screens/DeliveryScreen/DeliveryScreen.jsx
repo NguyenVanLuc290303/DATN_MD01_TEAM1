@@ -18,7 +18,7 @@ import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 
 const DeliveryScreen = ({navigation , route}) => {
 
-  const {dataProductOrder} = route?.params;
+  const {dataProductOrder} = route?.params || {};
   const {userData} =  User();
   console.log(userData._id);
   const [dataDelivery, setdataDelivery] = useState([]);
@@ -43,7 +43,7 @@ const DeliveryScreen = ({navigation , route}) => {
   console.log(dataDelivery);
 
   const handleAddAddressToOrder = ( item , index) =>{
-    navigation.navigate('OrderDetailsScreen' , {dataAddress : item , dataProductOrder : dataProductOrder});
+    navigation.navigate('OrderDetailsScreen' , {dataAddress : item , dataProductOrder2 : dataProductOrder});
   }
 
   const handleDeteleAddress = () =>{
@@ -98,7 +98,7 @@ const DeliveryScreen = ({navigation , route}) => {
             source={require('@/images/back.png')}
           />
         </TouchableOpacity>
-        
+
         <View
           style={{
             justifyContent: 'center',
@@ -176,7 +176,7 @@ const DeliveryScreen = ({navigation , route}) => {
                       <Text style={{color: '#FF0000'}}>Xóa</Text>
                     </TouchableOpacity>
                   </View>
-                  
+
                 </View>
               );
             }}

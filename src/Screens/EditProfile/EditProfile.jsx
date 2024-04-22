@@ -147,7 +147,7 @@ const EditProfile = ({navigation}) => {
         <View style={{ paddingTop: 10, justifyContent: 'center' }}>
           <TouchableOpacity onPress={()=>navigation.navigate('ChangeUserNameScreen')}>
             <View style={{ marginBottom: 22, flexDirection: 'row' }}>
-              <Text style={{ flex: 1 }}>Name</Text>
+              <Text style={{ flex: 1 }}>Họ và tên</Text>
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
                 <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.username}</Text>
                 <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
@@ -165,7 +165,7 @@ const EditProfile = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>navigation.navigate('ChangePhoneScreen')}>
             <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ flex: 1, }}>Phone Number</Text>
+              <Text style={{ flex: 1, }}>Số điện thoại</Text>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
                 <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.numberPhone}</Text>
                 <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
@@ -174,7 +174,7 @@ const EditProfile = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>navigation.navigate('ChangeAddressScreen')}>
             <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ flex: 1, }}>Address</Text>
+              <Text style={{ flex: 1, }}>Địa chỉ</Text>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.address}</Text>
                 <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
@@ -193,7 +193,7 @@ const EditProfile = ({navigation}) => {
                 height: 50,
                 backgroundColor: COLORS.black,
               }}>
-              <Text style={styles.submitText}>Change Information</Text>
+              <Text style={styles.submitText}>Thay đổi thông tin</Text>
             </TouchableOpacity>
           </View>
         </View>
