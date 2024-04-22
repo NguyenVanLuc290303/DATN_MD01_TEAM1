@@ -174,6 +174,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
           status: status,
           date: formattedDate,
           PTTT: 'Thanh toán bằng zalopay',
+          address: addressReceive,
         }),
         redirect: 'follow',
       };
