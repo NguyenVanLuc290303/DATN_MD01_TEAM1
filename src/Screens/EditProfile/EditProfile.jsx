@@ -1,6 +1,6 @@
 import {
   Alert,
-  Image,
+  Image, Keyboard,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {useEffect, useState} from 'react';
@@ -35,12 +35,20 @@ const EditProfile = ({navigation}) => {
   const [imageChange, setImageChange] = useState(null);
 
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      // Dismiss keyboard when navigating away from this screen
+      Keyboard.dismiss();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   const handleOnpressImagePicker = async () => {
     try {
       const result = await launchImageLibrary({
         mediaType: 'photo',
         quality: 1,
-        
+
       });
 
       if(!result.didCancel){
@@ -93,12 +101,12 @@ const EditProfile = ({navigation}) => {
     })
     .catch(function (error) {
       console.log(error);
-    });;
+    });
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
-      <ScrollView style={{flex: 1, marginHorizontal: 22}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white,}}>
+      <ScrollView style={{flex: 1, marginHorizontal: 22,paddingBottom: 100,}}>
         <View
           style={{
             marginBottom: 80,
@@ -148,7 +156,7 @@ const EditProfile = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>navigation.navigate('ChangeEmailScreen')}>
             <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ flex: 1, }}>Email</Text>              
+              <Text style={{ flex: 1, }}>Email</Text>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
                 <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.email}</Text>
                 <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />

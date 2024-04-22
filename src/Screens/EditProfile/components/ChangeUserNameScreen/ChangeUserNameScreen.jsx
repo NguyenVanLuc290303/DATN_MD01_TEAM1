@@ -7,8 +7,8 @@ import {
   View,
   Image,
   TextInput,
-  ToastAndroid
-} from 'react-native';
+  ToastAndroid, Keyboard,
+} from "react-native";
 import { User } from '../../../../hooks/useContext';
 import { API_UPDATE_USER } from '../../../../config/api-consts';
 import axios from 'axios';
@@ -43,12 +43,12 @@ const ChangeUserNameScreen = ({ navigation }) => {
       // if(response.data._id){
 
         const userdateNew = {
-          "_id": userData._id, 
-          "address": userData.address, 
-          "email": userData.email, 
-          "image": userData.image, 
-          "numberPhone": userData.numberPhone, 
-          "passwd": userData.passwd, 
+          "_id": userData._id,
+          "address": userData.address,
+          "email": userData.email,
+          "image": userData.image,
+          "numberPhone": userData.numberPhone,
+          "passwd": userData.passwd,
           "username": userName
         }
         setUserData(userdateNew);
@@ -68,6 +68,11 @@ const ChangeUserNameScreen = ({ navigation }) => {
     console.log('Đã lưu tên người dùng:', userName);
     navigation.navigate('EditProfile')
   };
+
+  const handleKeyboardDismiss = () => {
+    Keyboard.dismiss();
+  };
+
 
   return (
     <View style={styles.container}>
@@ -109,6 +114,7 @@ const ChangeUserNameScreen = ({ navigation }) => {
           borderBottomColor="#E5E5E5"
           value={userName}
           onChangeText={handleUsernameChange}
+          onBlur={handleKeyboardDismiss}
         />
       </View>
     </View>
