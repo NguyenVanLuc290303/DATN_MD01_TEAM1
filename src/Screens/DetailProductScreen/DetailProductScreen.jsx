@@ -41,6 +41,7 @@ import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import { API_PRODUCT } from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import {Cart} from '../../hooks/cartContext';
+import { API_PRODUCT } from '../../config/api-consts';
 import {styles} from './DetailProductScreen.style';
 import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
 import useListProduct from '../../services/product-services/use-all-list-product';
@@ -142,6 +143,19 @@ const DetailProductScreen = ({navigation, route  }) => {
   };
 
   useEffect(() => {
+
+
+
+    const increaseViewCount = async () => {
+      try {
+          await axios.get(`${API_PRODUCT}/view/${name}`);
+          console.log('Tăng View Thành CÔng');
+      } catch (error) {
+          console.error('Error increasing view count:', error);
+      }
+  };
+  increaseViewCount();
+
     const myHeaders = new Headers();
     myHeaders.append(
       'Cookie',
