@@ -40,6 +40,7 @@ import {API_COLOR_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import {Cart} from '../../hooks/cartContext';
+import { API_PRODUCT } from '../../config/api-consts';
 import {styles} from './DetailProductScreen.style';
 import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
 import useListProduct from '../../services/product-services/use-all-list-product';
@@ -48,6 +49,7 @@ import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
 import { isSameDay } from 'react-native-gifted-chat';
 import Animate, { Extrapolate, interpolate } from 'react-native-reanimated';
 import Login from '../../components/organisms/Login/Login';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -140,6 +142,19 @@ const DetailProductScreen = ({navigation, route  }) => {
   };
 
   useEffect(() => {
+
+
+
+    const increaseViewCount = async () => {
+      try {
+          await axios.get(`${API_PRODUCT}/view/${name}`);
+          console.log('Tăng View Thành CÔng');
+      } catch (error) {
+          console.error('Error increasing view count:', error);
+      }
+  };
+  increaseViewCount();
+
     const myHeaders = new Headers();
     myHeaders.append(
       'Cookie',
