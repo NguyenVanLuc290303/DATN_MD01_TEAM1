@@ -13,10 +13,8 @@ import {
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {User} from '../../hooks/useContext';
-import CryptoJS from 'crypto-js';
 
 import {useState, useCallback, useEffect} from 'react';
-import CheckBox from '@react-native-community/checkbox';
 import {
   API_DELETE_IN_CART,
   API_ORDER,
@@ -26,10 +24,17 @@ import {API_PRODUCT_ORDER} from '../../config/api-consts';
 import Icon from 'react-native-vector-icons/Fontisto';
 import axios, {Axios} from 'axios';
 import {Cart} from '../../hooks/cartContext';
+import { useRoute } from '@react-navigation/native';
+
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
 
   const {dataProductOrder, dataAddress} = route.params;
+
+  const route = useRoute();
+  const currentRouteName = route.name;
+
+  console.log(currentRouteName ,"lkkkkkk");
 
   const {removeFromCart} = Cart();
 
@@ -359,6 +364,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               onPress={() =>
                 navigation.navigate('DeliveryScreen', {
                   dataProductOrder: dataProductOrder,
+                  fromScreen : currentRouteName
                 })
               }>
               <Image source={Icons.IconNext} style={styles.iconNext} />

@@ -18,7 +18,7 @@ import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 
 const DeliveryScreen = ({navigation , route}) => {
 
-  const {dataProductOrder} = route?.params;
+  const {dataProductOrder} = route?.params || {};
   const {userData} =  User();
   console.log(userData._id);
   const [dataDelivery, setdataDelivery] = useState([]);
@@ -43,6 +43,7 @@ const DeliveryScreen = ({navigation , route}) => {
   console.log(dataDelivery);
 
   const handleAddAddressToOrder = ( item , index) =>{
+    
     navigation.navigate('OrderDetailsScreen' , {dataAddress : item , dataProductOrder : dataProductOrder});
   }
 
