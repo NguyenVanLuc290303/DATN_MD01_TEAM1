@@ -4,7 +4,8 @@ import COLORS from "../../constants/colors";
 export const styles = StyleSheet.create({
     container :{
         flex : 1,
-        alignItems : 'center'
+        paddingLeft : '3%',
+        paddingRight : '3%'
     },
     btn_continueOrder:{
         
@@ -35,5 +36,13 @@ export const styles = StyleSheet.create({
         color : COLORS.App,
         fontSize : 16,
         fontWeight : '700'
+    },
+    viewHeader:{
+        flexDirection : 'row',
+        alignItems : 'center'
+    },
+    timeOrder :{
+        flexDirection : 'row',
+        alignItems : 'center'
     }
 })

@@ -92,7 +92,7 @@ const AddDeliveryScreen = ({ navigation }) => {
             setTextPhone('');
             setTextStreet('');
 
-            // navigation.navigate('DeliveryScreen');
+            navigation.navigate('DeliveryScreen');
 
           }
         })
@@ -101,8 +101,6 @@ const AddDeliveryScreen = ({ navigation }) => {
         });
     }
   };
-
-  console.log('render lại', "AdđeliveryScreen");
 
   return (
     <View style={styles.container}>

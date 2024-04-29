@@ -89,7 +89,7 @@ const Profile = ({navigation}) => {
 
     {
       icon: Icons.IconPrivacy,
-      text: 'Privacy',
+      text: 'Thay đổi mật khẩu',
       action: navigateToPrivacy,
     }
   ];
