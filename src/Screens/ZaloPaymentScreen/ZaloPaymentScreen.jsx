@@ -233,7 +233,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
           removeFromCart(deleteProductInCart);
           deleteProductCart();
           downQuantityServer(deleteQuantityProduct);
-          navigation.replace('NotificationOrderSuccess');
+          navigation.replace('NotificationOrderSuccess' ,{dataProductOrder : dataProductOrder , timeOrder : formattedDate } );
           // }
         });
     } catch (error) {

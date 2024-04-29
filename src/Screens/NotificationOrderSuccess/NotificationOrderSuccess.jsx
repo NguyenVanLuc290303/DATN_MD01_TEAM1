@@ -9,21 +9,8 @@ const {HEIGHT , WIDTH} = Dimensions.get("window");
 
 function NotificationOrderSuccess({navigation, route}) {
 
-  const { timeOrder} = route.params || {};
+  const {dataProductOrder, timeOrder} = route.params || {};
 
-  const dataProductOrder = [
-    {
-      "_id": "661a9a9bf10cb00dce02a662",
-      "OrderId": "661a9a9af10cb00dce02a655",
-      "ProductId": "6615072cb4234ad3922c9547",
-      "ColorCode": "BDBDBD",
-      "Size": "XL",
-      "Quantity": 1,
-      "PropertiesId": "6615074cb4234ad3922c9557",
-      "Image": "https://firebasestorage.googleapis.com/v0/b/vidu2-96b2f.appspot.com/o/uploads%2FScreenshot%202024-03-25%20094627.png?alt=media",
-      "__v": 0
-    }
-  ];
 
 
   return (
