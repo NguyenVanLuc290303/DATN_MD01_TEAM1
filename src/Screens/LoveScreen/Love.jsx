@@ -46,9 +46,12 @@ const Love = ({ navigation }) => {
                             _id: item._id,
                             name: item.name,
                             image: item.image,
-                            category: item.loai,
+                            category: item.category,
                             price: item.price,
-                            quantitySold: item.quantitySold
+                            quantitySold: item.quantitySold,
+                            instruction : item.instruction,
+                            material : item.material,
+                            warrantyPolicy : item.warrantyPolicy,
                         })}
                     >
                          <View style={styles.viewItemLove}>

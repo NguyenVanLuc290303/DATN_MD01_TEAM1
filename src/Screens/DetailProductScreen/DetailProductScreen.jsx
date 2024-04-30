@@ -74,8 +74,6 @@ const DetailProductScreen = ({navigation, route  }) => {
 
 
   const {userData} = User();
-
-
   
   if (userData) {
     ({ dataCart, addItemToCart } = Cart());
@@ -85,9 +83,6 @@ const DetailProductScreen = ({navigation, route  }) => {
     dataCart = 0;
   }
 
-
-
-   
 
   const [dataProperties, setDaProperties] = useState([]);
 
@@ -561,10 +556,13 @@ const DetailProductScreen = ({navigation, route  }) => {
                       _id: item._id,
                       name: item.name,
                       image: item.image,
-                      category: item.loai,
+                      category: item.category,
                       describe: item.describe,
                       price: item.price,
                       quantitySold: item.quantitySold,
+                      instruction : item.instruction,
+                      material : item.material,
+                      warrantyPolicy : item.warrantyPolicy,
                     })
                   }>
                   <Image
