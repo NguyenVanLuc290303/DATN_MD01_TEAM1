@@ -28,20 +28,26 @@ const DeliveryScreen = ({navigation , route}) => {
 
   console.log(fromScreen , "fromScreen ")
 
-
   useEffect(() => {
-    axios
-      .get(`${API_ADDRESS}/${userData._id}`)
-      .then(function (response) {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_ADDRESS}/${userData._id}`);
         const data = Array.isArray(response.data) ? response.data : [response.data];
-
-        console.log(response.data ,"datadel");
         setdataDelivery(data);
-      })
-      .catch(function (error) {
+        console.log(data, "dataDelivery");
+      } catch (error) {
         console.log(error);
-      });
-  },[navigation]);
+      }
+    };
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Khi màn hình được focus, fetch dữ liệu mới
+      fetchData();
+    });
+
+    // Clean up listener khi component unmounts
+    return unsubscribe;
+  }, [navigation]); 
 
   console.log(dataDelivery);
 
