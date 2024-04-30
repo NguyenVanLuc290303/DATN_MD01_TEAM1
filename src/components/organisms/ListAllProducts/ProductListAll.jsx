@@ -43,7 +43,7 @@ const ProductListAll = ({dataListProduct , onpressLove , heartColor , navigation
                       <TouchableOpacity
                       style={styles.heartIcon}
                       onPress={() => onpressLove(item._id)}>
-                      <Icon name="heart" size={20} color={heartColor(item.id)} />
+                      <Icon name="heart" size={20} color={heartColor(item._id)} />
                     </TouchableOpacity>
                     </TouchableOpacity>
                   </View>
