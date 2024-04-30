@@ -66,7 +66,7 @@ const Profile = ({navigation}) => {
 
   const navigateToPrivacy = () => {
     console.log('Privacy Action');
-    navigation.navigate('PaymentScreen');
+    navigation.navigate('ChangePasswordScreen');
   };
   const accountItem = [
     {

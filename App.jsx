@@ -71,6 +71,7 @@ import ChangeAddressScreen from './src/Screens/EditProfile/components/ChangeAddr
 import ZaloPaymentScreen from './src/Screens/ZaloPaymentScreen/ZaloPaymentScreen';
 import EvualuateScreen from './src/Screens/EvaluateScreen/EvaluateScreen';
 import SettingNotificationScreen from './src/Screens/SettingNotificationScreen/SettingNotificationScreen';
+import ChangePasswordScreen from './src/Screens/ChangePasswordScreen/ChangePasswordScreen';
 import { PortalProvider } from '@gorhom/portal';
 
 // import {CartScreen} from './src/Screens';
@@ -291,6 +292,11 @@ function App() {
         <Stack.Screen
           name="SettingNotificationScreen"
           component={SettingNotificationScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChangePasswordScreen"
+          component={ChangePasswordScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
