@@ -258,7 +258,7 @@ function App() {
         <Stack.Screen
           name="NotificationOrderSuccess"
           component={NotificationOrderSuccess}
-          options={{headerShown: false}}
+          options={{headerShown: true}}
         />
         <Stack.Screen
           name="ChangeUserNameScreen"

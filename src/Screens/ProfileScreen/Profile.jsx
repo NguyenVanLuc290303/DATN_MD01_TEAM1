@@ -89,7 +89,7 @@ const Profile = ({navigation}) => {
 
     {
       icon: Icons.IconPrivacy,
-      text: 'Liên kết thẻ ngân hàng',
+      text: 'Thay đổi mật khẩu',
       action: navigateToPrivacy,
     }
   ];

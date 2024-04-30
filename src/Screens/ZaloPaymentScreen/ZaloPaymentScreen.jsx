@@ -27,6 +27,22 @@ const ZaloPaymentScreen = ({navigation, route}) => {
   const {dataProductOrder, pricePayment, addressReceive, deleteProductInCart} =
     route.params;
   const [status, setStatus] = useState('chờ xác nhận');
+  
+  const idUser = userData._id;
+  const userName = userData.username;
+  const year = new Date().getFullYear();
+  let month = new Date().getMonth() + 1;
+  if (month < 10) {
+    month = '0' + month;
+  }
+  let date = new Date().getDate();
+  if (date < 10) {
+    date = '0' + date;
+  }
+  const hour = new Date().getHours();
+  const minutes = new Date().getMinutes();
+  const secounds = new Date().getSeconds();
+  const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
   const {PayZaloBridge} = NativeModules;
   const payZaloBridgeEmitter = new NativeEventEmitter(PayZaloBridge);
 
@@ -142,23 +158,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
         console.log('error ', error);
       });
   };
-  const [isChecked, setIsChecked] = useState(false); // State để lưu trạng thái của checkbox
-  const idUser = userData._id;
-  const userName = userData.username;
-  const year = new Date().getFullYear();
-  let month = new Date().getMonth() + 1;
-  if (month < 10) {
-    month = '0' + month;
-  }
-  let date = new Date().getDate();
-  if (date < 10) {
-    date = '0' + date;
-  }
-  const hour = new Date().getHours();
-  const minutes = new Date().getMinutes();
-  const secounds = new Date().getSeconds();
-  const formattedDate = `${year}-${month}-${date} ${hour}:${minutes}:${secounds}`;
-  let addressOrder = '';
+
 
   const orderItems = dataProductOrder.map(item => ({
     sizeId: item.PropertiesId,
@@ -284,7 +284,7 @@ const ZaloPaymentScreen = ({navigation, route}) => {
           removeFromCart(deleteProductInCart);
           deleteProductCart();
           downQuantityServer(deleteQuantityProduct);
-          navigation.replace('NotificationOrderSuccess');
+          navigation.replace('NotificationOrderSuccess' ,{dataProductOrder : dataProductOrder , timeOrder : formattedDate } );
           // }
         });
     } catch (error) {
