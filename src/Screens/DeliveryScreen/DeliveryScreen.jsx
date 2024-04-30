@@ -41,7 +41,7 @@ const DeliveryScreen = ({navigation , route}) => {
       .catch(function (error) {
         console.log(error);
       });
-  }, [navigation]);
+  },[navigation]);
 
   console.log(dataDelivery);
 

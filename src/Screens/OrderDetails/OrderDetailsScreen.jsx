@@ -535,9 +535,12 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Zalo Pay
             </Text>
-            <Text onPress={handleZaloPay} style={styles.priceTransport3}>
+            <TouchableOpacity  onPress={handleZaloPay}>
+            <Text style={styles.priceTransport3}>
               Liên kết
             </Text>
+            </TouchableOpacity>
+            
           </View>
           <View style={styles.textTransport4}>
             <Image

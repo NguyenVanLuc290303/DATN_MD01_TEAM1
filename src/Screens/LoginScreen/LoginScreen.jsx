@@ -175,7 +175,6 @@ const LoginScreen = ({navigation}) => {
   }, []);
 
   return (
-    
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
@@ -275,25 +274,24 @@ const LoginScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.mangxh}>
-          <TouchableOpacity style={{}}>
-            <Image
-              source={require('../../assets/images/icons8-facebook-48.png')}
-              style={{width: 50, height: 50, borderRadius: 10}}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              source={{
-                uri: 'https://tse3.mm.bing.net/th?id=OIP.jpQFunOi7r3t9JaTNLFXQgHaHa&pid=Api&P=0&h=180',
-              }}
-              style={{width: 45, height: 45, borderRadius: 10, marginLeft: 50}}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              height: 50,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderWidth: 1,
+              borderRadius: 7,
+            }}>
             <Image
               source={require('../../assets/images/icon_google_2.png')}
-              style={{width: 50, height: 50, borderRadius: 10, marginLeft: 50}}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10,
+              }}
             />
+            <Text>Đăng nhập bằng google</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -308,10 +306,8 @@ const styles = StyleSheet.create({
   },
   mangxh: {
     width: '100%',
-    marginTop: 20,
-    flexDirection: 'row',
-    paddingLeft: 0,
     justifyContent: 'center',
+    padding : 20
   },
   header: {
     marginVertical: 20,

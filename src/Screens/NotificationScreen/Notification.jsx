@@ -40,7 +40,7 @@ const Notification = ({navigation}) => {
         handlePresentModalPress();
         });
 
-    return unsubscribe;
+    // return unsubscribe;
     }
     // Lọc dữ liệu với điều kiện UserId là "1" hoặc userData._id
     const query1 = refConversation.orderByChild('UserId').equalTo("1").on('child_added', snapshot => {

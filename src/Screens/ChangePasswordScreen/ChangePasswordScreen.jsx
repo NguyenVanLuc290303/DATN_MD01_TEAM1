@@ -4,24 +4,32 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  Dimensions,
+  ToastAndroid
 } from 'react-native';
 import InputView from '../../components/atoms/InputView/InputView';
 import COLORS from '../../constants/colors';
 import IconI from 'react-native-vector-icons/Ionicons';
 
 import {useState} from 'react';
+import { User } from '../../hooks/useContext';
 
-export default function ChangePasswordScreen() {
-  const [passwordOld, setPasswordOld] = useState();
-  const [passwordNew, setPasswordNew] = useState();
-  const [passwordConfirm, setPasswordConfirm] = useState();
+const {height , width } = Dimensions.get("screen");
+
+export default function ChangePasswordScreen({navigation}) {
+
+  const {userData} = User();
+
+  console.log(userData.numberPhone);
+  const [passwordOld, setPasswordOld] = useState('');
+  const [passwordNew, setPasswordNew] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const [showPasswordOld, setShowPasswordOld] = useState(false);
 
   const [showPasswordNew, setShowPasswordNew] = useState(false);
 
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-
 
   const toggleShowPasswordOld = () => {
     setShowPasswordOld(!showPasswordOld);
@@ -35,16 +43,43 @@ export default function ChangePasswordScreen() {
     setShowPasswordConfirm(!showPasswordConfirm);
   };
 
+  const handerOnlickChangePassword = () => {
+
+    if(passwordOld !== userData.passwd){
+      ToastAndroid.showWithGravity(
+        'Mật khẩu cũ không đúng',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }
+    if(passwordConfirm !== passwordNew){
+      ToastAndroid.showWithGravity(
+        'Mật khẩu mới không trùng',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }else{
+        
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity style={{ width : 24 , height : 24}} onPress={() => navigation.goBack()}>
+          <IconI name="arrow-back" size={24} />
+        </TouchableOpacity>
+
+        <Text style={{fontSize: 20, fontWeight: '600'}}>Thay đổi đổi mật</Text>
+        <View></View>
+      </View>
       <View style={styles.input}>
         <IconI name="lock-closed" size={24} />
         <TextInput
-          defaultValue={password}
           secureTextEntry={!showPasswordOld}
           style={{flex: 1, paddingLeft: 10, color: COLORS.black}}
           // value={form.password}
-          placeholder="Enter your password"
+          placeholder="Nhập mật khẩu cũ"
           placeholderTextColor="#6b7280"
           onChangeText={Text => setPasswordOld(Text)}
         />
@@ -55,11 +90,10 @@ export default function ChangePasswordScreen() {
       <View style={styles.input}>
         <IconI name="lock-closed" size={24} />
         <TextInput
-          defaultValue={password}
           secureTextEntry={!showPasswordNew}
           style={{flex: 1, paddingLeft: 10, color: COLORS.black}}
           // value={form.password}
-          placeholder="Enter your password"
+          placeholder="Nhập mật khẩu mới"
           placeholderTextColor="#6b7280"
           onChangeText={Text => setPasswordNew(Text)}
         />
@@ -70,11 +104,10 @@ export default function ChangePasswordScreen() {
       <View style={styles.input}>
         <IconI name="lock-closed" size={24} />
         <TextInput
-          defaultValue={password}
           secureTextEntry={!showPasswordConfirm}
           style={{flex: 1, paddingLeft: 10, color: COLORS.black}}
           // value={form.password}
-          placeholder="Enter your password"
+          placeholder="Nhập lại mật khẩu mới"
           placeholderTextColor="#6b7280"
           onChangeText={Text => setPasswordConfirm(Text)}
         />
@@ -84,7 +117,7 @@ export default function ChangePasswordScreen() {
       </View>
       <TouchableOpacity onPress={handerOnlickChangePassword}>
         <View style={styles.btn}>
-          <Text style={styles.btnText}>Đăng nhập</Text>
+          <Text style={styles.btnText}>Đổi mật khẩu</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -124,4 +157,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
   },
+  header :{
+    width : width,
+    height : height/15,
+    flexDirection : 'row',
+    justifyContent : 'space-between',
+    alignItems : 'center',
+  }
 });

@@ -505,7 +505,7 @@ const DetailProductScreen = ({navigation, route  }) => {
           </View>
           <View style={styles.evaluation}>
             {listEvaluate.map((item, index) => (
-              <View style={{marginTop: 20}}>
+              <View style={{marginTop: 20}} key={item._id}>
                 <View style={{flexDirection: 'row'}}>
                   <Image
                     style={{width: 40, height: 40, borderRadius: 20}}
