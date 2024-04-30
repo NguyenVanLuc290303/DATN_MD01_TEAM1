@@ -226,7 +226,7 @@ const Profile = ({navigation}) => {
 
             <View style={{marginBottom: 12}}>
               <Text style={{marginVertical: 10, color: COLORS.black}}>
-                Actions Settings
+                Đăng xuất
               </Text>
               <View style={{borderRadius: 12, color: COLORS.black}}>
                 {actionsItems.map((item, index) => (

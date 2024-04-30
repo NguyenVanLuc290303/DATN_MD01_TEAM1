@@ -38,7 +38,6 @@ import {
 import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
-import { API_PRODUCT } from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import {Cart} from '../../hooks/cartContext';
 import { API_PRODUCT } from '../../config/api-consts';
