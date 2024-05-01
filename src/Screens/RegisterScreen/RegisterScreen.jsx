@@ -29,6 +29,7 @@ const RegisterScreen = ({navigation}) => {
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [street, setStreet] = useState('');
+  const [distric , setDistric] = useState('');
   const [city, setCity] = useState('');
 
   const [errorMessages, setErrorMessages] = useState({
@@ -126,8 +127,9 @@ const RegisterScreen = ({navigation}) => {
               email: email,
               name: name,
               password: password,
-              address: street + city,
+              address: street + distric + city,
               street: street,
+              distric : distric,
               city: city,
               numberPhone: formattedPhoneNumber,
             }),
@@ -319,7 +321,32 @@ const RegisterScreen = ({navigation}) => {
               />
             </View>
           </View>
-
+          <View style={{marginBottom: 22}}>
+            <View
+              style={{
+                width: '100%',
+                height: 48,
+                borderColor: COLORS.black,
+                borderWidth: 1,
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingLeft: 22,
+                flexDirection: 'row',
+              }}>
+              <IconMT name="streetview" size={24} />
+              <TextInput
+                placeholder="Quận / Huyện"
+                placeholderTextColor={COLORS.black}
+                style={{
+                  width: '100%',
+                  paddingLeft: 10,
+                  color: COLORS.black,
+                }}
+                onChangeText={Text => setDistric(Text)}
+              />
+            </View>
+          </View>
           <View style={{marginBottom: 22}}>
             <View
               style={{

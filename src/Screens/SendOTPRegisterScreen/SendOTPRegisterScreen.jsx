@@ -18,13 +18,14 @@ import { API_ADD_USERS } from '../../config/api-consts';
 import { User } from '../../hooks/useContext';
 import { API_ADDRESS } from '../../config/api-consts';
 import axios,{ Axios } from 'axios';
+import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
 
 
 const SendOTPRegisterScreen = ({navigation, route}) => {
 
   const [code, setCode] = React.useState('');
 
-  const {verification, name, email,password , address, numberPhone , street , city} = route.params;
+  const {verification, name, email,password , address, numberPhone , street , distric, city} = route.params;
 
   console.log(numberPhone, 'phoneNumber Register Now =>>>>>>>>')
 
@@ -34,7 +35,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
     passwd : password,
     address : address,
     numberPhone : numberPhone,
-    image :'',
+    image : IMAGE_URL_DEFAULT,
   }
 
   const {setUserData} = User();
@@ -78,7 +79,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
             email: email,
             address: address,
             numberPhone : numberPhone,
-            image: '',
+            image: IMAGE_URL_DEFAULT,
         }),
         redirect: 'follow',
         };
@@ -118,7 +119,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
         UserId: id,
         name: name,
         city: city,
-        street: street,
+        street: street + distric,
         phone: numberPhone,
       }
 

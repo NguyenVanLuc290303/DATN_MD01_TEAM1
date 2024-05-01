@@ -194,6 +194,10 @@ const Login = ({
     navigation.navigate('RegisterScreen');
     handleClosePress();
   };
+  const handleNavigationForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+    handleClosePress();
+  };
   return (
     <Portal>
       <BottomSheetModalProvider>
@@ -292,11 +296,14 @@ const Login = ({
                         />
                       </TouchableOpacity>
                     </View>
+                    <TouchableOpacity onPress={handleNavigationForgotPassword}>
                     <Text
                       style={styles.title2}
-                      onPress={() => navigation.navigate('ForgotPassword')}>
+                     >
                       Quên mật khẩu
                     </Text>
+                    </TouchableOpacity>
+                  
                   </View>
                   <View style={styles.formAction}>
                     <TouchableOpacity onPress={handerOnlickLogin}>

@@ -34,29 +34,27 @@ const ForgotPassword = ({navigation}) => {
 
   const handerForgotPassword = async () => {
 
-    navigation.navigate(
-      'SendOtpScreen',
-      (data = {
-        // verification: confirmationResult.verificationId,
-        phoneNumber : phoneNumber,
-      }),
-    );
-    // try {
-    //   const internationalPhoneNumber = await convertToInternationalPhoneNumber(
-    //     phoneNumber,
-    //   );
-    //   console.log(internationalPhoneNumber); // Kết quả: +84123456789
 
-    //   const confirmationResult = await auth().signInWithPhoneNumber(
-    //     internationalPhoneNumber,
-    //   );
+    try {
+      const internationalPhoneNumber = await convertToInternationalPhoneNumber(
+        phoneNumber,
+      );
+      console.log(internationalPhoneNumber); // Kết quả: +84123456789
 
-
-     
-    // } catch (error) {
-    //   console.log(error);
-    //   Alert.alert('Error', 'Failed to send OTP');
-    // }
+      const confirmationResult = await auth().signInWithPhoneNumber(
+        internationalPhoneNumber,
+      );
+      navigation.navigate(
+        'SendOtpScreen',
+        (data = {
+          verification: confirmationResult.verificationId,
+          phoneNumber : phoneNumber,
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Failed to send OTP');
+    }
   };
 
   function convertToInternationalPhoneNumber(phoneNumber) {

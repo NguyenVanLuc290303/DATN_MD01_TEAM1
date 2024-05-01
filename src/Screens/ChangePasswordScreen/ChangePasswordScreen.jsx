@@ -13,6 +13,8 @@ import IconI from 'react-native-vector-icons/Ionicons';
 
 import {useState} from 'react';
 import { User } from '../../hooks/useContext';
+import axios from 'axios';
+import { API_RESSET_PASSWORD } from '../../config/api-consts';
 
 const {height , width } = Dimensions.get("screen");
 
@@ -59,7 +61,15 @@ export default function ChangePasswordScreen({navigation}) {
         ToastAndroid.BOTTOM
       );
     }else{
-        
+      axios.put(`${API_RESSET_PASSWORD}/${userData.numberPhone}`, {
+        passwd : passwordNew,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   };
 

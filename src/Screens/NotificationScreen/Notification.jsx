@@ -16,7 +16,7 @@ import {firebase} from '@react-native-firebase/database';
 import Login from '../../components/organisms/Login/Login';
 
 const Notification = ({navigation}) => {
-  const [notificationData, setNotificationData] = useState([]);
+  const [notificationData, setNotificationData] = useState([])
   const {userData} = User();
   const refConversation = firebase
     .app()
@@ -30,7 +30,7 @@ const Notification = ({navigation}) => {
 
   const snapPoints = useMemo(() => ['25%', '100%'], []);
 
-  const handlePresentModalPress = useCallback(() => {
+  const handlePresentModalPress =  useCallback( () =>  {
     bottomSheetModalRef.current?.present();
   }, []);
 
@@ -44,7 +44,7 @@ const Notification = ({navigation}) => {
 
   useEffect(() => {
     if (!userData) {
-      const unsubscribe = navigation.addListener('focus', () => {
+      const unsubscribe = navigation.addListener('focus',  () => {
         handlePresentModalPress();
       });
 
@@ -76,7 +76,7 @@ const Notification = ({navigation}) => {
       query1.off('child_added');
       query2.off('child_added');
     };
-  }, [userData]);
+  }, [userData , navigation]);
   console.log(notificationData, 'iiiiiiiiooooooo');
 
   const DetailTB = async (content, name, item) => {

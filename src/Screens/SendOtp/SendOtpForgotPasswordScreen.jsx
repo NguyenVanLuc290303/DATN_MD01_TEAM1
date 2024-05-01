@@ -27,8 +27,8 @@ const SendOtpScreen = ({navigation , route}) => {
 
   const handleVerifyOTP =  ()  => {
     try {
-      // const credential =  auth.PhoneAuthProvider.credential(verification, code);
-      //  auth().signInWithCredential(credential);
+      const credential =  auth.PhoneAuthProvider.credential(verification, code);
+       auth().signInWithCredential(credential);
        navigation.navigate('ResetForgotPasswordScreen' , {phoneNumber : phoneNumber})
     } catch (error) {
       console.log(error);
