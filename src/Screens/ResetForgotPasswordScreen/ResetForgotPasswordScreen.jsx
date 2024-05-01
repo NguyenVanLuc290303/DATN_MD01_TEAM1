@@ -68,7 +68,7 @@ const ResetForgotPasswordScreen = ({navigation ,route}) => {
       const requestOptions = {
         method: 'PUT',
         headers: myHeaders,
-        body: {passwd : passwordReset},
+        body: JSON.stringify({ passwd: passwordReset }),
         redirect: 'follow',
       };
   

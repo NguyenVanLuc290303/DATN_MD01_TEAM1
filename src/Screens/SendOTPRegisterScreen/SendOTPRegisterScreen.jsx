@@ -30,7 +30,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
   console.log(numberPhone, 'phoneNumber Register Now =>>>>>>>>')
 
   const dataUserRegister = {
-    name : name,
+    username : name,
     email : email,
     passwd : password,
     address : address,
@@ -119,7 +119,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
         UserId: id,
         name: name,
         city: city,
-        street: street + distric,
+        street: street +", "+ distric,
         phone: numberPhone,
       }
 
