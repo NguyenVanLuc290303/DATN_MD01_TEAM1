@@ -721,7 +721,7 @@ const DetailProductScreen = ({navigation, route  }) => {
                           marginTop: 10,
                           borderRadius: 10,
                           backgroundColor: `#${item.colorId}`,
-                          // borderWidth: 1,
+                          borderWidth: item.colorId === "FFFFFF" ? 1 : 0,
                           // borderColor:
                           //   selectedColor &&
                           //   selectedColor.colorId === item.colorId
@@ -1012,7 +1012,7 @@ const DetailProductScreen = ({navigation, route  }) => {
                           marginTop: 10,
                           borderRadius: 10,
                           backgroundColor: `#${item.colorId}`,
-                          // borderWidth: 1,
+                          borderWidth: item.colorId === 'FFFFFF' ? 1 : 0,
                           // borderColor:
                           //   selectedColor &&
                           //   selectedColor.colorId === item.colorId

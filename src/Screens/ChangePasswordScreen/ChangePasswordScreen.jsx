@@ -22,7 +22,6 @@ export default function ChangePasswordScreen({navigation}) {
 
   const {userData} = User();
 
-  console.log(userData.numberPhone);
   const [passwordOld, setPasswordOld] = useState('');
   const [passwordNew, setPasswordNew] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -61,12 +60,23 @@ export default function ChangePasswordScreen({navigation}) {
         ToastAndroid.BOTTOM
       );
     }else{
+
+      console.log("tới đây rk");
       axios.put(`${API_RESSET_PASSWORD}/${userData.numberPhone}`, {
         passwd : passwordNew,
       })
       .then(function (response) {
+        if(response.data){
+          ToastAndroid.showWithGravity(
+            'Thay đổi mật khẩu thành công',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM
+          );
+          navigation.goBack();
+        }
+
         console.log(response);
-      })
+      }) 
       .catch(function (error) {
         console.log(error);
       });

@@ -73,6 +73,7 @@ import EvualuateScreen from './src/Screens/EvaluateScreen/EvaluateScreen';
 import SettingNotificationScreen from './src/Screens/SettingNotificationScreen/SettingNotificationScreen';
 import ChangePasswordScreen from './src/Screens/ChangePasswordScreen/ChangePasswordScreen';
 import { PortalProvider } from '@gorhom/portal';
+import ReasonScreen from './src/Screens/ReasonScreen/ReasonScreen';
 
 // import {CartScreen} from './src/Screens';
 
@@ -298,6 +299,11 @@ function App() {
           name="ChangePasswordScreen"
           component={ChangePasswordScreen}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ReasonScreen"
+          component={ReasonScreen}
+          options={{headerShown: true}}
         />
       </Stack.Navigator>
     </NavigationContainer>
