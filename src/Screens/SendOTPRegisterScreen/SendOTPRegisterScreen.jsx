@@ -48,8 +48,8 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
        auth().signInWithCredential(credential);
       console.log('đăng ký trên mongodb');
       // Navigate to the main screen upon successful authentication
-      setUserData(dataUserRegister);
-      console.log('dataUserRegister', dataUserRegister);
+      // setUserData(dataUserRegister);
+      // console.log('dataUserRegister', dataUserRegister);
       RegisterUserMongodb();
     } catch (error) {
       console.log(error);
@@ -88,7 +88,7 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
 
         fetch(`${API_ADD_USERS}/${numberPhone}/${email}`, requestOptions)
         .then(response => response.json())
-        .then(result => addAddress(result.data._id)
+        .then(result => addAddress(result.data)
           
           // {
           // if(result._id !== null){
@@ -114,9 +114,11 @@ const SendOTPRegisterScreen = ({navigation, route}) => {
       setCode(otp);
     }, []);
 
-    const addAddress = (id) =>{
+    const addAddress = (data) =>{
+      console.log(data , "dataUser ");
+      setUserData(data);
       const dataAddress = {
-        UserId: id,
+        UserId: data.id,
         name: name,
         city: city,
         street: street +", "+ distric,
