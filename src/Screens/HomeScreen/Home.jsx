@@ -1,4 +1,4 @@
-import React, {useState, useEffect ,useRef , useCallback, useMemo} from 'react';
+import React, {useState, useEffect, useRef, useCallback, useMemo} from 'react';
 import {
   FlatList,
   Image,
@@ -44,7 +44,6 @@ const Home = ({navigation}) => {
 
   console.log(dataCart.length, 'dataCart.length');
 
-  
   const bottomSheetModalRef = useRef(null);
 
   const snapPoints = useMemo(() => ['25%', '100%'], []);
@@ -61,7 +60,6 @@ const Home = ({navigation}) => {
     bottomSheetModalRef.current?.close();
   }, []);
 
-
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchDataProduct();
@@ -74,7 +72,9 @@ const Home = ({navigation}) => {
     const loadLikedProducts = async () => {
       try {
         if (userData !== null) {
-          const likedProductsString = await AsyncStorage.getItem(`likedProducts_${userData._id}`);
+          const likedProductsString = await AsyncStorage.getItem(
+            `likedProducts_${userData._id}`,
+          );
           if (likedProductsString !== null) {
             setLikedProducts(JSON.parse(likedProductsString));
           }
@@ -157,22 +157,20 @@ const Home = ({navigation}) => {
   };
 
   React.useEffect(() => {
-
-    if(userData){
+    if (userData) {
       axios
-      .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
-      .then(function (response) {
-        const data = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
-        // console.log(data);
-        setDataCart(data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .get(`${API_PRODUCT_TO_CART}/${userData._id}`)
+        .then(function (response) {
+          const data = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
+          // console.log(data);
+          setDataCart(data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-   
   }, [userData]);
 
   const fetchDataProduct = () => {
@@ -200,13 +198,13 @@ const Home = ({navigation}) => {
 
   console.log(dataCart, 'sản phẩm trong giỏ của mỗi người');
 
-  const handleToCartScreen = () =>{
+  const handleToCartScreen = () => {
     if (userData) {
       navigation.navigate('CartScreen');
-    }else{
+    } else {
       handlePresentModalPress();
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -255,6 +253,7 @@ const Home = ({navigation}) => {
           </View>
         </View>
         <ScrollView
+          contentContainerStyle={{paddingBottom: 80}}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
@@ -306,7 +305,7 @@ const Home = ({navigation}) => {
           handleSheetChanges={handleSheetChanges}
           handleClosePress={handleClosePress}
           navigation={navigation}
-          />
+        />
       </View>
     </View>
   );
