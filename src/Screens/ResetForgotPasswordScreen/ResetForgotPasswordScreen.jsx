@@ -6,7 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  ToastAndroid
+  ToastAndroid,
+  ScrollView,
 } from 'react-native';
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
@@ -14,22 +15,18 @@ import COLORS from '../../constants/colors';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
 import SuccessNotificationModal from '../../components/organisms/SuccessNotificationModal/SuccessNotificationModal';
-import { API_RESSET_PASSWORD } from '../../config/api-consts';
+import {API_RESSET_PASSWORD} from '../../config/api-consts';
 
-const ResetForgotPasswordScreen = ({navigation ,route}) => {
-
+const ResetForgotPasswordScreen = ({navigation, route}) => {
   const {phoneNumber} = route.params;
 
-  console.log("Your number phone" + phoneNumber);
-
+  console.log('Your number phone' + phoneNumber);
 
   const [visible, setVisible] = useState(false);
-
 
   const [passwordReset, setPasswordReset] = useState();
 
   const [passwordConfirm, setPasswordConfirm] = useState();
-
 
   function convertToInternationalPhoneNumber(phoneNumber) {
     // Kiểm tra nếu số điện thoại không hợp lệ hoặc rỗng
@@ -50,51 +47,69 @@ const ResetForgotPasswordScreen = ({navigation ,route}) => {
   }
 
   const handerForgotPasswordReset = async () => {
+    if (!passwordReset || passwordReset.trim().length === 0) {
+      Alert.alert(
+        'Lỗi!!!',
+        'Mật khẩu mới không được để trống, mời bạn vui lòng nhập lại.',
+      );
+      return;
+    }
 
-   const internationalPhoneNumber = await convertToInternationalPhoneNumber(phoneNumber);
+    if (!passwordConfirm || passwordConfirm.trim().length === 0) {
+      Alert.alert(
+        'Lỗi!!!',
+        'Mật khẩu nhập lại không được để trống, mời bạn vui lòng nhập lại.',
+      );
+      return;
+    }
+    const internationalPhoneNumber = await convertToInternationalPhoneNumber(
+      phoneNumber,
+    );
 
     console.log(internationalPhoneNumber);
-    if(passwordReset === passwordConfirm){
- 
-    try {
-      const myHeaders = new Headers();
-      myHeaders.append(
-        'Cookie',
-        'connect.sid=s%3AONtAlWU07R3RPkvL4ydlKOwh9p944hba.qBfnHMcC2Yt203yxaDbUEqQ%2B%2FLbl9g5QiPX7d43k8NI',
-      );
-  
-      const urlencoded = new URLSearchParams();
-  
-      const requestOptions = {
-        method: 'PUT',
-        headers: myHeaders,
-        body: JSON.stringify({ passwd: passwordReset }),
-        redirect: 'follow',
-      };
-  
-      fetch(`${API_RESSET_PASSWORD}/${internationalPhoneNumber}`, requestOptions)
-        .then(response => response.json())
-        .then(result => {
-          if(result.status ===1){
-            ToastAndroid.showWithGravity(
-              'Thay Đổi mật khẩu thành công ',
-              ToastAndroid.SHORT,
-              ToastAndroid.BOTTOM
-            );
-          }
-        }).then(() => navigation.navigate('LoginScreen'))
-        .catch(error => console.error(error));
+    if (passwordReset === passwordConfirm) {
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append(
+          'Cookie',
+          'connect.sid=s%3AONtAlWU07R3RPkvL4ydlKOwh9p944hba.qBfnHMcC2Yt203yxaDbUEqQ%2B%2FLbl9g5QiPX7d43k8NI',
+        );
 
-    } catch (error) {
-      console.log(error)
+        const urlencoded = new URLSearchParams();
+
+        const requestOptions = {
+          method: 'PUT',
+          headers: myHeaders,
+          body: JSON.stringify({passwd: passwordReset}),
+          redirect: 'follow',
+        };
+
+        fetch(
+          `${API_RESSET_PASSWORD}/${internationalPhoneNumber}`,
+          requestOptions,
+        )
+          .then(response => response.json())
+          .then(result => {
+            if (result.status === 1) {
+              ToastAndroid.showWithGravity(
+                'Thay Đổi mật khẩu thành công ',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+              );
+            }
+          })
+          .then(() => navigation.navigate('LoginScreen'))
+          .catch(error => console.error(error));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      Alert.alert('Password nhập lại không đúng');
     }
-  } else{
-    Alert.alert('Password nhập lại không đúng')
-  }
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Image style={styles.imageStyle} source={Icons.ImageForogtPassword} />
       <View style={styles.borderText}>
         <Text style={styles.textStyle}>Forgot</Text>
@@ -113,7 +128,6 @@ const ResetForgotPasswordScreen = ({navigation ,route}) => {
       <TextInput
         style={styles.textInput}
         placeholderTextColor={COLORS.color_7E7D7D}
-
         placeholder="Xác nhận mật khẩu"
         onChangeText={Text => setPasswordConfirm(Text)}
       />
@@ -125,13 +139,13 @@ const ResetForgotPasswordScreen = ({navigation ,route}) => {
         </TouchableOpacity>
       </View>
 
-      {/* <SuccessNotificationModal 
+      {/* <SuccessNotificationModal
         visible={visible}
         textContent={"Thay đổi thành công"}
-        
+
         >
       </SuccessNotificationModal> */}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -171,7 +185,7 @@ const styles = StyleSheet.create({
       width: 1,
     },
     padding: 12,
-    marginTop : 10
+    marginTop: 10,
   },
   formAction: {},
   btn: {
