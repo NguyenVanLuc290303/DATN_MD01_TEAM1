@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image
 } from 'react-native';
 import React from 'react';
 import Onboarding from 'react-native-onboarding-swiper';
@@ -37,6 +38,10 @@ export default function OnboardingScreen() {
             backgroundColor: '#a7f3d0',
             image: (
               <View style={styles.lottie}>
+                <Image
+                  source={ require('../../assets/images/SilderShow/sildershow1.png')}
+                  style={{ width: '100%', height: '100%', borderRadius: 20 }} // Thay thế bằng kích thước thích hợp
+                />
                 <Lottie
                   source={require('../../assets/animations/boost.json')}
                   autoPlay
@@ -44,13 +49,19 @@ export default function OnboardingScreen() {
                 />
               </View>
             ),
-            title: 'Onboarding',
-            subtitle: 'Done with React Native Onboarding Swiper',
+            title: 'Đơn giản',
+            subtitle: 'Sự đơn giản là sự thanh lịch.',
+            titleStyles: { fontFamily: 'Roboto', fontSize: 40, fontWeight: 'bold', color: '#333' }, // Thêm kiểu chữ mới cho title
+        subTitleStyles: { fontFamily: 'Roboto', fontSize: 16, color: '#666' }, // Thêm kiểu chữ mới cho subtitle
           },
           {
             backgroundColor: '#fef3c7',
             image: (
               <View style={styles.lottie}>
+                <Image
+                  source={ require('../../assets/images/SilderShow/images_thoitrang.jpeg')}
+                  style={{ width: '100%', height: '100%', borderRadius: 20 }} // Thay thế bằng kích thước thích hợp
+                />
                 <Lottie
                   source={require('../../assets/animations/work.json')}
                   autoPlay
@@ -58,13 +69,19 @@ export default function OnboardingScreen() {
                 />
               </View>
             ),
-            title: 'Onboarding',
-            subtitle: 'Done with React Native Onboarding Swiper',
+            title: 'Thời trang',
+            subtitle: 'Thời trang là cách biểu đạt cá nhân.',
+            titleStyles: { fontFamily: 'Roboto', fontSize: 40, fontWeight: 'bold', color: '#333' }, // Thêm kiểu chữ mới cho title
+        subTitleStyles: { fontFamily: 'Roboto', fontSize: 16, color: '#666' }, // Thêm kiểu chữ mới cho subtitle
           },
           {
             backgroundColor: '#a78bfa',
             image: (
               <View style={styles.lottie}>
+                <Image
+                  source={ require('../../assets/images/SilderShow/sildershow2.png')}
+                  style={{ width: '100%', height: '100%', borderRadius: 20 }} // Thay thế bằng kích thước thích hợp
+                />
                 <Lottie
                   source={require('../../assets/animations/achieve.json')}
                   autoPlay
@@ -72,8 +89,10 @@ export default function OnboardingScreen() {
                 />
               </View>
             ),
-            title: 'Onboarding',
-            subtitle: 'Done with React Native Onboarding Swiper',
+            title: 'Phong cách',
+            subtitle: 'Phong cách không chỉ là bề ngoài, mà còn là cách sống.',
+            titleStyles: { fontFamily: 'Roboto', fontSize: 40, fontWeight: 'bold', color: '#FFFFFF' }, // Thêm kiểu chữ mới cho title
+        subTitleStyles: { fontFamily: 'Roboto', fontSize: 16, color: '#FFFFFF' }, // Thêm kiểu chữ mới cho subtitle
           },
         ]}
       />
