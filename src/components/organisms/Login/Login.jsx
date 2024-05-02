@@ -297,13 +297,8 @@ const Login = ({
                       </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={handleNavigationForgotPassword}>
-                    <Text
-                      style={styles.title2}
-                     >
-                      Quên mật khẩu
-                    </Text>
+                      <Text style={styles.title2}>Quên mật khẩu</Text>
                     </TouchableOpacity>
-                  
                   </View>
                   <View style={styles.formAction}>
                     <TouchableOpacity onPress={handerOnlickLogin}>
@@ -334,25 +329,25 @@ const Login = ({
                     Đăng nhập bằng Facebook
                   </Text>
                 </TouchableOpacity> */}
-                  <TouchableOpacity
-                    style={{
-                      height: 50,
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderWidth: 1,
-                      borderRadius: 7,
-                    }}>
-                    <Image
-                      source={require('../../../assets/images/icon_google_2.png')}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 10,
-                      }}
-                    />
-                    <Text>Đăng nhập bằng google</Text>
-                  </TouchableOpacity>
+                  {/*<TouchableOpacity*/}
+                  {/*  style={{*/}
+                  {/*    height: 50,*/}
+                  {/*    flexDirection: 'row',*/}
+                  {/*    justifyContent: 'center',*/}
+                  {/*    alignItems: 'center',*/}
+                  {/*    borderWidth: 1,*/}
+                  {/*    borderRadius: 7,*/}
+                  {/*  }}>*/}
+                  {/*  <Image*/}
+                  {/*    source={require('../../../assets/images/icon_google_2.png')}*/}
+                  {/*    style={{*/}
+                  {/*      width: 40,*/}
+                  {/*      height: 40,*/}
+                  {/*      borderRadius: 10,*/}
+                  {/*    }}*/}
+                  {/*  />*/}
+                  {/*  <Text>Đăng nhập bằng google</Text>*/}
+                  {/*</TouchableOpacity>*/}
                 </View>
               </ScrollView>
             </View>

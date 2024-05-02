@@ -273,27 +273,27 @@ const LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.mangxh}>
-          <TouchableOpacity
-            style={{
-              height: 50,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderWidth: 1,
-              borderRadius: 7,
-            }}>
-            <Image
-              source={require('../../assets/images/icon_google_2.png')}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 10,
-              }}
-            />
-            <Text>Đăng nhập bằng google</Text>
-          </TouchableOpacity>
-        </View>
+        {/*<View style={styles.mangxh}>*/}
+        {/*  <TouchableOpacity*/}
+        {/*    style={{*/}
+        {/*      height: 50,*/}
+        {/*      flexDirection: 'row',*/}
+        {/*      justifyContent: 'center',*/}
+        {/*      alignItems: 'center',*/}
+        {/*      borderWidth: 1,*/}
+        {/*      borderRadius: 7,*/}
+        {/*    }}>*/}
+        {/*    <Image*/}
+        {/*      source={require('../../assets/images/icon_google_2.png')}*/}
+        {/*      style={{*/}
+        {/*        width: 40,*/}
+        {/*        height: 40,*/}
+        {/*        borderRadius: 10,*/}
+        {/*      }}*/}
+        {/*    />*/}
+        {/*    <Text>Đăng nhập bằng google</Text>*/}
+        {/*  </TouchableOpacity>*/}
+        {/*</View>*/}
       </ScrollView>
     </SafeAreaView>
   );
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   mangxh: {
     width: '100%',
     justifyContent: 'center',
-    padding : 20
+    padding: 20,
   },
   header: {
     marginVertical: 20,

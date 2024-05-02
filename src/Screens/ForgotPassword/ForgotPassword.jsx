@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   KeyboardAvoidingView,
-  Alert
+  Alert,
+  ScrollView,
 } from 'react-native';
 import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
@@ -33,8 +34,13 @@ const ForgotPassword = ({navigation}) => {
   }, []);
 
   const handerForgotPassword = async () => {
-
-
+    if (!phoneNumber || phoneNumber.trim().length === 0) {
+      Alert.alert(
+        'Lỗi!!!',
+        'Số điện thoại không được để trống. Vui lòng nhâp lại.',
+      );
+      return; // Stop execution if the phone number is empty
+    }
     try {
       const internationalPhoneNumber = await convertToInternationalPhoneNumber(
         phoneNumber,
@@ -48,7 +54,7 @@ const ForgotPassword = ({navigation}) => {
         'SendOtpScreen',
         (data = {
           verification: confirmationResult.verificationId,
-          phoneNumber : phoneNumber,
+          phoneNumber: phoneNumber,
         }),
       );
     } catch (error) {
@@ -77,43 +83,46 @@ const ForgotPassword = ({navigation}) => {
 
   return (
     <>
-
-    <SafeAreaView style={styles.container}>
-    <KeyboardAvoidingView behavior='padding'  >
-      <Image style={styles.imageStyle} source={Icons.ImageForogtPassword} />
-        <View style={styles.borderText}>
-          <Text style={styles.textStyle}>Forgot</Text>
-          <Text style={styles.textStyle}>Password?</Text>
-        </View>
-        <Text style={styles.textStyle2}>
-          Don't worry! It happens. Please enter the phone number we will send
-          the OTP in this phone number
-        </Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Enter the phone"
-          placeholderTextColor={COLORS.color_7E7D7D}
-          onChangeText={Text => setPhoneNumber(Text)}
-        />
-
-        <View style={styles.formAction}>
-          <TouchableOpacity onPress={handerForgotPassword}>
-            <View style={styles.btn}>
-              <Text style={styles.btnText}>Continue</Text>
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <KeyboardAvoidingView behavior="padding">
+            <Image
+              style={styles.imageStyle}
+              source={Icons.ImageForogtPassword}
+            />
+            <View style={styles.borderText}>
+              <Text style={styles.textStyle}>Forgot</Text>
+              <Text style={styles.textStyle}>Password?</Text>
             </View>
-          </TouchableOpacity>
-        </View>
-        </KeyboardAvoidingView>
+            <Text style={styles.textStyle2}>
+              Don't worry! It happens. Please enter the phone number we will
+              send the OTP in this phone number
+            </Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Enter the phone"
+              placeholderTextColor={COLORS.color_7E7D7D}
+              onChangeText={Text => setPhoneNumber(Text)}
+            />
 
-    </SafeAreaView>
+            <View style={styles.formAction}>
+              <TouchableOpacity onPress={handerForgotPassword}>
+                <View style={styles.btn}>
+                  <Text style={styles.btnText}>Continue</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width : '100%',
-    height : '100%',
+    width: '100%',
+    height: '100%',
     backgroundColor: '#FFFFFF',
     padding: 24,
   },
