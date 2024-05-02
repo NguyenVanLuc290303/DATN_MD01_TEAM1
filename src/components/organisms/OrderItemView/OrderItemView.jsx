@@ -1,4 +1,4 @@
-import {StyleSheet ,Text , ScrollView, Image , View, } from 'react-native';
+import {StyleSheet, Text, ScrollView, Image, View} from 'react-native';
 import COLORS from '../../../constants/colors';
 
 export default function OrderItemView({dataProductOrder}) {
@@ -55,6 +55,8 @@ export default function OrderItemView({dataProductOrder}) {
 const styles = StyleSheet.create({
   productInfo: {
     flexDirection: 'row',
+    elevation: 3,
+    paddingVertical: 10,
   },
   imgStyle: {
     width: 80,
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
     color: COLORS.black, // Ensure text color is visible
     marginBottom: 5,
     fontWeight: 'bold',
+    marginLeft: 10,
   },
   productDetailsWrapper: {
     marginTop: 5,

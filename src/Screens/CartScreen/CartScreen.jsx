@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
   View,
   Animated,
-  ToastAndroid
-
+  ToastAndroid,
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {useCallback, useEffect, useState} from 'react';
@@ -19,29 +18,26 @@ import {User} from '../../hooks/useContext';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {API_PRODUCT , API_COLOR_PRODUCT} from '../../config/api-consts';
-import { Cart } from '../../hooks/cartContext';
+import {API_PRODUCT, API_COLOR_PRODUCT} from '../../config/api-consts';
+import {Cart} from '../../hooks/cartContext';
 import Loading from '../../components/organisms/Loading/Loading';
 import useListOrderQuantity from '../../services/check-order-quantity-services/use-list-order-quantity';
-import axios from "axios";
-
-
+import axios from 'axios';
 
 const CartScreen = ({navigation}) => {
   const {userData} = User();
 
   const {removeItemFromCart} = Cart();
 
-
   const idUser = userData._id;
 
-  const [visible ,setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const [productArray, setProductArray] = useState([]);
 
-  const [itemDelete ,setItemDelete] = useState();
+  const [itemDelete, setItemDelete] = useState();
 
-  const [indexDelete , setIndexDelete] = useState();
+  const [indexDelete, setIndexDelete] = useState();
 
   useEffect(() => {
     const myHeaders = new Headers();
@@ -90,26 +86,28 @@ const CartScreen = ({navigation}) => {
   const handleDecreaseQuantity = index => {
     const newArray = [...productArray];
 
-    console.log(newArray[index].RemainQuantity ,"++++++++++++");
-    if (newArray[index].Quantity > 1 ) {
+    console.log(newArray[index].RemainQuantity, '++++++++++++');
+    if (newArray[index].Quantity > 1) {
       newArray[index].Quantity -= 1;
       setProductArray(newArray);
     }
   };
 
   const handleIncreaseQuantity = index => {
-
     const newArray = [...productArray];
-    console.log(newArray[index].RemainQuantity ,"++++++++++++");
+    console.log(newArray[index].RemainQuantity, '++++++++++++');
 
-    if (newArray[index].Quantity < 99  &&  newArray[index].Quantity < newArray[index].RemainQuantity) {
+    if (
+      newArray[index].Quantity < 99 &&
+      newArray[index].Quantity < newArray[index].RemainQuantity
+    ) {
       newArray[index].Quantity += 1;
       setProductArray(newArray);
-    }else{
+    } else {
       ToastAndroid.showWithGravity(
         ' Sản phẩm này số lượng  trong kho đã hết',
         ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM
+        ToastAndroid.BOTTOM,
       );
     }
   };
@@ -131,86 +129,75 @@ const CartScreen = ({navigation}) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
   };
 
-  console.log('chay toi day r')
+  console.log('chay toi day r');
   const orderItems = checkedItems.map(item => ({
     sizeId: item.PropertiesId,
     quantity: item.Quantity,
   }));
 
-  console.log(checkedItems, "jjjjjjjj");
-
+  console.log(checkedItems, 'jjjjjjjj');
 
   const handleOrderProduct = async () => {
-
-
-    if(checkedItems.length === 0 ){
+    if (checkedItems.length === 0) {
       ToastAndroid.showWithGravity(
         'Chưa chọn sản phẩm ',
         ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM
+        ToastAndroid.BOTTOM,
       );
       return;
-
-    }else{
-    postData();
+    } else {
+      postData();
     }
-
   };
 
   const postData = async () => {
-
-  await  axios.post(`${API_COLOR_PRODUCT}`, { orderItems })
-    .then(function (response) {
-      if(response.data !== null){
-        const data = Array.isArray(response.data)
-        ? response.data
-        : [response.data];
-        console.log(data , "kkkkkkk");
-        if(checkOrder(data) === true){
-          navigation.navigate('OrderDetailsScreen', {dataProductOrder: checkedItems})
-                }
-                else{
-                  ToastAndroid.showWithGravity(
-                    'Sản phẩm đã hết',
-                    ToastAndroid.SHORT,
-                    ToastAndroid.BOTTOM
-                  );
-                }
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-};
-
-const checkOrder = (data) =>{
-
-  let count = 0;
-
-  for (let index = 0; index < data.length; index++) {
-    for (let i = 0; i < orderItems.length; i++) { // Sửa lỗi cú pháp: orderItems.lengtht thành orderItems.length
-        if(data[index].PropertiesId === orderItems[i].sizeId){ // Sửa lỗi cú pháp: data.index.PropertiesId thành data[index].sizeId và orderItems.i.sizeId thành orderItems[i].PropertiesId
-            if(orderItems[i].quantity <= data[index].quantity){ // Sửa lỗi cú pháp: orderItems.i.quantity thành orderItems[i].quantity và data.index.quantity thành data[index].quantity
-                count++;
-            }
+    await axios
+      .post(`${API_COLOR_PRODUCT}`, {orderItems})
+      .then(function (response) {
+        if (response.data !== null) {
+          const data = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
+          console.log(data, 'kkkkkkk');
+          if (checkOrder(data) === true) {
+            navigation.navigate('OrderDetailsScreen', {
+              dataProductOrder: checkedItems,
+            });
+          } else {
+            ToastAndroid.showWithGravity(
+              'Sản phẩm đã hết',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM,
+            );
+          }
         }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const checkOrder = data => {
+    let count = 0;
+
+    for (let index = 0; index < data.length; index++) {
+      for (let i = 0; i < orderItems.length; i++) {
+        // Sửa lỗi cú pháp: orderItems.lengtht thành orderItems.length
+        if (data[index].PropertiesId === orderItems[i].sizeId) {
+          // Sửa lỗi cú pháp: data.index.PropertiesId thành data[index].sizeId và orderItems.i.sizeId thành orderItems[i].PropertiesId
+          if (orderItems[i].quantity <= data[index].quantity) {
+            // Sửa lỗi cú pháp: orderItems.i.quantity thành orderItems[i].quantity và data.index.quantity thành data[index].quantity
+            count++;
+          }
+        }
+      }
+      if (count === orderItems.length) {
+        return true;
+      }
     }
-    if(count === orderItems.length){
-      return true;
-    }
-}
+  };
 
-
-
-
-
-
-}
-
-
-
-
-  const renderRightActions = (item, index, progress , dragX) => {
+  const renderRightActions = (item, index, progress, dragX) => {
     // Define the content of the swipeable view (e.g., delete button)
     // You can customize this according to your app's needs
     // const trans = dragX.interpolate({
@@ -223,8 +210,8 @@ const checkOrder = (data) =>{
           backgroundColor: 'red',
           padding: 10,
           marginVertical: 5,
-          justifyContent : 'center',
-          alignItems : 'center',
+          justifyContent: 'center',
+          alignItems: 'center',
           // transform :[{
           //   translateX : trans
           // }]
@@ -244,9 +231,9 @@ const checkOrder = (data) =>{
   // },[indexDelete])
 
   const handleDeleteProductCart = (item, index) => {
-    console.log(item._id , "item._id của cartScreen" );
-    console.log(item.CartId , " item.CartId của cartScreen" );
-    console.log(item.ProductId , "item.ProductId của cartScreen" );
+    console.log(item._id, 'item._id của cartScreen');
+    console.log(item.CartId, ' item.CartId của cartScreen');
+    console.log(item.ProductId, 'item.ProductId của cartScreen');
     // Tạo một bản sao của mảng sản phẩm
     const newArray = [...productArray];
     // Xóa sản phẩm ở vị trí index khỏi mảng
@@ -265,16 +252,12 @@ const checkOrder = (data) =>{
 
     fetch(`${API_PRODUCT}/${item._id}`, requestOptions)
       .then(response => response.json())
-      .then(
-          result => console.log(result)
-      )
+      .then(result => console.log(result))
       .catch(error => console.error(error));
-
   };
 
-
   const renderItem = ({item, index}) => (
-    <Swipeable renderRightActions={() => renderRightActions(item , index)}>
+    <Swipeable renderRightActions={() => renderRightActions(item, index)}>
       <View style={styles.item}>
         <View style={styles.productInfo}>
           <View style={styles.checkboxStyle}>
@@ -292,10 +275,15 @@ const checkOrder = (data) =>{
               </Text>
               <View style={styles.productDetailsWrapper}>
                 {/* <Text style={styles.productDetails}>{item.ColorCode}</Text> */}
-                <View style={{ backgroundColor : `#${item.ColorCode}` , height : 25 , width : 25 , borderRadius : 5}}>
-                </View>
+                <View
+                  style={{
+                    backgroundColor: `#${item.ColorCode}`,
+                    height: 25,
+                    width: 25,
+                    borderRadius: 5,
+                  }}
+                />
                 <Text style={styles.productDetails}>{item.Size}</Text>
-
               </View>
               <View style={styles.rowContainer}>
                 <View style={styles.priceContainer}>
@@ -350,19 +338,18 @@ const checkOrder = (data) =>{
 
   return (
     <View style={styles.container}>
-
-      {productArray.length >  0 ? (
+      {productArray.length > 0 ? (
         <>
-        <FlatList
-        data={productArray}
-        renderItem={renderItem}
-        keyExtractor={item => item._id.toString()}
-        nestedScrollEnabled={true}
-        style={{paddingBottom: 100, marginBottom: 100}}
-        />
+          <FlatList
+            data={productArray}
+            renderItem={renderItem}
+            keyExtractor={item => item._id.toString()}
+            nestedScrollEnabled={true}
+            style={{paddingBottom: 100, marginBottom: 100}}
+          />
         </>
-      ):(
-        <Loading/>
+      ) : (
+        <Loading />
       )}
       <View
         style={[
@@ -385,7 +372,7 @@ const checkOrder = (data) =>{
               onPress={allChecked ? handleUncheckAll : handleChooseAll}
             />
             <Text style={styles.checkboxLabel}>
-              Choose All ({checkedItemCount})
+              Chọn tất cả ({checkedItemCount})
             </Text>
           </View>
           {/* Title */}
@@ -398,8 +385,6 @@ const checkOrder = (data) =>{
           </TouchableOpacity>
         </View>
       </View>
-
-
     </View>
   );
 };

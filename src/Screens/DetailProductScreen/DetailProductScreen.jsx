@@ -33,28 +33,28 @@ import {
   BottomSheetModalProvider,
   BottomSheetScrollView,
   BottomSheetBackdropProps,
-  BottomSheetBackdrop
+  BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
 import {useRef, useCallback, useMemo, useState, useEffect} from 'react';
 import {API_COLOR_PRODUCT} from '../../config/api-consts';
 import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import {User} from '../../hooks/useContext';
 import {Cart} from '../../hooks/cartContext';
-import { API_PRODUCT } from '../../config/api-consts';
+import {API_PRODUCT} from '../../config/api-consts';
 import {styles} from './DetailProductScreen.style';
 import ProductListAll from '../../components/organisms/ListAllProducts/ProductListAll';
 import useListProduct from '../../services/product-services/use-all-list-product';
 import useListEvaluate from '../../services/evaluate-services/use-list-evaluate-product';
 import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
-import { isSameDay } from 'react-native-gifted-chat';
-import Animate, { Extrapolate, interpolate } from 'react-native-reanimated';
+import {isSameDay} from 'react-native-gifted-chat';
+import Animate, {Extrapolate, interpolate} from 'react-native-reanimated';
 import Login from '../../components/organisms/Login/Login';
 import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const DetailProductScreen = ({navigation, route  }) => {
+const DetailProductScreen = ({navigation, route}) => {
   const {
     _id,
     name,
@@ -72,17 +72,15 @@ const DetailProductScreen = ({navigation, route  }) => {
   let addItemToCart;
   let idUser;
 
-
   const {userData} = User();
-  
+
   if (userData) {
-    ({ dataCart, addItemToCart } = Cart());
+    ({dataCart, addItemToCart} = Cart());
 
     idUser = userData._id;
-  }else{
+  } else {
     dataCart = 0;
   }
-
 
   const [dataProperties, setDaProperties] = useState([]);
 
@@ -137,18 +135,15 @@ const DetailProductScreen = ({navigation, route  }) => {
   };
 
   useEffect(() => {
-
-
-
     const increaseViewCount = async () => {
       try {
-          await axios.get(`${API_PRODUCT}/view/${name}`);
-          console.log('Tăng View Thành CÔng');
+        await axios.get(`${API_PRODUCT}/view/${name}`);
+        console.log('Tăng View Thành CÔng');
       } catch (error) {
-          console.error('Error increasing view count:', error);
+        console.error('Error increasing view count:', error);
       }
-  };
-  increaseViewCount();
+    };
+    increaseViewCount();
 
     const myHeaders = new Headers();
     myHeaders.append(
@@ -171,7 +166,6 @@ const DetailProductScreen = ({navigation, route  }) => {
   const bottomSheetModalRef = useRef(null);
 
   // const animatedIndex = useRef(new Animated.Value(0)).current;
-
 
   const snapPoints = useMemo(() => ['25%', '75%'], []);
 
@@ -200,19 +194,17 @@ const DetailProductScreen = ({navigation, route  }) => {
 
   const snapPointsLogin = useMemo(() => ['25%', '100%'], []);
 
-
   const handlePresentModalPressLogin = useCallback(() => {
     bottomSheetModalRefLogin.current?.present();
   }, []);
 
-  const handleSheetChangesLogin = useCallback((index) => {
+  const handleSheetChangesLogin = useCallback(index => {
     console.log('handleSheetChanges', index);
   }, []);
 
   const handleClosePressLogin = useCallback(() => {
     bottomSheetModalRefLogin.current?.close();
   }, []);
-
 
   const [checkProductCarts, setCheckProductCarts] = useState(null);
 
@@ -261,16 +253,16 @@ const DetailProductScreen = ({navigation, route  }) => {
   });
 
   const handleToCart = () => {
-    if(userData){
+    if (userData) {
       if (selectedColor !== null) {
-        if(selectSize !== null){
+        if (selectSize !== null) {
           const myHeaders = new Headers();
           myHeaders.append('Content-Type', 'application/json');
           myHeaders.append(
             'Cookie',
             'connect.sid=s%3AMUhs3zzQOSqhxF85Fo8cxhWe-tIcn7yJ.4tBwGl%2FKSv%2BCGLjLVN%2BVqs9LV2Tl51tkZIAR8Gd%2Fcwg',
           );
-    
+
           const requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -288,7 +280,7 @@ const DetailProductScreen = ({navigation, route  }) => {
             }),
             redirect: 'follow',
           };
-    
+
           try {
             fetch(
               `${API_PRODUCT_TO_CART}/${_id}/${selectedColor.colorId}/${selectSize}/${idUser}`,
@@ -311,7 +303,7 @@ const DetailProductScreen = ({navigation, route  }) => {
           } catch (error) {
             console.log(error, ' lỗi thêm vào giỏ hàng');
           }
-        }else{
+        } else {
           ToastAndroid.showWithGravity(
             'Bạn chưa chọn size',
             ToastAndroid.SHORT,
@@ -325,20 +317,19 @@ const DetailProductScreen = ({navigation, route  }) => {
           ToastAndroid.CENTER,
         );
       }
-    }else{
+    } else {
       ToastAndroid.showWithGravity(
         'Hãy đăng nhập trước khi thêm giỏ hàng',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
     }
-   
   };
 
   const handleToSale = () => {
-    if(userData !== null){
+    if (userData !== null) {
       if (selectedColor !== null) {
-        if(selectSize !== null){
+        if (selectSize !== null) {
           const productSelect = [
             {
               ProductId: _id,
@@ -351,7 +342,7 @@ const DetailProductScreen = ({navigation, route  }) => {
               Image: selectedColor.image,
             },
           ];
-    
+
           navigation.navigate('OrderDetailsScreen', {
             dataProductOrder: productSelect,
           });
@@ -362,21 +353,20 @@ const DetailProductScreen = ({navigation, route  }) => {
             ToastAndroid.CENTER,
           );
         }
-        }else{
-          ToastAndroid.showWithGravity(
-            'Bạn chưa chọn màu',
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          );
-        }
-    }else{
+      } else {
+        ToastAndroid.showWithGravity(
+          'Bạn chưa chọn màu',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      }
+    } else {
       ToastAndroid.showWithGravity(
         'Bạn chưa đăng nhập hãy đăng nhập',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
     }
-   
   };
 
   const handleOnpressSize = (size, id, quantity) => {
@@ -386,19 +376,19 @@ const DetailProductScreen = ({navigation, route  }) => {
     setIdPropoties(id);
   };
 
-  const handleToCartScreen = () =>{
+  const handleToCartScreen = () => {
     if (userData) {
       navigation.navigate('CartScreen');
-    }else{
+    } else {
       handlePresentModalPressLogin();
     }
-  }
+  };
 
   // console.log('renderlai');
 
   return (
     <BottomSheetModalProvider>
-      <Animate.View style={[styles.container ]}>
+      <Animate.View style={[styles.container]}>
         <Animated.ScrollView
           contentContainerStyle={{flexGrow: 1}}
           onScroll={handleScroll}
@@ -470,7 +460,7 @@ const DetailProductScreen = ({navigation, route  }) => {
                 styleCommon.h2,
                 {color: COLORS.red, fontWeight: 'bold', marginTop: 10},
               ]}>
-              {price}
+              {price} VNĐ
             </Text>
             <View>
               <Text style={[styleCommon.h2, {color: COLORS.black}]}>
@@ -537,7 +527,8 @@ const DetailProductScreen = ({navigation, route  }) => {
                     height: 1,
                     backgroundColor: '#E5E5E5',
                     marginTop: 10,
-                  }}></View>
+                  }}
+                />
               </View>
             ))}
           </View>
@@ -560,9 +551,9 @@ const DetailProductScreen = ({navigation, route  }) => {
                       describe: item.describe,
                       price: item.price,
                       quantitySold: item.quantitySold,
-                      instruction : item.instruction,
-                      material : item.material,
-                      warrantyPolicy : item.warrantyPolicy,
+                      instruction: item.instruction,
+                      material: item.material,
+                      warrantyPolicy: item.warrantyPolicy,
                     })
                   }>
                   <Image
@@ -624,8 +615,7 @@ const DetailProductScreen = ({navigation, route  }) => {
           index={1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
-          backdropComponent={BottomSheetBackdrop}
-          >
+          backdropComponent={BottomSheetBackdrop}>
           <View style={styles.bottomSheetContainer}>
             <View
               style={{
@@ -721,7 +711,7 @@ const DetailProductScreen = ({navigation, route  }) => {
                           marginTop: 10,
                           borderRadius: 10,
                           backgroundColor: `#${item.colorId}`,
-                          borderWidth: item.colorId === "FFFFFF" ? 1 : 0,
+                          borderWidth: item.colorId === 'FFFFFF' ? 1 : 0,
                           // borderColor:
                           //   selectedColor &&
                           //   selectedColor.colorId === item.colorId
@@ -855,7 +845,7 @@ const DetailProductScreen = ({navigation, route  }) => {
                     />
                   </View>
                 ) : (
-                  <View></View>
+                  <View />
                 )}
               </View>
             </View>
@@ -915,8 +905,7 @@ const DetailProductScreen = ({navigation, route  }) => {
           index={1}
           snapPoints={snapPoints}
           onChange={handleSheetChangesSale}
-          backdropComponent={BottomSheetBackdrop}
-          >
+          backdropComponent={BottomSheetBackdrop}>
           <View style={styles.bottomSheetContainer}>
             <View
               style={{
@@ -1146,7 +1135,7 @@ const DetailProductScreen = ({navigation, route  }) => {
                     />
                   </View>
                 ) : (
-                  <View></View>
+                  <View />
                 )}
               </View>
             </View>
@@ -1174,24 +1163,28 @@ const DetailProductScreen = ({navigation, route  }) => {
                 </View>
               </View>
             </View>
-            <View style={{ width : '100%' , justifyContent : 'center' ,alignItems : 'center'}}>
-            <TouchableOpacity
+            <View
               style={{
-                width: '80%',
-                height: 40,
-                backgroundColor: COLORS.red,
+                width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop : 10,
-                borderRadius: 5,
-              }}
-              onPress={handleToSale}>
-              <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
-                xác nhận
-              </Text>
-            </TouchableOpacity>
+              }}>
+              <TouchableOpacity
+                style={{
+                  width: '80%',
+                  height: 40,
+                  backgroundColor: COLORS.red,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 10,
+                  borderRadius: 5,
+                }}
+                onPress={handleToSale}>
+                <Text style={{fontFamily: 'Inter-Bold', color: COLORS.white}}>
+                  xác nhận
+                </Text>
+              </TouchableOpacity>
             </View>
-            
           </View>
         </BottomSheetModal>
 
@@ -1201,8 +1194,7 @@ const DetailProductScreen = ({navigation, route  }) => {
           handleSheetChanges={handleSheetChangesLogin}
           handleClosePress={handleClosePressLogin}
           navigation={navigation}
-          />
-
+        />
       </Animate.View>
     </BottomSheetModalProvider>
   );

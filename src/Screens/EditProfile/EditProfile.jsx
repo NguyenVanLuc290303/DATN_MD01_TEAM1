@@ -19,41 +19,36 @@ import ImagePicker, {
 } from 'react-native-image-picker';
 import IconI from 'react-native-vector-icons/Ionicons';
 import storage from '@react-native-firebase/storage';
-import { API_UPDATE_USER } from '../../config/api-consts';
-import axios, { Axios } from 'axios';
-import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
+import {API_UPDATE_USER} from '../../config/api-consts';
+import axios, {Axios} from 'axios';
+import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
 import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 
 const EditProfile = ({navigation}) => {
-
   const {userData} = User();
 
-  const dataURI =[];
+  const dataURI = [];
 
   const reference = storage().ref(`avatars/${userData._id}`);
 
   const [imageChange, setImageChange] = useState(null);
-
 
   const handleOnpressImagePicker = async () => {
     try {
       const result = await launchImageLibrary({
         mediaType: 'photo',
         quality: 1,
-        
       });
 
-      if(!result.didCancel){
+      if (!result.didCancel) {
         const uriUPdate = result.assets[0].uri;
         // console.log(uriUPdate);
         // dataURI.push(uriUPdate);
         setImageChange(uriUPdate);
       }
-
     } catch (error) {
       console.log(error);
     }
-
   };
 
   console.log(dataURI);
@@ -80,21 +75,22 @@ const EditProfile = ({navigation}) => {
       });
   };
 
-  const updateImageUserToMongoDB = (url) =>{
+  const updateImageUserToMongoDB = url => {
     axios({
       method: 'put',
       url: `${API_UPDATE_USER}/${userData._id}`,
-       data : {
-        image : url
-      }
-    }).then(function (response) {
-      console.log(response);
-      console.log("Update image success " , response);
+      data: {
+        image: url,
+      },
     })
-    .catch(function (error) {
-      console.log(error);
-    });;
-  }
+      .then(function (response) {
+        console.log(response);
+        console.log('Update image success ', response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -107,7 +103,7 @@ const EditProfile = ({navigation}) => {
             flexDirection: 'column',
           }}>
           <Image
-            source={{ uri : imageChange === null ? userData.image : imageChange}}
+            source={{uri: imageChange === null ? userData.image : imageChange}}
             style={{
               width: 200,
               height: 200,
@@ -135,41 +131,126 @@ const EditProfile = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={{ fontSize: 18, color: 'gray', fontWeight: '300' }}>Giới thiệu về bạn</Text>
-        <View style={{ paddingTop: 10, justifyContent: 'center' }}>
-          <TouchableOpacity onPress={()=>navigation.navigate('ChangeUserNameScreen')}>
-            <View style={{ marginBottom: 22, flexDirection: 'row' }}>
-              <Text style={{ flex: 1 }}>Name</Text>
-              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.username}</Text>
-                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+        <Text style={{fontSize: 18, color: 'gray', fontWeight: '300'}}>
+          Giới thiệu về bạn
+        </Text>
+        <View style={{paddingTop: 10, justifyContent: 'center'}}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChangeUserNameScreen')}>
+            <View style={{marginBottom: 22, flexDirection: 'row'}}>
+              <Text style={{flex: 1}}>Họ và tên</Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                  }}>
+                  {userData.username}
+                </Text>
+                <Image
+                  style={{width: 15, height: 15}}
+                  source={require('@/images/next.png')}
+                />
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate('ChangeEmailScreen')}>
-            <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ flex: 1, }}>Email</Text>              
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.email}</Text>
-                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChangeEmailScreen')}>
+            <View
+              style={{
+                marginBottom: 22,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={{flex: 1}}>Email</Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                  }}>
+                  {userData.email}
+                </Text>
+                <Image
+                  style={{width: 15, height: 15}}
+                  source={require('@/images/next.png')}
+                />
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate('ChangePhoneScreen')}>
-            <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ flex: 1, }}>Phone Number</Text>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.numberPhone}</Text>
-                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChangePhoneScreen')}>
+            <View
+              style={{
+                marginBottom: 22,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={{flex: 1}}>Số điện thoại</Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                  }}>
+                  {userData.numberPhone}
+                </Text>
+                <Image
+                  style={{width: 15, height: 15}}
+                  source={require('@/images/next.png')}
+                />
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate('ChangeAddressScreen')}>
-            <View style={{ marginBottom: 22, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ flex: 1, }}>Address</Text>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>{userData.address}</Text>
-                <Image style={{ width: 15, height: 15 }} source={require('@/images/next.png')} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChangeAddressScreen')}>
+            <View
+              style={{
+                marginBottom: 22,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={{flex: 1}}>Địa chỉ</Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                  }}>
+                  {userData.address}
+                </Text>
+                <Image
+                  style={{width: 15, height: 15}}
+                  source={require('@/images/next.png')}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -185,7 +266,7 @@ const EditProfile = ({navigation}) => {
                 height: 50,
                 backgroundColor: COLORS.black,
               }}>
-              <Text style={styles.submitText}>Change Information</Text>
+              <Text style={styles.submitText}>Thay đổi thông tin</Text>
             </TouchableOpacity>
           </View>
         </View>
