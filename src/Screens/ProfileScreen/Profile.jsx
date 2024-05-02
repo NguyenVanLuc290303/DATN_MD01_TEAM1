@@ -12,11 +12,11 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetScrollView,
-  BottomSheetBackdropProps
+  BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import {Icons} from '../../constants/images';
 import COLORS from '../../constants/colors';
-import {Fragment, useState , useRef , useCallback , useMemo} from 'react';
+import {Fragment, useState, useRef, useCallback, useMemo} from 'react';
 import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
 import {User} from '../../hooks/useContext';
 import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
@@ -29,26 +29,23 @@ const Profile = ({navigation}) => {
 
   // console.log(userData.image);
 
-
   const [showModal, setShowModal] = useState(false);
 
   const bottomSheetModalRef = useRef(null);
 
   const snapPoints = useMemo(() => ['25%', '100%'], []);
 
-
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const handleSheetChanges = useCallback((index) => {
+  const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
   }, []);
 
   const handleClosePress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
-
 
   const navigateToEditProfile = () => {
     console.log('Edit Profile Action');
@@ -91,7 +88,7 @@ const Profile = ({navigation}) => {
       icon: Icons.IconPrivacy,
       text: 'Thay đổi mật khẩu',
       action: navigateToPrivacy,
-    }
+    },
   ];
 
   const renderSettingItem = ({icon, text, action}) => (
@@ -111,7 +108,7 @@ const Profile = ({navigation}) => {
   );
 
   const navigateToSubscription = () => {
-    navigation.navigate('DeliveryScreen')
+    navigation.navigate('DeliveryScreen');
   };
 
   const navigateToSupport = () => {
@@ -127,12 +124,6 @@ const Profile = ({navigation}) => {
       icon: Icons.IconSubscription,
       text: 'Thêm địa chỉ giao hàng',
       action: navigateToSubscription,
-    },
-    {icon: Icons.IconHelp, text: 'Help & Support', action: navigateToSupport},
-    {
-      icon: Icons.IconInfo,
-      text: 'Terms and Policies',
-      action: navigateToTermsAndPolicies,
     },
   ];
 
@@ -171,96 +162,97 @@ const Profile = ({navigation}) => {
   };
   return (
     <BottomSheetModalProvider>
-    <SafeAreaView style={styles.container}>
-      {userData ? (
-        <View style={styles.header}>
-          {/* <TouchableOpacity
+      <SafeAreaView style={styles.container}>
+        {userData ? (
+          <View style={styles.header}>
+            {/* <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{position: 'absolute', left: 0}}
         /> */}
 
-          <ScrollView style={{flex: 1, marginBottom: 12}}>
-            <View
-              style={{
-                marginTop: 20,
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}>
-              <Image
-                source={{
-                  uri:
-                    userData.image === '' ? IMAGE_URL_DEFAULT : userData.image,
-                }}
+            <ScrollView style={{flex: 1, marginBottom: 12}}>
+              <View
                 style={{
-                  width: 200,
-                  height: 200,
-                  borderRadius: 400 / 2,
-                  borderWidth: 1,
-                  borderColor: COLORS.gray,
-                }}
-              />
-            </View>
-            {/*Account Setting*/}
-            <View style={{marginBottom: 0}}>
-              <Text style={{marginVertical: 0, color: COLORS.black}}>
-                Tài khoản
-              </Text>
-              <View style={{borderRadius: 12, color: COLORS.black}}>
-                {accountItem.map((item, index) => (
-                  <Fragment key={index}>{renderSettingItem(item)}</Fragment>
-                ))}
-                {supportItems.map((item, index) => (
-                  <Fragment key={index}>{renderSettingItem(item)}</Fragment>
-                ))}
+                  marginTop: 20,
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                }}>
+                <Image
+                  source={{
+                    uri:
+                      userData.image === ''
+                        ? IMAGE_URL_DEFAULT
+                        : userData.image,
+                  }}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: 400 / 2,
+                    borderWidth: 1,
+                    borderColor: COLORS.gray,
+                  }}
+                />
               </View>
-            </View>
+              {/*Account Setting*/}
+              <View style={{marginBottom: 0}}>
+                <Text style={{marginVertical: 0, color: COLORS.black}}>
+                  Tài khoản
+                </Text>
+                <View style={{borderRadius: 12, color: COLORS.black}}>
+                  {accountItem.map((item, index) => (
+                    <Fragment key={index}>{renderSettingItem(item)}</Fragment>
+                  ))}
+                  {supportItems.map((item, index) => (
+                    <Fragment key={index}>{renderSettingItem(item)}</Fragment>
+                  ))}
+                </View>
+              </View>
 
-            <View style={{marginBottom: 12}}>
-              <Text style={{marginVertical: 10, color: COLORS.black}}>
-                Actions Settings
-              </Text>
-              <View style={{borderRadius: 12, color: COLORS.black}}>
-                {actionsItems.map((item, index) => (
-                  <Fragment key={index}>{renderSettingItem(item)}</Fragment>
-                ))}
+              <View style={{marginBottom: 12}}>
+                <Text style={{marginVertical: 10, color: COLORS.black}}>
+                  Đăng xuất
+                </Text>
+                <View style={{borderRadius: 12, color: COLORS.black}}>
+                  {actionsItems.map((item, index) => (
+                    <Fragment key={index}>{renderSettingItem(item)}</Fragment>
+                  ))}
+                </View>
               </View>
-            </View>
-          </ScrollView>
-          <ModalConfirm
-            content={'Bạn muốn đăng xuất không ? '}
-            visible={showModal}
-            onClose={() => setShowModal(false)}
-            onConfirm={handleLogout}
-          />
-        </View>
-      ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Icon name="person-add-outline" size={50} color="gray" />
-          <Text style={{margin: 20}}>Đăng nhập vào tài khoản hiện có</Text>
-          <TouchableOpacity
-            style={{
-              width: 200,
-              height: 50,
-              backgroundColor: COLORS.App,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={handlePresentModalPress}
-            >
-            <Text style={styles.title}>Đăng nhập</Text>
-          </TouchableOpacity>
-          <Login
-          bottomSheetModalRef={bottomSheetModalRef}
-          snapPoints={snapPoints}
-          handleSheetChanges={handleSheetChanges}
-          handleClosePress={handleClosePress}
-          navigation={navigation}
-          />
-        </View>
-      )}
-    </SafeAreaView>
-   
+            </ScrollView>
+            <ModalConfirm
+              content={'Bạn muốn đăng xuất không ? '}
+              visible={showModal}
+              onClose={() => setShowModal(false)}
+              onConfirm={handleLogout}
+            />
+          </View>
+        ) : (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Icon name="person-add-outline" size={50} color="gray" />
+            <Text style={{margin: 20}}>Đăng nhập vào tài khoản hiện có</Text>
+            <TouchableOpacity
+              style={{
+                width: 200,
+                height: 50,
+                backgroundColor: COLORS.App,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={handlePresentModalPress}>
+              <Text style={styles.title}>Đăng nhập</Text>
+            </TouchableOpacity>
+            <Login
+              bottomSheetModalRef={bottomSheetModalRef}
+              snapPoints={snapPoints}
+              handleSheetChanges={handleSheetChanges}
+              handleClosePress={handleClosePress}
+              navigation={navigation}
+            />
+          </View>
+        )}
+      </SafeAreaView>
     </BottomSheetModalProvider>
   );
 };

@@ -291,7 +291,10 @@ const OrderDetailsScreen = ({navigation, route}) => {
           removeFromCart(deleteProductInCart);
           deleteProductCart();
           downQuantityServer(deleteQuantityProduct);
-          navigation.replace('NotificationOrderSuccess', { dataProductOrder : dataProductOrder , timeOrder : formattedDate});
+          navigation.replace('NotificationOrderSuccess', {
+            dataProductOrder: dataProductOrder,
+            timeOrder: formattedDate,
+          });
           // }
         });
     } catch (error) {
@@ -374,9 +377,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
             <Image source={Icons.IconView} style={styles.iconView} />
           </View>
           <View style={styles.item}>
-            <OrderItemView
-            dataProductOrder={dataProductOrder}
-            />
+            <OrderItemView dataProductOrder={dataProductOrder} />
           </View>
 
           <View style={styles.textTransport}>
@@ -535,36 +536,33 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Zalo Pay
             </Text>
-            <TouchableOpacity  onPress={handleZaloPay}>
-            <Text style={styles.priceTransport3}>
-              Liên kết
-            </Text>
+            <TouchableOpacity onPress={handleZaloPay}>
+              <Text style={styles.priceTransport3}>Liên kết</Text>
             </TouchableOpacity>
-            
           </View>
-          <View style={styles.textTransport4}>
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                marginLeft: 10,
-                marginTop: 10,
-                justifyContent: 'center',
-                alignSelf: 'center',
-              }}
-              source={require('../../assets/images/credit-card.png')}
-            />
-            <Text
-              style={{
-                color: COLORS.black,
-                fontWeight: 'normal',
-                marginTop: 10,
-                alignItems: 'center',
-              }}>
-              Thẻ tín dụng/Ghi nợ
-            </Text>
-            <View style={{paddingRight: '18%'}} />
-          </View>
+          {/*<View style={styles.textTransport4}>*/}
+          {/*  <Image*/}
+          {/*    style={{*/}
+          {/*      width: 30,*/}
+          {/*      height: 30,*/}
+          {/*      marginLeft: 10,*/}
+          {/*      marginTop: 10,*/}
+          {/*      justifyContent: 'center',*/}
+          {/*      alignSelf: 'center',*/}
+          {/*    }}*/}
+          {/*    source={require('../../assets/images/credit-card.png')}*/}
+          {/*  />*/}
+          {/*  <Text*/}
+          {/*    style={{*/}
+          {/*      color: COLORS.black,*/}
+          {/*      fontWeight: 'normal',*/}
+          {/*      marginTop: 10,*/}
+          {/*      alignItems: 'center',*/}
+          {/*    }}>*/}
+          {/*    Thẻ tín dụng/Ghi nợ*/}
+          {/*  </Text>*/}
+          {/*  <View style={{paddingRight: '18%'}} />*/}
+          {/*</View>*/}
         </View>
         <View
           style={{
@@ -649,7 +647,7 @@ const styles = StyleSheet.create({
 
   item: {
     marginBottom: 20, // Add margin bottom to separate items
-    padding : '3%'
+    padding: '3%',
   },
 
   borderInfo: {
