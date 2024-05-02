@@ -79,12 +79,6 @@ const Profile = ({navigation}) => {
     },
 
     {
-      icon: Icons.IconNotification,
-      text: 'Cài đặt thông báo',
-      action: navigateToNotifications,
-    },
-
-    {
       icon: Icons.IconPrivacy,
       text: 'Thay đổi mật khẩu',
       action: navigateToPrivacy,
