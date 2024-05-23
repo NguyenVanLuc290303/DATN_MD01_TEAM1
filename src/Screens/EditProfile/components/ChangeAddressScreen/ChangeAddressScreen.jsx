@@ -47,21 +47,21 @@ const ChangeAddressScreen = ({ navigation }) => {
         }).then(function (response) {
           // console.log(response.data);
           // if(response.data._id){
-    
+
             const userdateNew = {
-              "_id": userData._id, 
-              "address": address, 
-              "email": userData.email, 
-              "image": userData.image, 
-              "numberPhone": userData.numberPhone, 
-              "passwd": userData.passwd, 
+              "_id": userData._id,
+              "address": address,
+              "email": userData.email,
+              "image": userData.image,
+              "numberPhone": userData.numberPhone,
+              "passwd": userData.passwd,
               "username": userData.username
             }
             setUserData(userdateNew);
             navigation.navigate('EditProfile')
             console.log(userdateNew)
           // }
-    
+
           // console.log(userData, 'PPPPPPPP');
         })
         .catch(function (error) {
@@ -98,7 +98,7 @@ const ChangeAddressScreen = ({ navigation }) => {
                     style={{
                         alignItems: 'center',
                     }}>
-                    <Text style={{ fontSize: 20, color: 'black' }}>Address</Text>
+                    <Text style={{ fontSize: 20, color: 'black' }}>Địa chỉ</Text>
                 </View>
                 <TouchableOpacity
                     style={[styles.button, isUsernameChanged ? styles.buttonActive : styles.buttonInactive]}
@@ -110,7 +110,7 @@ const ChangeAddressScreen = ({ navigation }) => {
             </View>
             <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
             <View style={{ margin: 20, }}>
-                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'gray', marginBottom: 5 }}>Address
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'gray', marginBottom: 5 }}>Địa chỉ
                 </Text>
                 <TextInput style={{ width: '100%', fontSize: 16, paddingBottom: 20, paddingTop: 20 }}
                     borderBottomWidth={1}

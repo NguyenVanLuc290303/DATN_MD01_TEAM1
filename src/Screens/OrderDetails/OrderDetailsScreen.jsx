@@ -13,10 +13,8 @@ import {
 import COLORS from '../../constants/colors';
 import {Icons} from '../../constants/images';
 import {User} from '../../hooks/useContext';
-import CryptoJS from 'crypto-js';
 
 import {useState, useCallback, useEffect} from 'react';
-import CheckBox from '@react-native-community/checkbox';
 import {
   API_DELETE_IN_CART,
   API_ORDER,
@@ -26,10 +24,18 @@ import {API_PRODUCT_ORDER} from '../../config/api-consts';
 import Icon from 'react-native-vector-icons/Fontisto';
 import axios, {Axios} from 'axios';
 import {Cart} from '../../hooks/cartContext';
+import OrderItemView from '../../components/organisms/OrderItemView/OrderItemView';
+
 const OrderDetailsScreen = ({navigation, route}) => {
   // const { idProduct, idPropoties , name , size , quantity , color , price , image } = route.params;
 
   const {dataProductOrder, dataAddress} = route.params;
+
+  const currentRouteName = route.name;
+
+  console.log(route, navigation, 'ooooooo');
+
+  console.log(currentRouteName, 'lkkkkkk');
 
   const {removeFromCart} = Cart();
 
@@ -186,6 +192,8 @@ const OrderDetailsScreen = ({navigation, route}) => {
       });
   };
 
+  console.log(isChecked);
+
   const postOrdertoServer = () => {
     if (isChecked) {
       const myHeaders = new Headers();
@@ -283,7 +291,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
           removeFromCart(deleteProductInCart);
           deleteProductCart();
           downQuantityServer(deleteQuantityProduct);
-          navigation.replace('NotificationOrderSuccess');
+          navigation.replace('NotificationOrderSuccess', { dataProductOrder : dataProductOrder , timeOrder : formattedDate});
           // }
         });
     } catch (error) {
@@ -316,6 +324,23 @@ const OrderDetailsScreen = ({navigation, route}) => {
       });
   };
 
+  const handleZaloPay = () => {
+    if (isChecked) {
+      ToastAndroid.showWithGravity(
+        'Vui lòng tắt thanh toán khi nhận hàng',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+    } else {
+      navigation.navigate('ZaloPaymentScreen', {
+        dataProductOrder: dataProductOrder,
+        pricePayment: totalPrice,
+        addressReceive: addressOrder,
+        deleteProductInCart: deleteProductInCart,
+      });
+    }
+  };
+
   return (
     <View styles={styles.container}>
       <ScrollView>
@@ -339,6 +364,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               onPress={() =>
                 navigation.navigate('DeliveryScreen', {
                   dataProductOrder: dataProductOrder,
+                  fromScreen: currentRouteName,
                 })
               }>
               <Image source={Icons.IconNext} style={styles.iconNext} />
@@ -348,79 +374,15 @@ const OrderDetailsScreen = ({navigation, route}) => {
             <Image source={Icons.IconView} style={styles.iconView} />
           </View>
           <View style={styles.item}>
-            <ScrollView>
-              {dataProductOrder.map((item, index) => (
-                <View key={index} style={styles.productInfo}>
-                  <Image source={{uri: item.Image}} style={styles.imgStyle} />
-                  <View style={styles.textContainer}>
-                    <Text numberOfLines={2} style={styles.textStyle}>
-                      {item.Name}
-                    </Text>
-                    <View style={styles.productDetailsWrapper}>
-                      <Text style={styles.productDetails}>{item.Size}</Text>
-                    </View>
-                    <View style={styles.rowContainer}>
-                      <View style={styles.priceContainer}>
-                        <Text style={styles.salePrice}>{item.Price}</Text>
-                      </View>
-                      <View
-                        style={[
-                          styles.countProduct,
-                          {
-                            width: '50%',
-                            flexDirection: 'row',
-                            borderWidth: 1,
-                            borderColor: '#272727',
-                          },
-                        ]}>
-                        <Text
-                          style={{
-                            flex: 3,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            alignSelf: 'center',
-                            textAlign: 'center',
-                            borderWidth: 0.5,
-                            borderColor: '#272727',
-                            color: COLORS.black,
-                          }}>
-                          {item.Quantity}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              ))}
-            </ScrollView>
+            <OrderItemView
+            dataProductOrder={dataProductOrder}
+            />
           </View>
 
           <View style={styles.textTransport}>
             <Text style={styles.transportInfo}>Vận chuyển tiêu chuẩn</Text>
-            <Text style={styles.priceTransport}>{costTranformer}</Text>
+            <Text style={styles.priceTransport}>{costTranformer} VNĐ</Text>
           </View>
-          <View style={styles.addressTransport}>
-            {/* <Image
-              source={require('../../assets/images/send.png')}
-              style={{width: 13, height: 12, marginTop: 5, marginRight: 5}}
-            />
-            <Text style={{marginBottom: 3, color: COLORS.black}}>
-              Từ Cầu Giấy
-            </Text> */}
-          </View>
-          {/* <View style={styles.timeTransport}>
-            <Image
-              source={require('../../assets/images/clock.png')}
-              style={{width: 13, height: 12, marginTop: 5, marginRight: 5}}
-            />
-            <Text style={{marginBottom: 3, color: COLORS.black}}>
-              Ngày giao dự kiến: Jan 16 - Jan 18
-            </Text>
-          </View>
-          <View style={{marginLeft: 25, marginTop: 15}}>
-            <Text style={{marginBottom: 3, color: COLORS.black}}>
-              Tin nhắn: Che tên sản phẩm
-            </Text>
-          </View> */}
         </View>
         <View
           style={{
@@ -473,7 +435,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Sản phẩm
             </Text>
-            <Text style={styles.priceTransport}>{totalPriceProduct}</Text>
+            <Text style={styles.priceTransport}>{totalPriceProduct} VNĐ</Text>
           </View>
           <View style={styles.textTransport}>
             <Text
@@ -485,7 +447,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Vận chuyển
             </Text>
-            <Text style={styles.priceTransport}>{costTranformer}</Text>
+            <Text style={styles.priceTransport}>{costTranformer} VNĐ</Text>
           </View>
           <View style={styles.textTransport2}>
             <Text
@@ -497,7 +459,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Tổng
             </Text>
-            <Text style={styles.priceTransport2}>{totalPrice}</Text>
+            <Text style={styles.priceTransport2}>{totalPrice} VNĐ</Text>
           </View>
         </View>
         <View
@@ -573,16 +535,7 @@ const OrderDetailsScreen = ({navigation, route}) => {
               }}>
               Zalo Pay
             </Text>
-            <Text
-              onPress={() =>
-                navigation.navigate('ZaloPaymentScreen', {
-                  dataProductOrder: dataProductOrder,
-                  pricePayment: totalPrice,
-                  addressReceive: addressOrder,
-                  deleteProductInCart: deleteProductInCart,
-                })
-              }
-              style={styles.priceTransport3}>
+            <Text onPress={handleZaloPay} style={styles.priceTransport3}>
               Liên kết
             </Text>
           </View>
@@ -603,10 +556,11 @@ const OrderDetailsScreen = ({navigation, route}) => {
                 color: COLORS.black,
                 fontWeight: 'normal',
                 marginTop: 10,
-                marginLeft: 20,
+                alignItems: 'center',
               }}>
               Thẻ tín dụng/Ghi nợ
             </Text>
+            <View style={{paddingRight: '18%'}} />
           </View>
         </View>
         <View
@@ -624,10 +578,6 @@ const OrderDetailsScreen = ({navigation, route}) => {
               justifyContent: 'center',
               alignItems: 'center',
               margin: 20,
-              // position: 'absolute',
-              // bottom: 15,
-              // right: 50,
-              // left: 50,
               borderRadius: 5,
             }}
             onPress={handleOrderProduct}>
@@ -693,17 +643,12 @@ const styles = StyleSheet.create({
   iconView: {
     width: '100%',
   },
-  rowContainer: {
-    flexDirection: 'row',
-    marginLeft: 10,
-  },
+
   item: {
     marginBottom: 20, // Add margin bottom to separate items
+    padding : '3%'
   },
-  productInfo: {
-    flexDirection: 'row',
-    margin: '2%',
-  },
+
   borderInfo: {
     flexDirection: 'column',
     flex: 1,
@@ -718,36 +663,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     backgroundColor: COLORS.black,
   },
-  productDetailsWrapper: {
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 10,
-    backgroundColor: '#EFEFEF',
-    paddingHorizontal: 10,
-    paddingVertical: 1,
-    borderRadius: 5,
-    alignSelf: 'flex-start', // Căn chỉnh cho phù hợp với vùng chữ
-  },
-  priceContainer: {
-    flexDirection: 'column',
-  },
-  imgStyle: {
-    width: 80,
-    height: 80,
-    marginRight: 10,
-    marginLeft: 10,
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  textContainer: {
-    flexDirection: 'column',
-  },
-  textStyle: {
-    fontSize: 16,
-    color: COLORS.black, // Ensure text color is visible
-    marginBottom: 5,
-    fontWeight: 'bold',
-  },
+
   textTransport: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -755,12 +671,15 @@ const styles = StyleSheet.create({
   },
   textTransport4: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginLeft: 10,
+    marginTop: 10,
   },
   textTransport3: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 10,
+    marginTop: 10,
   },
   textTransport2: {
     flexDirection: 'row',
@@ -790,30 +709,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: 15,
   },
-  productDetails: {
-    fontSize: 14,
-    marginTop: 5,
-    color: '#939393',
-  },
-  salePrice: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'red',
-    marginRight: 10,
-  },
+
   regularPrice: {
     fontSize: 16,
     color: '#666',
     textDecorationLine: 'line-through',
   },
-  countProduct: {
-    backgroundColor: COLORS.white,
-    justifyContent: 'flex-end',
-    marginLeft: 30,
-    height: 22,
-    borderRadius: 8,
-    flexDirection: 'row',
-  },
+
   borderCount: {
     flex: 1,
   },
@@ -834,6 +736,9 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     borderRadius: 20, // Border radius cho view bao bọc
     overflow: 'hidden', // Cắt bớt phần ngoài ra khỏi vùng border
+  },
+  textContainerCenter: {
+    justifyContent: 'center',
   },
 });
 

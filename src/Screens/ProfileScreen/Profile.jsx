@@ -7,43 +7,61 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {
+  BottomSheetView,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetScrollView,
+  BottomSheetBackdropProps
+} from '@gorhom/bottom-sheet';
 import {Icons} from '../../constants/images';
 import COLORS from '../../constants/colors';
-import {Fragment, useState} from 'react';
-import { IMAGE_URL_DEFAULT } from '../../assets/images/background/imageURL';
-import { User } from '../../hooks/useContext';
+import {Fragment, useState , useRef , useCallback , useMemo} from 'react';
+import {IMAGE_URL_DEFAULT} from '../../assets/images/background/imageURL';
+import {User} from '../../hooks/useContext';
 import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import IconF from 'react-native-vector-icons/FontAwesome';
+import Login from '../../components/organisms/Login/Login';
 
 const Profile = ({navigation}) => {
-
   const {userData} = User();
 
-  console.log(userData.image);
-
+  // console.log(userData.image);
 
 
   const [showModal, setShowModal] = useState(false);
 
-  const handleConfirmAction = () => {
-    console.log('Confirmed action');
-    // Add your logic here for the action to be taken when confirmed
-    setShowModal(false); // Close the modal after action is taken
-    navigation.navigate('LoginScreen'); // Chuyển hướng đến màn hình đăng nhập
-  };
+  const bottomSheetModalRef = useRef(null);
+
+  const snapPoints = useMemo(() => ['25%', '100%'], []);
+
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleSheetChanges = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+
+
   const navigateToEditProfile = () => {
     console.log('Edit Profile Action');
     navigation.navigate('EditProfile');
   };
   const navigateToSecurity = () => {
     console.log('Security Action');
-    navigation.navigate('YourOrderScreen')
+    navigation.navigate('YourOrderScreen');
   };
 
   const navigateToNotifications = () => {
     console.log('Notifications Action');
-    navigation.navigate('Notification');
+    navigation.navigate('SettingNotificationScreen');
   };
 
   const navigateToPrivacy = () => {
@@ -53,28 +71,27 @@ const Profile = ({navigation}) => {
   const accountItem = [
     {
       icon: Icons.IconEditProfile,
-      text: 'Edit Profile',
+      text: 'Thông tin',
       action: navigateToEditProfile,
     },
 
     {
       icon: Icons.IconListOrder,
-      text: 'Your Order',
+      text: 'Đơn hàng của bạn',
       action: navigateToSecurity,
     },
 
     {
       icon: Icons.IconNotification,
-      text: 'Notifications',
+      text: 'Cài đặt thông báo',
       action: navigateToNotifications,
     },
 
     {
       icon: Icons.IconPrivacy,
-      text: 'Privacy',
+      text: 'Thay đổi mật khẩu',
       action: navigateToPrivacy,
-    },
-    
+    }
   ];
 
   const renderSettingItem = ({icon, text, action}) => (
@@ -94,7 +111,7 @@ const Profile = ({navigation}) => {
   );
 
   const navigateToSubscription = () => {
-    console.log('My Subscription Action');
+    navigation.navigate('DeliveryScreen')
   };
 
   const navigateToSupport = () => {
@@ -108,13 +125,13 @@ const Profile = ({navigation}) => {
   const supportItems = [
     {
       icon: Icons.IconSubscription,
-      text: 'My Subscription',
+      text: 'Thêm địa chỉ giao hàng',
       action: navigateToSubscription,
     },
-    {icon: Icons.IconHelp, text: 'Help & Support', action: navigateToSupport},
+    {icon: Icons.IconHelp, text: 'Hỗ trợ', action: navigateToSupport},
     {
       icon: Icons.IconInfo,
-      text: 'Terms and Policies',
+      text: 'Điều khoản và chính sách',
       action: navigateToTermsAndPolicies,
     },
   ];
@@ -125,14 +142,6 @@ const Profile = ({navigation}) => {
 
   const navigateToDataSaver = () => {
     console.log('Data Saver Action');
-  };
-
-  const navigateToReportProblem = () => {
-    console.log('Data Saver Action');
-  };
-
-  const addAccount = () => {
-    console.log('Add Account Action');
   };
 
   const logout = () => {
@@ -150,112 +159,118 @@ const Profile = ({navigation}) => {
   ];
 
   const actionsItems = [
-    // {
-    //   icon: Icons.IconReport,
-    //   text: 'Report a problem',
-    //   action: navigateToReportProblem,
-    // },
-    // {
-    //   icon: Icons.IconPeople,
-    //   text: 'Add Account',
-    //   action: addAccount,
-    // },
     {
       icon: Icons.IconLogOut,
-      text: 'Log out',
+      text: 'Đăng xuất',
       action: logout,
     },
   ];
 
- const handleLogout =() =>{
-  navigation.replace('LoginScreen');
- }
+  const handleLogout = () => {
+    navigation.replace('LoginScreen');
+  };
   return (
+    <BottomSheetModalProvider>
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        {/* <TouchableOpacity
+      {userData ? (
+        <View style={styles.header}>
+          {/* <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{position: 'absolute', left: 0}}
         /> */}
 
-        <ScrollView style={{flex : 1,marginBottom: 12}}>
-        <View
-          style={{
-            marginTop: 20,
-            alignItems: 'center',
-            flexDirection: 'column',
-          }}>
-          <Image
-            source={{ uri: userData.image === "" ? IMAGE_URL_DEFAULT : userData.image}}
+          <ScrollView style={{flex: 1, marginBottom: 12}}>
+            <View
+              style={{
+                marginTop: 20,
+                alignItems: 'center',
+                flexDirection: 'column',
+              }}>
+              <Image
+                source={{
+                  uri:
+                    userData.image === '' ? IMAGE_URL_DEFAULT : userData.image,
+                }}
+                style={{
+                  width: 200,
+                  height: 200,
+                  borderRadius: 400 / 2,
+                  borderWidth: 1,
+                  borderColor: COLORS.gray,
+                }}
+              />
+            </View>
+            {/*Account Setting*/}
+            <View style={{marginBottom: 0}}>
+              <Text style={{marginVertical: 0, color: COLORS.black}}>
+                Tài khoản
+              </Text>
+              <View style={{borderRadius: 12, color: COLORS.black}}>
+                {accountItem.map((item, index) => (
+                  <Fragment key={index}>{renderSettingItem(item)}</Fragment>
+                ))}
+              </View>
+            </View>
+
+            {/*Support and About Setting*/}
+            <View style={{marginBottom: 12}}>
+              <Text style={{marginVertical: 10, color: COLORS.black}}>
+                Hỗ trợ và thông tin
+              </Text>
+              <View style={{borderRadius: 12, color: COLORS.black}}>
+                {supportItems.map((item, index) => (
+                  <Fragment key={index}>{renderSettingItem(item)}</Fragment>
+                ))}
+              </View>
+            </View>
+
+            <View style={{marginBottom: 12}}>
+              <Text style={{marginVertical: 10, color: COLORS.black}}>
+                Đăng xuất
+              </Text>
+              <View style={{borderRadius: 12, color: COLORS.black}}>
+                {actionsItems.map((item, index) => (
+                  <Fragment key={index}>{renderSettingItem(item)}</Fragment>
+                ))}
+              </View>
+            </View>
+          </ScrollView>
+          <ModalConfirm
+            content={'Bạn muốn đăng xuất không ? '}
+            visible={showModal}
+            onClose={() => setShowModal(false)}
+            onConfirm={handleLogout}
+          />
+        </View>
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Icon name="person-add-outline" size={50} color="gray" />
+          <Text style={{margin: 20}}>Đăng nhập vào tài khoản hiện có</Text>
+          <TouchableOpacity
             style={{
               width: 200,
-              height: 200,
-              borderRadius: 400 / 2,
-              borderWidth: 1,
-              borderColor: COLORS.gray,
+              height: 50,
+              backgroundColor: COLORS.App,
+              borderRadius: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
+            onPress={handlePresentModalPress}
+            >
+            <Text style={styles.title}>Đăng nhập</Text>
+          </TouchableOpacity>
+          <Login
+          bottomSheetModalRef={bottomSheetModalRef}
+          snapPoints={snapPoints}
+          handleSheetChanges={handleSheetChanges}
+          handleClosePress={handleClosePress}
+          navigation={navigation}
           />
-          {/* <Image
-            source={Icons.IconPlus}
-            style={{width: 35, height: 30, marginTop: -30, marginLeft: 120}}
-          /> */}
         </View>
-          {/*Account Setting*/}
-          <View style={{marginBottom: 12}}>
-            <Text style={{marginVertical: 10, color: COLORS.black}}>
-              Account
-            </Text>
-            <View style={{borderRadius: 12, color: COLORS.black}}>
-              {accountItem.map((item, index) => (
-                <Fragment key={index}>{renderSettingItem(item)}</Fragment>
-              ))}
-            </View>
-          </View>
-
-          {/*Support and About Setting*/}
-          <View style={{marginBottom: 12}}>
-            <Text style={{marginVertical: 10, color: COLORS.black}}>
-              Support and About
-            </Text>
-            <View style={{borderRadius: 12, color: COLORS.black}}>
-              {supportItems.map((item, index) => (
-                <Fragment key={index}>{renderSettingItem(item)}</Fragment>
-              ))}
-            </View>
-          </View>
-
-          {/*Cache & Cellular*/}
-          {/* <View style={{marginBottom: 12}}>
-            <Text style={{marginVertical: 10, color: COLORS.black}}>
-              Cache & Cellular
-            </Text>
-            <View style={{borderRadius: 12, color: COLORS.black}}>
-              {cacheAndCellularItems.map((item, index) => (
-                <Fragment key={index}>{renderSettingItem(item)}</Fragment>
-              ))}
-            </View>
-          </View> */}
-
-          {/*Actions Settings*/}
-          <View style={{marginBottom: 12}}>
-            <Text style={{marginVertical: 10, color: COLORS.black}}>
-              Actions Settings
-            </Text>
-            <View style={{borderRadius: 12, color: COLORS.black}}>
-              {actionsItems.map((item, index) => (
-                <Fragment key={index}>{renderSettingItem(item)}</Fragment>
-              ))}
-            </View>
-          </View>
-        </ScrollView>
-        <ModalConfirm
-        content={"Bạn muốn đăng xuất không ? "}
-        visible={showModal}
-        onClose={() => setShowModal(false)}
-        onConfirm={handleLogout}
-        />
-      </View>
+      )}
     </SafeAreaView>
+
+    </BottomSheetModalProvider>
   );
 };
 
@@ -266,12 +281,17 @@ const styles = StyleSheet.create({
   },
   header: {
     // marginHorizontal: 12,
-    paddingLeft : 10,
+    paddingLeft: 10,
     flexDirection: 'row',
   },
   iconStyle: {
     width: 24,
     height: 24,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFFFFF',
   },
 });
 

@@ -23,7 +23,7 @@ const FisrtScreen = ({navigation}) => {
 
   const FisrtScreenDisplay = useMemo(() => {
     const timer = setTimeout(() => {
-      navigation.replace('LoginScreen');
+      navigation.replace('BottomNavigation');
     }, 2000);
 
     return () => clearTimeout(timer);
@@ -56,7 +56,7 @@ const FisrtScreen = ({navigation}) => {
         <Text style={styles.text}>Let's Get Started !</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('LoginScreen')}>
+          onPress={() => navigation.navigate('BottomNavigation')}>
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
       </View>

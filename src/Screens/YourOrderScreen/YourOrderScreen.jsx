@@ -46,7 +46,7 @@ function YourOrderScreen({navigation}) {
           />
         </TouchableOpacity>
         <View style={styles.viewText}>
-          <Text style={styles.textHead}> ĐƠN HÀNG </Text>
+          <Text style={styles.textHead}>ĐƠN HÀNG </Text>
         </View>
         <View></View>
       </View>

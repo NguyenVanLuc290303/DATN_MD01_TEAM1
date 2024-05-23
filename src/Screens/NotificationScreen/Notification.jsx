@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useRef , useCallback, useMemo } from 'react';
 import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import COLORS from '../../constants/colors';
 import axios from 'axios';
 import { User } from "../../hooks/useContext"; 
 import { API_NOTIFICATION, API_PRODUCT } from '../../config/api-consts';
 import { firebase } from '@react-native-firebase/database';
+import Login from '../../components/organisms/Login/Login';
+
 
 
 
@@ -15,7 +17,31 @@ const Notification = ({navigation}) => {
   const refConversation = firebase.app().database('https://vidu2-96b2f-default-rtdb.asia-southeast1.firebasedatabase.app/',).ref('/thongbao');
   const [sp, setSp] = useState([]);
 
+  const bottomSheetModalRef = useRef(null);
+
+  const snapPoints = useMemo(() => ['25%', '100%'], []);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleSheetChanges = useCallback(index => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+
   useEffect(() => {
+
+    if(!userData){
+      const unsubscribe = navigation.addListener('focus', () => {
+        handlePresentModalPress();
+        });
+
+    return unsubscribe;
+    }
     // Lọc dữ liệu với điều kiện UserId là "1" hoặc userData._id
     const query1 = refConversation.orderByChild('UserId').equalTo("1").on('child_added', snapshot => {
         const newMessage = snapshot.val();
@@ -37,6 +63,7 @@ const Notification = ({navigation}) => {
         query2.off('child_added');
     };
 }, []);
+console.log(notificationData, "iiiiiiiiooooooo");
 
 
 
@@ -94,19 +121,31 @@ const Notification = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-
-        data={notificationData}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => {
-          if (item.id) {
-            return item.id.toString();
-          } else {
-            return index.toString();
-          }
-        }}
-
-      />
+      {
+        userData ? (
+          <FlatList
+          data={notificationData}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => {
+            if (item.id) {
+              return item.id.toString();
+            } else {
+              return index.toString();
+            }
+          }}
+  
+        />
+        ) :(
+          <Login
+          bottomSheetModalRef={bottomSheetModalRef}
+          snapPoints={snapPoints}
+          handleSheetChanges={handleSheetChanges}
+          handleClosePress={handleClosePress}
+          navigation={navigation}
+          />
+        )
+      }
+     
     </SafeAreaView>
   );
 };

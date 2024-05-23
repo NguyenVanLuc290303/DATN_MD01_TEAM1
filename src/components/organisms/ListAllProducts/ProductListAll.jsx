@@ -38,7 +38,7 @@ const ProductListAll = ({dataListProduct , onpressLove , heartColor , navigation
                         style={{width: 90, height: 131}}
                       />
                       <Text>{item.name}</Text>
-                      <Text>{item.price} USD</Text>
+                      <Text>{item.price} VND</Text>
                       {/* Thêm icon trái tim */}
                       <TouchableOpacity
                       style={styles.heartIcon}

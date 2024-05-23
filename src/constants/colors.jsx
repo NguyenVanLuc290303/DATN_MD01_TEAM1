@@ -1,7 +1,7 @@
 const COLORS = {
 
   //COLOR APP 
-  App : "#6666FF",
+  App : "#8C52FF",
 
   white: '#FFFFFF',
   black: '#000000',

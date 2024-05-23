@@ -30,11 +30,11 @@ const ModalConfirm = ({visible, onClose, onConfirm , content}) => {
               }}>
               <Text
               style={{
-                fontSize : 16 , 
+                fontSize : 16 ,
                 fontWeight : 'bold',
                 color : COLORS.white
               }}
-              >OKE</Text>
+              >Đồng ý</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={onClose}

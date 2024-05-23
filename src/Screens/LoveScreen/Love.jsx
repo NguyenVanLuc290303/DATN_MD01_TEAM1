@@ -36,7 +36,7 @@ const Love = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.viewTextHeadTitle}>
-                <Text style={styles.textHeadTitle}>Love Clothes</Text>
+                <Text style={styles.textHeadTitle}>Yêu thích</Text>
             </View>
             <ScrollView style={styles.viewListLove}>
                 {dataLove && dataLove.map((item) => (
@@ -55,7 +55,7 @@ const Love = ({ navigation }) => {
                             <Image source={{ uri: item.image }} style={styles.image} />
                             <View style={styles.textContainer}>
                                 <Text style={styles.nameText}>{item.name}</Text>
-                                <Text style={styles.priceText}>{item.price} USD</Text>
+                                <Text style={styles.priceText}>{item.price} VNĐ</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: "30%",
-        height: 85,
+        height: 110,
         marginLeft: "7%"
     },
     textContainer: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         marginBottom: '4%'
     },
     // priceText: {
-    //     color: 'red', 
+    //     color: 'red',
     // }
 });
 

@@ -83,7 +83,7 @@ const LoginScreen = ({navigation}) => {
       .get(`${API_ADD_USERS}/${internationalPhoneNumber}`)
       .then(function (response) {
         // const data = Array.isArray(response.data) ? response.data : [response.data];
-        console.log(response.data , "ffffffffff");
+        console.log(response.data, 'ffffffffff');
 
         loginUser(response.data);
       })
@@ -103,11 +103,11 @@ const LoginScreen = ({navigation}) => {
         internationalPhoneNumber === dataUser.numberPhone &&
         password === dataUser.passwd
       ) {
-        console.log(dataUser)
+        console.log(dataUser);
         setUserData(dataUser);
         navigation.navigate('BottomNavigation');
       } else {
-        console.log(dataUser + "data")
+        console.log(dataUser + 'data');
         Alert.alert('thông tin sai');
       }
     } catch (error) {
@@ -175,14 +175,15 @@ const LoginScreen = ({navigation}) => {
   }, []);
 
   return (
+    
     <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image source={Icons.IconApp} style={styles.iconShop} alt="Logo" />
 
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Đăng nhập</Text>
 
-          <Text style={styles.subtitle}>Please sign in to continue</Text>
+          {/* <Text style={styles.subtitle}></Text> */}
         </View>
         <View style={styles.form}>
           <View style={styles.input}>
@@ -205,7 +206,7 @@ const LoginScreen = ({navigation}) => {
             <TextInput
               defaultValue={password}
               secureTextEntry={!showPassword}
-              style={{flex: 1, paddingLeft: 10}}
+              style={{flex: 1, paddingLeft: 10, color: COLORS.black}}
               // value={form.password}
               placeholder="Enter your password"
               placeholderTextColor="#6b7280"
@@ -219,64 +220,81 @@ const LoginScreen = ({navigation}) => {
           <Text
             style={styles.title2}
             onPress={() => navigation.navigate('ForgotPassword')}>
-            Forgot Password
+            Quên mật khẩu
           </Text>
 
           <View style={styles.formAction}>
             <TouchableOpacity onPress={handerOnlickLogin}>
               <View style={styles.btn}>
-                <Text style={styles.btnText}>Login</Text>
+                <Text style={styles.btnText}>Đăng nhập</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                saveData(phone, password);
-                changeImage();
-              }}
-              style={{marginTop: 20, marginLeft: 160}}>
-              <Image
-                source={{uri: imageUri}}
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 10,
-                  marginLeft: 170,
+            <View style={{flex: 1}} />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  saveData(phone, password);
+                  changeImage();
                 }}
-              />
-            </TouchableOpacity>
-            <Text style={{color: 'blue', marginTop: 0, marginLeft: 220}}>
-              Remember Me ?
-            </Text>
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginRight: 10,
+                  marginTop: 20,
+                }}>
+                <Text
+                  style={{
+                    color: 'blue',
+                    marginRight: 10,
+                  }}>
+                  Nhớ mật khẩu ?
+                </Text>
+                <Image
+                  source={{uri: imageUri}}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: 10,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <TouchableOpacity
             style={{marginTop: 'auto'}}
             onPress={() => navigation.navigate('RegisterScreen')}>
             <Text style={styles.formFooter}>
-              Don't have an account?{''}
-              <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>
+              Bạn chưa có tài khoản ?{''}
+              <Text style={{textDecorationLine: 'underline'}}>Đăng ký</Text>
             </Text>
           </TouchableOpacity>
         </View>
-        <View style = {styles.mangxh}>
-        <TouchableOpacity style = {{}}>
+        <View style={styles.mangxh}>
+          <TouchableOpacity style={{}}>
             <Image
-                 source={{ uri : 'https://www.pinclipart.com/picdir/middle/2-21918_download-transparent-background-facebook-logo-clipart-facebook-logo.png'}}
-                 style={{ width: 50, height: 50 ,borderRadius:10}}
+              source={require('../../assets/images/icons8-facebook-48.png')}
+              style={{width: 50, height: 50, borderRadius: 10}}
             />
-        </TouchableOpacity>
-        <TouchableOpacity>
+          </TouchableOpacity>
+          <TouchableOpacity>
             <Image
-                 source={{ uri: 'https://tse3.mm.bing.net/th?id=OIP.jpQFunOi7r3t9JaTNLFXQgHaHa&pid=Api&P=0&h=180' }}
-                 style={{ width: 50, height: 50,borderRadius:10 ,marginLeft:50}}
+              source={{
+                uri: 'https://tse3.mm.bing.net/th?id=OIP.jpQFunOi7r3t9JaTNLFXQgHaHa&pid=Api&P=0&h=180',
+              }}
+              style={{width: 45, height: 45, borderRadius: 10, marginLeft: 50}}
             />
-        </TouchableOpacity>
-        <TouchableOpacity>
+          </TouchableOpacity>
+          <TouchableOpacity>
             <Image
-                 source={{ uri : 'https://cdn.imgbin.com/23/7/2/imgbin-google-logo-google-search-icon-google-google-logo-hEJMjnfCV4MA1gDtjaWTv5kc1.jpg'}}
-                 style={{ width: 50, height: 50 ,borderRadius:10,marginLeft:50}}
+              source={require('../../assets/images/icon_google_2.png')}
+              style={{width: 50, height: 50, borderRadius: 10, marginLeft: 50}}
             />
-        </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -287,16 +305,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  }, 
-    mangxh :{
-    width : '100%',
-    marginTop:20,
-    flexDirection:'row',
-    paddingLeft:0,
-    justifyContent : 'center'            
-},
+  },
+  mangxh: {
+    width: '100%',
+    marginTop: 20,
+    flexDirection: 'row',
+    paddingLeft: 0,
+    justifyContent: 'center',
+  },
   header: {
-    marginVertical: 36,
+    marginVertical: 20,
   },
   title: {
     fontSize: 27,
@@ -320,10 +338,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconShop: {
-    width: 80,
-    height: 80,
+    width: 150,
+    height: 150,
     alignSelf: 'center',
-    marginBottom: 36,
   },
   subtitle: {
     fontSize: 15,
@@ -385,6 +402,7 @@ const styles = StyleSheet.create({
   },
   formAction: {
     marginVertical: 24,
+    justifyContent: 'center',
   },
   formFooter: {
     fontSize: 17,

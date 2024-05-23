@@ -92,7 +92,7 @@ const AddDeliveryScreen = ({ navigation }) => {
             setTextPhone('');
             setTextStreet('');
 
-            // navigation.navigate('DeliveryScreen');
+            navigation.navigate('DeliveryScreen');
 
           }
         })
@@ -101,8 +101,6 @@ const AddDeliveryScreen = ({ navigation }) => {
         });
     }
   };
-
-  console.log('render lại', "AdđeliveryScreen");
 
   return (
     <View style={styles.container}>
@@ -125,7 +123,7 @@ const AddDeliveryScreen = ({ navigation }) => {
             alignItems: 'center',
             marginLeft: 20,
           }}>
-          <Text style={{ fontSize: 20, color: 'black' }}>Địa Chỉ mới</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>Địa Chỉ Mới</Text>
         </View>
       </View>
       <Text style={{ margin: 10 }}>Liên Hệ</Text>
@@ -140,9 +138,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Số điện thoại"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -152,10 +150,10 @@ const AddDeliveryScreen = ({ navigation }) => {
           }}
         />
       </View>
-      <Text style={{ margin: 10 }}>Địa Chỉ</Text>
+      <Text style={{margin: 10}}>Địa Chỉ</Text>
       <View>
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Tỉnh/Thành Phố"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -164,9 +162,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Quận/Huyện"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -175,9 +173,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Phường/Xã"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -186,9 +184,9 @@ const AddDeliveryScreen = ({ navigation }) => {
             checkInputs();
           }}
         />
-        <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
+        <View style={{width: '100%', height: 1, backgroundColor: '#E5E5E5'}} />
         <TextInput
-          style={{ paddingLeft: 10, height: 70 }}
+          style={{paddingLeft: 10, height: 70}}
           placeholder="Tên đường"
           placeholderTextColor="#6b7280"
           backgroundColor="white"
@@ -211,7 +209,7 @@ const AddDeliveryScreen = ({ navigation }) => {
         }}
         onPress={handleComplete}
         disabled={!isComplete}>
-        <Text style={{ color: isComplete ? 'white' : 'gray' }}>Thêm mới</Text>
+        <Text style={{color: isComplete ? 'white' : 'gray'}}>Thêm mới</Text>
       </TouchableOpacity>
     </View>
   );

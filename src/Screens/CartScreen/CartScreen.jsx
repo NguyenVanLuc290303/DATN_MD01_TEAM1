@@ -10,7 +10,7 @@ import {
   View,
   Animated,
   ToastAndroid
-  
+
 } from 'react-native';
 import COLORS from '../../constants/colors';
 import {useCallback, useEffect, useState} from 'react';
@@ -20,7 +20,6 @@ import {API_PRODUCT_TO_CART} from '../../config/api-consts';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {API_PRODUCT , API_COLOR_PRODUCT} from '../../config/api-consts';
-import ModalConfirm from '../../components/dialog/ModalConfirm';
 import { Cart } from '../../hooks/cartContext';
 import Loading from '../../components/organisms/Loading/Loading';
 import useListOrderQuantity from '../../services/check-order-quantity-services/use-list-order-quantity';
@@ -143,7 +142,7 @@ const CartScreen = ({navigation}) => {
 
   const handleOrderProduct = async () => {
 
-   
+
     if(checkedItems.length === 0 ){
       ToastAndroid.showWithGravity(
         'Chưa chọn sản phẩm ',
@@ -155,7 +154,7 @@ const CartScreen = ({navigation}) => {
     }else{
     postData();
     }
-  
+
   };
 
   const postData = async () => {
@@ -185,7 +184,7 @@ const CartScreen = ({navigation}) => {
 };
 
 const checkOrder = (data) =>{
-  
+
   let count = 0;
 
   for (let index = 0; index < data.length; index++) {
@@ -194,7 +193,7 @@ const checkOrder = (data) =>{
             if(orderItems[i].quantity <= data[index].quantity){ // Sửa lỗi cú pháp: orderItems.i.quantity thành orderItems[i].quantity và data.index.quantity thành data[index].quantity
                 count++;
             }
-        }        
+        }
     }
     if(count === orderItems.length){
       return true;
@@ -205,7 +204,7 @@ const checkOrder = (data) =>{
 
 
 
-  
+
 }
 
 
@@ -244,7 +243,7 @@ const checkOrder = (data) =>{
 
   // },[indexDelete])
 
-  const handleDeleteProductCart = (item, index) => {    
+  const handleDeleteProductCart = (item, index) => {
     console.log(item._id , "item._id của cartScreen" );
     console.log(item.CartId , " item.CartId của cartScreen" );
     console.log(item.ProductId , "item.ProductId của cartScreen" );
@@ -270,7 +269,7 @@ const checkOrder = (data) =>{
           result => console.log(result)
       )
       .catch(error => console.error(error));
- 
+
   };
 
 
@@ -301,13 +300,13 @@ const checkOrder = (data) =>{
               <View style={styles.rowContainer}>
                 <View style={styles.priceContainer}>
                   <Text style={styles.salePrice}>{item.priceSale}</Text>
-                  <Text style={styles.regularPrice}>{item.Price}</Text>
+                  <Text style={styles.regularPrice}>{item.Price} VNĐ</Text>
                 </View>
                 <View
                   style={[
                     styles.countProduct,
                     {
-                      width: '60%',
+                      width: '50%',
                       flexDirection: 'row',
                       borderWidth: 1,
                       borderColor: '#272727',
@@ -364,7 +363,7 @@ const checkOrder = (data) =>{
         </>
       ):(
         <Loading/>
-      )} 
+      )}
       <View
         style={[
           styles.bottomSheet,
@@ -386,11 +385,11 @@ const checkOrder = (data) =>{
               onPress={allChecked ? handleUncheckAll : handleChooseAll}
             />
             <Text style={styles.checkboxLabel}>
-              Choose All ({checkedItemCount})
+              Chọn tất cả ({checkedItemCount})
             </Text>
           </View>
           {/* Title */}
-          <Text style={styles.title}>{totalPrice}</Text>
+          <Text style={styles.title}>{totalPrice} VNĐ</Text>
           {/* Order Button */}
           <TouchableOpacity
             style={styles.orderButton}

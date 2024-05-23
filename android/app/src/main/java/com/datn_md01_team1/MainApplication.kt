@@ -43,6 +43,6 @@ class MainApplication : Application(), ReactApplication {
       load()
     }
     ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
-    ZaloPaySDK.init(553, Environment.SANDBOX);
+    ZaloPaySDK.init(2553, Environment.SANDBOX);
   }
 }

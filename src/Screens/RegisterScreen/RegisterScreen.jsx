@@ -17,8 +17,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMT from 'react-native-vector-icons/MaterialIcons';
 
-
-
 import {Icons} from '../../constants/images';
 import {ToggleButton} from 'react-native-paper';
 import axios, {Axios} from 'axios';
@@ -30,8 +28,8 @@ const RegisterScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [street ,setStreet] = useState('');
-  const [city , setCity] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
 
   const [errorMessages, setErrorMessages] = useState({
     phoneNumber: '',
@@ -75,72 +73,67 @@ const RegisterScreen = ({navigation}) => {
   };
 
   const handerOnlickCreateAccount = async () => {
+    console.log('ở đây', 'lll');
 
-    console.log("ở đây" , "lll")
-    
     try {
-
       const errors = {};
-    if (phoneNumber === '') {
-      errors.phoneNumber = 'Vui lòng nhập số điện thoại';
-    }
-    else if (!validateEmail(email)) {
-      errors.email = 'Vui lòng nhập đúng định dạng email';
-    }
-    if (name === '') {
-      errors.name = 'Vui lòng nhập tên';
-    }
-    if (password === '') {
-      errors.password = 'Vui lòng nhập password';
-    } else if (
-      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?!.*\s).{8,}$/.test(
-        password,
-      )
-    ) {
-      errors.password =
-        'Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một ký tự đặc biệt và một số';
-    }
-    if (address === '') {
-      errors.address = 'Vui lòng nhập địa chỉ';
-    }
-
-    setErrorMessages(errors);
-
-    console.log(Object.keys(errors).length ,"OOOOO");
-
-    if (Object.keys(errors).length === 1) {
-      // Nếu không có lỗi, bạn có thể tiến hành đăng ký tài khoản ở đây
-
-      console.log('ở đây')
-
-      // chuyển số điện thoại 0 -> +84
-      let formattedPhoneNumber = phoneNumber.trim();
-      if (formattedPhoneNumber.startsWith('0')) {
-        formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
-
-        // chuyển đổi xong thì bắt đầu thực hiện đăng ký
-
-        console.log(formattedPhoneNumber);
-        const confirmationResult = await auth().signInWithPhoneNumber(
-          formattedPhoneNumber,
-        );
-        navigation.navigate(
-          'SendOTPRegisterScreen',
-          (data = {
-            verification: confirmationResult.verificationId,
-            email: email,
-            name: name,
-            password: password,
-            address: street + city,
-            street : street,
-            city : city,
-            numberPhone: formattedPhoneNumber,
-          }),
-        );
-        
+      if (phoneNumber === '') {
+        errors.phoneNumber = 'Vui lòng nhập số điện thoại';
+      } else if (!validateEmail(email)) {
+        errors.email = 'Vui lòng nhập đúng định dạng email';
       }
-    }
+      if (name === '') {
+        errors.name = 'Vui lòng nhập tên';
+      }
+      if (password === '') {
+        errors.password = 'Vui lòng nhập password';
+      } else if (
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?!.*\s).{8,}$/.test(
+          password,
+        )
+      ) {
+        errors.password =
+          'Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một ký tự đặc biệt và một số';
+      }
+      if (address === '') {
+        errors.address = 'Vui lòng nhập địa chỉ';
+      }
 
+      setErrorMessages(errors);
+
+      console.log(Object.keys(errors).length, 'OOOOO');
+
+      if (Object.keys(errors).length === 1) {
+        // Nếu không có lỗi, bạn có thể tiến hành đăng ký tài khoản ở đây
+
+        console.log('ở đây');
+
+        // chuyển số điện thoại 0 -> +84
+        let formattedPhoneNumber = phoneNumber.trim();
+        if (formattedPhoneNumber.startsWith('0')) {
+          formattedPhoneNumber = '+84' + formattedPhoneNumber.slice(1);
+
+          // chuyển đổi xong thì bắt đầu thực hiện đăng ký
+
+          console.log(formattedPhoneNumber);
+          const confirmationResult = await auth().signInWithPhoneNumber(
+            formattedPhoneNumber,
+          );
+          navigation.navigate(
+            'SendOTPRegisterScreen',
+            (data = {
+              verification: confirmationResult.verificationId,
+              email: email,
+              name: name,
+              password: password,
+              address: street + city,
+              street: street,
+              city: city,
+              numberPhone: formattedPhoneNumber,
+            }),
+          );
+        }
+      }
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'Failed to send OTP');
@@ -150,10 +143,11 @@ const RegisterScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView style={{flex: 1, marginHorizontal: 22}}>
-        <View style={{marginBottom: 80, marginTop: 20, alignItems: 'center'}}>
-          <Image source={Icons.IconApp} style={{width: 100, height: 100}} />
+      
+        <View style={{marginBottom: 40, marginTop: 20, alignItems: 'center'}}>
+          <Image source={Icons.IconApp} style={{width: 150, height: 150}} />
         </View>
-        <View style={{marginVertical: 22}}>
+        <View style={{marginVertical: 0}}>
           <Text
             style={{
               fontSize: 22,
@@ -177,7 +171,7 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
-                flexDirection : 'row'
+                flexDirection: 'row',
               }}>
               <Icon name="phone" size={24} />
               <TextInput
@@ -186,7 +180,8 @@ const RegisterScreen = ({navigation}) => {
                 keyboardType="phone-pad"
                 style={{
                   width: '100%',
-                  paddingLeft : 10
+                  paddingLeft: 10,
+                  color: COLORS.black,
                 }}
                 onChangeText={Text => setPhoneNumber(Text)}
               />
@@ -206,16 +201,17 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
-                flexDirection : 'row'
+                flexDirection: 'row',
               }}>
-                <IconM name="email" size={24} />
+              <IconM name="email" size={24} />
               <TextInput
                 placeholder="Email"
                 placeholderTextColor={COLORS.black}
                 keyboardType="email-address"
                 style={{
                   width: '100%',
-                  paddingLeft : 10
+                  paddingLeft: 10,
+                  color: COLORS.black,
                 }}
                 onChangeText={Text => setEmail(Text)}
               />
@@ -224,7 +220,6 @@ const RegisterScreen = ({navigation}) => {
               <Text style={{color: 'red'}}>{errorMessages.email}</Text>
             ) : null}
           </View>
-          
 
           <View style={{marginBottom: 22}}>
             <View
@@ -237,15 +232,16 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
-                flexDirection  : 'row'
+                flexDirection: 'row',
               }}>
-                <Icon name="user" size={24}/>
+              <Icon name="user" size={24} />
               <TextInput
                 placeholder="Tên của bạn"
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
-                  paddingLeft : 10
+                  paddingLeft: 10,
+                  color: COLORS.black,
                 }}
                 onChangeText={Text => setName(Text)}
               />
@@ -266,16 +262,17 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
-                flexDirection : 'row'
+                flexDirection: 'row',
               }}>
-                <IconI name="lock-closed" size={24} />
+              <IconI name="lock-closed" size={24} />
               <TextInput
                 placeholder="Mật khẩu"
                 placeholderTextColor={COLORS.black}
                 secureTextEntry={!isPasswordShow}
                 style={{
                   width: '100%',
-                  paddingLeft : 10
+                  paddingLeft: 10,
+                  color: COLORS.black,
                 }}
                 onChangeText={Text => setPassword(Text)}
               />
@@ -307,15 +304,16 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
-                flexDirection : 'row'
+                flexDirection: 'row',
               }}>
-                <IconMT name="streetview" size={24}/>
+              <IconMT name="streetview" size={24} />
               <TextInput
                 placeholder="Đường"
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
-                  paddingLeft : 10
+                  paddingLeft: 10,
+                  color: COLORS.black,
                 }}
                 onChangeText={Text => setStreet(Text)}
               />
@@ -333,14 +331,15 @@ const RegisterScreen = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingLeft: 22,
-                flexDirection : 'row'
+                flexDirection: 'row',
               }}>
-                <IconMT name="location-city" size={24}/>
+              <IconMT name="location-city" size={24} />
               <TextInput
                 placeholder="Thành Phố"
                 placeholderTextColor={COLORS.black}
                 style={{
                   width: '100%',
+                  color: COLORS.black,
                 }}
                 onChangeText={Text => setCity(Text)}
               />
@@ -354,9 +353,10 @@ const RegisterScreen = ({navigation}) => {
                 marginTop: 18,
                 marginBottom: 4,
                 borderWidth: 1,
+                borderColor : COLORS.App,
                 borderRadius: 8,
                 height: 50,
-                backgroundColor: COLORS.black,
+                backgroundColor: COLORS.App,
               }}>
               <Text style={styles.submitText}>Đăng ký</Text>
             </TouchableOpacity>

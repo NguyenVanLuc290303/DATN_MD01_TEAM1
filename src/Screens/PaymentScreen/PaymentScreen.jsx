@@ -14,12 +14,20 @@ import {Icons} from '../../constants/images';
 import {FontText} from '../../constants/Constant';
 import { User } from '../../hooks/useContext';
 
+const takePicture = async () => {
+  if (cameraRef) {
+    const options = { quality: 0.5, base64: true };
+    const data = await cameraRef.current.takePictureAsync(options);
+    console.log(data.uri);
+  }
+};
+
 const PaymentScreen = ({navigation}) => {
   const {dataUser} = User();
   return (
     <ScrollView style={styles.container}>
       <Image source={Icons.ImageCard} style={styles.imgCard} />
-      <TouchableOpacity style={styles.iconCamera}>
+      <TouchableOpacity onPress={takePicture} style={styles.iconCamera}>
         <Image source={Icons.IconCamera} />
       </TouchableOpacity>
       <View
@@ -43,7 +51,7 @@ const PaymentScreen = ({navigation}) => {
               paddingLeft: 10,
             }}>
             <TextInput
-              placeholder="Varat Singh Sharma"
+              placeholder="Enter name"
               placeholderTextColor={COLORS.color_A1A1A1}
               keyboardType="default"
               style={{
@@ -68,7 +76,7 @@ const PaymentScreen = ({navigation}) => {
               paddingLeft: 10,
             }}>
             <TextInput
-              placeholder="4747 4747 4777"
+              placeholder="Enter card number"
               placeholderTextColor={COLORS.color_A1A1A1}
               style={{
                 width: '100%',
@@ -138,7 +146,7 @@ const PaymentScreen = ({navigation}) => {
 
         <View style={{flexDirection: 'row', flex: 1}}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.goBack()}
             style={{
               width: '100%',
               marginTop: 18,

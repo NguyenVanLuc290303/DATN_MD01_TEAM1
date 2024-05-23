@@ -21,24 +21,18 @@ import axios,{Axios} from 'axios';
 import { API_EVALUATE } from '../../config/api-consts';
 import useDateCurrent from '../../services/date-services/use-get-date-current';
 import storage from '@react-native-firebase/storage';
+import { API_ORDER } from '../../config/api-consts';
 
 
 
-const EvualuateScreen = ({navigation, route}) => {
+const ReasonScreen = ({navigation, route}) => {
   const {userData} = User();
-  const {productId} = route.params;
+  const {OrderId} = route.params;
   const [image, setImage] = useState(null);
 //   const dataURI = [];
 const reference = storage().ref(`evaluate/${userData._id}`);
-
-
-    const [rating, setRating] = useState(0);
     const [context , setContent] = useState("");
-    const handleRating = (star) => {
-    setRating(star);
 
-    console.log(star);
-    };
   const handleOnpressImagePicker = async () => {
     try {
       const result = await launchImageLibrary({
@@ -61,80 +55,43 @@ const reference = storage().ref(`evaluate/${userData._id}`);
     // const response = await fetch(dataURI[0]);
     // const blob = await response.blob();
     // console.log(dataURI[0]);
-    if(image){
-      const task = reference.putFile(image);
-      // Đợi quá trình upload hoàn thành
-      task
-        .then(async () => {
-          console.log('Image uploaded to the bucket!');
-  
-          // Lấy URL của ảnh sau khi đã tải lên Firebase Storage
-          const url = await reference.getDownloadURL();
-          console.log('Download URL:', url);
-  
-          updateImageUserToMongoDB(url);
-        })
-        .catch(error => {
-          console.error('Error uploading image:', error);
-        });
-    }else{
-      ToastAndroid.showWithGravity(
-        'Chưa có hình ảnh đánh giá',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM
-      );
-    }
 
-   
+    const task = reference.putFile(image);
+    // Đợi quá trình upload hoàn thành
+    task
+      .then(async () => {
+        console.log('Image uploaded to the bucket!');
+
+        // Lấy URL của ảnh sau khi đã tải lên Firebase Storage
+        const url = await reference.getDownloadURL();
+        console.log('Download URL:', url);
+
+        updateImageUserToMongoDB(url);
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
+      });
   };
 
   const updateImageUserToMongoDB = (imageURL) =>{
+    const datetime = useDateCurrent();
 
-    if(context == null){
-      ToastAndroid.showWithGravity(
-        'Chưa có nội dung đánh giá',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM
-      );
-
-    }else if(rating === 0){
-      ToastAndroid.showWithGravity(
-        'Chưa có đánh giá sao',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM
-      );
-    }else{
-      const datetime = useDateCurrent();
-
-      console.log(datetime);
-      
-  
-      axios.post(API_EVALUATE, {
-          UserId  : userData._id,
-          ProductId : productId,
-          username : userData.username,
-          imageuser : userData.image,
-          datetime : datetime,
-          content : context,
-          imageContent : imageURL,
-          star : rating
-        })
-        .then(function (response) {
-          if(response.data){
-            ToastAndroid.showWithGravity(
-              'Thêm đánh giá thành công',
-              ToastAndroid.SHORT,
-              ToastAndroid.BOTTOM
-            );
-          }
-        }).then(
-          () => navigation.goBack()
-        )
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
+    console.log(datetime);
     
+    axios
+    .put(`${API_ORDER}/${OrderId}`, { status: "Trả hàng" ,reason :context,itemPhoto:imageURL})
+    .then(function (response) {
+      console.log(response.data); 
+      ToastAndroid.showWithGravity
+        'Yêu Cầu Trả Hàng Thành Công',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM// response.data thường chứa dữ liệu trả về từ server
+    }).then(
+        () => navigation.goBack()
+      )
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
@@ -165,21 +122,13 @@ const reference = storage().ref(`evaluate/${userData._id}`);
           color: COLORS.gray,
           margin: 20,
         }}>
-        Đánh giá
+        Lí Do Trả Hàng 
       </Text>
-      <View style={{flexDirection: 'row', marginLeft: 20}}>
-        {[1,2,3,4,5].map((star , index) =>(
-          
-            <TouchableOpacity key={index} onPress={() => handleRating(star)}>
-                <IconI name="star" size={30} color={ star <= rating ? 'yellow' : 'gray'} />
-            </TouchableOpacity>
-        ))}
-        
-      </View>
+     
       <View style={{margin: 20}}>
         <TextInput
           style={styles.input}
-          placeholder="Nhập đánh giá của bạn ......"
+          placeholder="Nhập lí do của bạn ......"
           multiline={true}
           numberOfLines={4}
           onChangeText={(Text) => setContent(Text)}
@@ -188,7 +137,7 @@ const reference = storage().ref(`evaluate/${userData._id}`);
       <View style={{ width : '100%' , alignItems : 'center'}}>
       <ButtonCustom
         onPress={upLoadImageToFirebaseStorage}
-        textContent={"Đánh giá"}        
+        textContent={"Yêu Cầu Trả Hàng "}        
       />
       </View>
       
@@ -214,4 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EvualuateScreen;
+export default ReasonScreen;

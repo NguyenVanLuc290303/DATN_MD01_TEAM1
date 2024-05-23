@@ -119,7 +119,7 @@ const ChangePhoneScreen = ({ navigation }) => {
                     style={{
                         alignItems: 'center',
                     }}>
-                    <Text style={{ fontSize: 20, color: 'black' }}>Phone</Text>
+                    <Text style={{ fontSize: 20, color: 'black' }}>Số điện thoại</Text>
                 </View>
                 <TouchableOpacity
                     style={[styles.button, isUsernameChanged ? styles.buttonActive : styles.buttonInactive]}
@@ -131,7 +131,7 @@ const ChangePhoneScreen = ({ navigation }) => {
             </View>
             <View style={{ width: '100%', height: 1, backgroundColor: '#E5E5E5' }} />
             <View style={{ margin: 20, }}>
-                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'gray', marginBottom: 5 }}>Phone
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'gray', marginBottom: 5 }}>Số điện thoại
                 </Text>
                 <TextInput style={{ width: '100%', fontSize: 16, paddingBottom: 20, paddingTop: 20 }}
                     borderBottomWidth={1}

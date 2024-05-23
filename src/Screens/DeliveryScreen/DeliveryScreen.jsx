@@ -18,12 +18,15 @@ import ModalConfirm from '../../components/morecules/ModalConfirm/ModalConfirm';
 
 const DeliveryScreen = ({navigation , route}) => {
 
-  const {dataProductOrder} = route?.params;
+  const {dataProductOrder , fromScreen} = route?.params || {};
+
   const {userData} =  User();
   console.log(userData._id);
   const [dataDelivery, setdataDelivery] = useState([]);
   const [itemDelete ,setItemDelete] = useState();
   const [itemIndex , setItemIndex] = useState();
+
+  console.log(fromScreen , "fromScreen ")
 
 
   useEffect(() => {
@@ -38,12 +41,14 @@ const DeliveryScreen = ({navigation , route}) => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [navigation]);
 
   console.log(dataDelivery);
 
   const handleAddAddressToOrder = ( item , index) =>{
-    navigation.navigate('OrderDetailsScreen' , {dataAddress : item , dataProductOrder : dataProductOrder});
+    if(fromScreen === 'OrderDetailsScreen'){
+      navigation.navigate('OrderDetailsScreen' , {dataAddress : item , dataProductOrder : dataProductOrder});
+    }
   }
 
   const handleDeteleAddress = () =>{
@@ -98,7 +103,7 @@ const DeliveryScreen = ({navigation , route}) => {
             source={require('@/images/back.png')}
           />
         </TouchableOpacity>
-        
+
         <View
           style={{
             justifyContent: 'center',
@@ -176,7 +181,7 @@ const DeliveryScreen = ({navigation , route}) => {
                       <Text style={{color: '#FF0000'}}>Xóa</Text>
                     </TouchableOpacity>
                   </View>
-                  
+
                 </View>
               );
             }}
